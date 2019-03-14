@@ -57,7 +57,7 @@ public class CarteraClientes extends Fecha implements Serializable {
         return cartera_clientes.get(codigo).getLlamadas();
     }
 
-    public void añadirFactura(Factura factura, Cliente cliente) {
+    public void addFactura(Factura factura, Cliente cliente) {
         cartera_clientes.get(cliente.getCodigo()).addFactura(factura);
     }
 

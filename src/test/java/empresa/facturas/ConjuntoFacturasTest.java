@@ -29,7 +29,7 @@ public class ConjuntoFacturasTest {
     }
 
     @Test
-    public void añadirFactura() throws FacturaNotFound {
+    public void addFactura() throws FacturaNotFound {
 
         boolean prueba = conjuntoFacturas.contieneFactura(factura);
         assertEquals(false, prueba);
@@ -37,11 +37,11 @@ public class ConjuntoFacturasTest {
         prueba = conjuntoFacturas.contieneFactura(otra_factura);
         assertEquals(false, prueba);
 
-        conjuntoFacturas.añadirFactura(factura);
+        conjuntoFacturas.addFactura(factura);
         prueba = conjuntoFacturas.contieneFactura(factura);
         assertEquals(true, prueba);
 
-        conjuntoFacturas.añadirFactura(otra_factura);
+        conjuntoFacturas.addFactura(otra_factura);
         prueba = conjuntoFacturas.contieneFactura(otra_factura);
         assertEquals(true, prueba);
 
@@ -56,18 +56,18 @@ public class ConjuntoFacturasTest {
             assertEquals(true, true);
         }
 
-        conjuntoFacturas.añadirFactura(factura);
+        conjuntoFacturas.addFactura(factura);
         assertEquals(factura, conjuntoFacturas.obtenerFactura(factura.getCodigo()));
 
-        conjuntoFacturas.añadirFactura(otra_factura);
+        conjuntoFacturas.addFactura(otra_factura);
         assertEquals(otra_factura, conjuntoFacturas.obtenerFactura(otra_factura.getCodigo()));
 
     }
 
     @Test
     public void listaFacturas() throws FacturaNotFound{
-        conjuntoFacturas.añadirFactura(factura);
-        conjuntoFacturas.añadirFactura(otra_factura);
+        conjuntoFacturas.addFactura(factura);
+        conjuntoFacturas.addFactura(otra_factura);
         HashMap<String, Factura> total_facturas = new HashMap<>();
         total_facturas.put(factura.getCodigo(), factura);
         total_facturas.put(otra_factura.getCodigo(), otra_factura);

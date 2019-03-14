@@ -13,7 +13,7 @@ public class ConjuntoFacturas extends Fecha implements Serializable {
         this.facturas = new HashMap<>();
     }
 
-    public void añadirFactura(Factura factura) throws FacturaNotFound {
+    public void addFactura(Factura factura) throws FacturaNotFound {
         if(facturas.containsKey(factura.getCodigo())){
             throw new FacturaNotFound();
         }

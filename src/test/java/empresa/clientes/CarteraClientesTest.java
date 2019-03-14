@@ -1,7 +1,6 @@
 package empresa.clientes;
 
 import empresa.excepcion.ClienteNotFound;
-import empresa.facturas.ConjuntoFacturas;
 import empresa.facturas.Factura;
 import empresa.llamadas.Llamada;
 import empresa.tarifas.Tarifa;
@@ -149,13 +148,13 @@ public class CarteraClientesTest {
     }
 
     @Test
-    public void añadirFactura() throws ClienteNotFound{
+    public void addFactura() throws ClienteNotFound{
 
         carteraClientes.altaCliente(clienteEmpresa);
         boolean prueba = carteraClientes.contieneFactura(clienteEmpresa, factura);
         assertEquals(false, prueba);
 
-        carteraClientes.añadirFactura(factura, clienteEmpresa);
+        carteraClientes.addFactura(factura, clienteEmpresa);
         prueba = carteraClientes.contieneFactura(clienteEmpresa, factura);
         assertEquals(true, prueba);
     }
@@ -169,8 +168,8 @@ public class CarteraClientesTest {
         facturas.add(otra_factura);
         assertNotEquals(facturas, carteraClientes.listaFacturas(clienteParticular.getCodigo()));
 
-        carteraClientes.añadirFactura(factura, clienteParticular);
-        carteraClientes.añadirFactura(otra_factura, clienteParticular);
+        carteraClientes.addFactura(factura, clienteParticular);
+        carteraClientes.addFactura(otra_factura, clienteParticular);
         assertEquals(facturas, carteraClientes.listaFacturas(clienteParticular.getCodigo()));
 
     }

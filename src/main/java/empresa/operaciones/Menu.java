@@ -63,8 +63,8 @@ public class Menu {
                 case EMITIR_FACTURA:
                     Cliente cliente = cartera_clientes.datosCliente(RecopilacionInformacion.codigoCliente());
                     Factura factura = Factura.emitirFactura(cliente, RecopilacionInformacion.codigoFactura(), RecopilacionInformacion.fechaInicio(), RecopilacionInformacion.fechaFinal());
-                    cartera_clientes.añadirFactura(factura, cliente);
-                    totalFacturas.añadirFactura(factura);
+                    cartera_clientes.addFactura(factura, cliente);
+                    totalFacturas.addFactura(factura);
                     break;
                 case DATOS_FACTURA:
                     Factura datos_factura = totalFacturas.obtenerFactura(RecopilacionInformacion.codigoFactura());
