@@ -36,6 +36,7 @@ public class Menu {
                 case ALTA_CLIENTE_EMPRESA:
                     cartera_clientes.altaCliente(RecopilacionInformacion.nuevoClienteEmpresa());
                     System.out.println(cartera_clientes.toString());
+                    System.out.println("Hola");
                     break;
                 case BAJA_CLIENTE:
                     cartera_clientes.bajaCliente(RecopilacionInformacion.codigoCliente());
