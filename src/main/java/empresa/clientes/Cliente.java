@@ -79,11 +79,11 @@ public abstract class Cliente extends Fecha implements Serializable {
     public String toString() {
         String fecha = (this.fecha_alta.get(Calendar.DAY_OF_MONTH) + "/" + (this.fecha_alta.get(Calendar.MONTH) + 1)+ "/" + this.fecha_alta.get(Calendar.YEAR));
         StringBuilder cliente = new StringBuilder();
-        cliente.append("Nombre: " + this.getNombre());
+        cliente.append("Nombre: " + this.nombre);
         cliente.append("\n");
-        cliente.append("NIF: " + this.getCodigo());
+        cliente.append("NIF: " + this.codigo);
         cliente.append("\n");
-        cliente.append("Correo: " + this.getCorreo());
+        cliente.append("Correo: " + this.correo);
         cliente.append("\n");
         cliente.append("Fecha: " + fecha);
         cliente.append("\n");

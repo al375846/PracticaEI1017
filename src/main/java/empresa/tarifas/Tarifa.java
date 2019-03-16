@@ -19,7 +19,7 @@ public class Tarifa implements Serializable {
 
     public String toString() {
         StringBuilder tarifa = new StringBuilder();
-        tarifa.append("Tarifa: " + this.getPrecio());
+        tarifa.append("Tarifa: " + this.precio);
         tarifa.append("\n");
         return tarifa.toString();
     }

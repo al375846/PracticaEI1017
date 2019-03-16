@@ -69,12 +69,12 @@ public class Factura extends Fecha implements Serializable {
     }
 
     public boolean compare(Factura otra_factura) {
-        if (this.getCodigo().compareTo(otra_factura.getCodigo()) == 0)
-            if (this.getImporte() == otra_factura.getImporte())
-                if (this.getTarifa().toString().compareTo(otra_factura.getTarifa().toString()) == 0)
-                    if (this.getFecha().toString().compareTo(otra_factura.getFecha().toString()) == 0)
-                        if (this.getInicio_periodo().toString().compareTo(otra_factura.getInicio_periodo().toString()) == 0)
-                            if (this.getFin_periodo().toString().compareTo(otra_factura.getFin_periodo().toString()) == 0)
+        if (this.codigo.compareTo(otra_factura.getCodigo()) == 0)
+            if (this.importe == otra_factura.getImporte())
+                if (this.tarifa.toString().compareTo(otra_factura.getTarifa().toString()) == 0)
+                    if (this.fecha_emision.toString().compareTo(otra_factura.getFecha().toString()) == 0)
+                        if (this.inicio_periodo.toString().compareTo(otra_factura.getInicio_periodo().toString()) == 0)
+                            if (this.fin_periodo.toString().compareTo(otra_factura.getFin_periodo().toString()) == 0)
                                 return true;
         return false;
     }
