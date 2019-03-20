@@ -41,4 +41,5 @@ public class ConjuntoFacturas extends Fecha implements Serializable {
             facturas.append(factura.toString());
         return facturas.toString();
     }
+
 }

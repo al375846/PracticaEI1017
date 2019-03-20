@@ -1,5 +1,7 @@
 package empresa.fecha;
 
+import empresa.excepcion.IllegalPeriodException;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Collection;
@@ -13,7 +15,10 @@ public class Fecha implements Serializable {
 
     }
 
-    public <T extends Fecha> HashSet<T> extraerEnPeriodo(Collection<T> datos, Calendar fecha_inicio, Calendar fecha_fin) {
+    public <T extends Fecha> HashSet<T> extraerEnPeriodo(Collection<T> datos, Calendar fecha_inicio, Calendar fecha_fin) throws IllegalPeriodException {
+        if(fecha_inicio.after(fecha_fin)){
+            throw new IllegalPeriodException();
+        }
         Collection<T> resultado = new HashSet<>();
         for(T dato: datos) {
             if (fecha_inicio.before(dato.getFecha()) && fecha_fin.after(dato.getFecha())) {
@@ -24,7 +29,9 @@ public class Fecha implements Serializable {
         return (HashSet<T>) resultado;
     }
 
+
     public Calendar getFecha() {
         return this.fecha;
     }
+
 }

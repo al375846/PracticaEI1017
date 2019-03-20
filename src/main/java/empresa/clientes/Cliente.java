@@ -1,5 +1,6 @@
 package empresa.clientes;
 
+import empresa.excepcion.IllegalPeriodException;
 import empresa.facturas.Factura;
 import empresa.fecha.Fecha;
 import empresa.llamadas.Llamada;
@@ -66,16 +67,6 @@ public abstract class Cliente extends Fecha implements Serializable {
         this.tarifa = tarifa;
     }
 
-   /* public void datos(){
-        String fecha = (this.fecha_alta.get(Calendar.DAY_OF_MONTH) + "/" + (this.fecha_alta.get(Calendar.MONTH) + 1)+ "/" + this.fecha_alta.get(Calendar.YEAR));
-        System.out.println("Nombre: " + this.getNombre());
-        System.out.println("NIF: " + this.getCodigo());
-        System.out.println("Correo: " + this.getCorreo());
-        System.out.println("Fecha: " + fecha);
-        System.out.println(this.getTarifa().toString());
-        System.out.println(this.getDireccion().toString());
-    }*/
-
     public String toString() {
         String fecha = (this.fecha_alta.get(Calendar.DAY_OF_MONTH) + "/" + (this.fecha_alta.get(Calendar.MONTH) + 1)+ "/" + this.fecha_alta.get(Calendar.YEAR));
         StringBuilder cliente = new StringBuilder();
@@ -128,4 +119,5 @@ public abstract class Cliente extends Fecha implements Serializable {
             return true;
         return false;
     }
+
 }

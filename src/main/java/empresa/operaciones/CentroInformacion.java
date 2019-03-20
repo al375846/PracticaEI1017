@@ -8,10 +8,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
-public class RecopilacionInformacion {
+public class CentroInformacion {
 
 
-    public RecopilacionInformacion() {
+    public CentroInformacion() {
     }
 
     public static Cliente nuevoClienteEmpresa() {
@@ -76,14 +76,12 @@ public class RecopilacionInformacion {
         return tarifa;
     }
     public static Llamada nuevaLlamada(){
-        System.out.println("Inserte los datos de la llamada:");
+        System.out.println("Inserte los datos de la llamada...");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Inserte el numero al que llamó:");
         String numero = scanner.next();
         System.out.println("Inserte la duración de la llamada:");
         Float duracion = scanner.nextFloat();
-        System.out.println("Inserte el codigo del clientes que efectuo la llamada:");
-        String codigo = scanner.next();
         Llamada llamada = new Llamada(numero, duracion, new GregorianCalendar());
         return llamada;
     }
@@ -102,8 +100,8 @@ public class RecopilacionInformacion {
         int mes_inicio = scanner.nextInt();
         System.out.println("Inserte el año de inicio del periodo de facturacion:");
         int año_inicio = scanner.nextInt();
-        Calendar inicio_periodo = new GregorianCalendar();
-        inicio_periodo.set(año_inicio, mes_inicio, dia_inicio);
+        Calendar inicio_periodo = new GregorianCalendar(año_inicio, mes_inicio, dia_inicio);
+        //inicio_periodo.set(año_inicio, mes_inicio, dia_inicio);
         return inicio_periodo;
     }
     public static Calendar fechaFinal(){
@@ -114,8 +112,8 @@ public class RecopilacionInformacion {
         int mes_fin = scanner.nextInt();
         System.out.println("Inserte el año de fin del periodo de facturacion:");
         int año_fin = scanner.nextInt();
-        Calendar fin_periodo = new GregorianCalendar();
-        fin_periodo.set(año_fin, mes_fin, dia_fin);
+        Calendar fin_periodo = new GregorianCalendar(año_fin, mes_fin - 1, dia_fin);
+        //fin_periodo.set(año_fin, mes_fin, dia_fin);
         return fin_periodo;
     }
 

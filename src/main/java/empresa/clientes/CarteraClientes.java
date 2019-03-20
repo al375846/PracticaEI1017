@@ -1,6 +1,7 @@
 package empresa.clientes;
 
 import empresa.excepcion.ClienteNotFound;
+import empresa.excepcion.IllegalPeriodException;
 import empresa.facturas.Factura;
 import empresa.fecha.Fecha;
 import empresa.llamadas.Llamada;
@@ -39,6 +40,7 @@ public class CarteraClientes extends Fecha implements Serializable {
         if (!cartera_clientes.containsKey(codigo))
             throw new ClienteNotFound();
         cartera_clientes.get(codigo).addLlamada(llamada);
+        System.out.println(llamada.toString());
     }
 
     public Cliente datosCliente(String codigo) throws ClienteNotFound {
@@ -88,4 +90,45 @@ public class CarteraClientes extends Fecha implements Serializable {
         return  cliente.contieneFactura(cliente, factura);
     }
 
+    public HashSet<Cliente> clientesEnPeriodo(Calendar fecha_inicio, Calendar fecha_fin) throws IllegalPeriodException {
+        try{
+            return extraerEnPeriodo(cartera_clientes.values(), fecha_inicio, fecha_fin);
+        }
+        catch (IllegalPeriodException p){
+            System.out.println("Periodo de fechas no valido");
+            return new HashSet<>();
+        }
+
+    }
+    public HashSet<Llamada> llamadasEnPeriodo(String codigo, Calendar fecha_inicio, Calendar fecha_fin) throws IllegalPeriodException, ClienteNotFound {
+        try{
+
+            return extraerEnPeriodo(this.datosCliente(codigo).getLlamadas(), fecha_inicio, fecha_fin);
+        }
+        catch (IllegalPeriodException p){
+            System.out.println("Periodo de fechas no válido");
+            return new HashSet<>();
+        }
+        catch (ClienteNotFound c){
+            System.out.println("Código de cliente no válido");
+            return new HashSet<>();
+        }
+
+    }
+
+    public HashSet<Factura> facturasEnPeriodo(String codigo, Calendar fecha_inicio, Calendar fecha_fin) throws IllegalPeriodException, ClienteNotFound {
+        try{
+
+            return extraerEnPeriodo(this.datosCliente(codigo).getFacturas(), fecha_inicio, fecha_fin);
+        }
+        catch (IllegalPeriodException p){
+            System.out.println("Periodo de fechas no válido");
+            return new HashSet<>();
+        }
+        catch (ClienteNotFound c){
+            System.out.println("Código de cliente no válido");
+            return new HashSet<>();
+        }
+
+    }
 }

@@ -84,15 +84,15 @@ public class Factura extends Fecha implements Serializable {
         StringBuilder factura = new StringBuilder();
         factura.append("Codigo: " + this.codigo);
         factura.append("\n");
-        factura.append("Importe: " + this.importe);
+        factura.append("Importe: " + this.getImporte());
         factura.append("\n");
-        factura.append("Tarifa: " + this.tarifa.toString());
+        factura.append(this.tarifa.toString());
         factura.append("Fecha de emision: " + fecha);
         factura.append("\n");
-        fecha = (this.inicio_periodo.get(Calendar.DAY_OF_MONTH) + "/" + (this.inicio_periodo.get(Calendar.MONTH) + 1)+ "/" + this.inicio_periodo.get(Calendar.YEAR));
-        factura.append("Inicio del periodo de facturacion" + fecha);
+        fecha = (this.inicio_periodo.get(Calendar.DAY_OF_MONTH) + "/" + (this.inicio_periodo.get(Calendar.MONTH) + 1) + "/" + this.inicio_periodo.get(Calendar.YEAR));
+        factura.append("Inicio del periodo de facturacion: " + fecha);
         factura.append("\n");
-        fecha = (this.fin_periodo.get(Calendar.DAY_OF_MONTH) + "/" + (this.fin_periodo.get(Calendar.MONTH) + 1)+ "/" + this.fin_periodo.get(Calendar.YEAR));
+        fecha = (this.fin_periodo.get(Calendar.DAY_OF_MONTH) + "/" + (this.fin_periodo.get(Calendar.MONTH) + 1) + "/" + this.fin_periodo.get(Calendar.YEAR));
         factura.append("Fin del periodo de facturacion: " + fecha);
         factura.append("\n");
 
