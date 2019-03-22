@@ -1,6 +1,6 @@
 package empresa.facturas;
 
-import empresa.excepcion.FacturaNotFound;
+import empresa.excepcion.InvoiceNotFound;
 import empresa.tarifas.Tarifa;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class ConjuntoFacturasTest {
     }
 
     @Test
-    public void addFactura() throws FacturaNotFound {
+    public void addFactura() throws InvoiceNotFound {
 
         boolean prueba = conjuntoFacturas.contieneFactura(factura);
         assertEquals(false, prueba);
@@ -48,11 +48,11 @@ public class ConjuntoFacturasTest {
     }
 
     @Test
-    public void obtenerFactura() throws FacturaNotFound{
+    public void obtenerFactura() throws InvoiceNotFound {
 
         try{
             conjuntoFacturas.obtenerFactura(otra_factura.getCodigo());
-        } catch (FacturaNotFound e){
+        } catch (InvoiceNotFound e){
             assertEquals(true, true);
         }
 
@@ -65,7 +65,7 @@ public class ConjuntoFacturasTest {
     }
 
     @Test
-    public void listaFacturas() throws FacturaNotFound{
+    public void listaFacturas() throws InvoiceNotFound {
         conjuntoFacturas.addFactura(factura);
         conjuntoFacturas.addFactura(otra_factura);
         HashMap<String, Factura> total_facturas = new HashMap<>();

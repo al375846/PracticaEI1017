@@ -1,5 +1,6 @@
 package empresa.facturas;
 
+import empresa.excepcion.IllegalPeriodException;
 import empresa.fecha.Fecha;
 import empresa.llamadas.Llamada;
 import empresa.tarifas.Tarifa;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 
 public class Factura extends Fecha implements Serializable {
     private double importe;
@@ -29,15 +31,20 @@ public class Factura extends Fecha implements Serializable {
         this.fin_periodo = fin_facturacion;
     }
 
-    public static Factura emitirFactura(Cliente cliente, String codigo, Calendar inicio_periodo, Calendar fin_periodo) {
-        double totalMinutos = 0;
-        for (Llamada llamada: cliente.getLlamadas())
-            if(llamada.getFecha().getTime().after(inicio_periodo.getTime()) && llamada.getFecha().getTime().before(fin_periodo.getTime())){
+    public static Factura emitirFactura(Cliente cliente, String codigo, Calendar inicio, Calendar fin) {
+        try {
+            HashSet<Llamada> llamadas = cliente.extraerEnPeriodo(cliente.getLlamadas(), inicio, fin);
+            double totalMinutos = 0;
+            for (Llamada llamada : llamadas)
                 totalMinutos += llamada.getDuracion();
-            }
-        double importe = totalMinutos * cliente.getTarifa().getPrecio();
-        Factura factura = new Factura(importe, codigo, cliente.getTarifa(), inicio_periodo, fin_periodo);
-        return factura;
+            double importe = totalMinutos * cliente.getTarifa().getPrecio();
+            Factura factura = new Factura(importe, codigo, cliente.getTarifa(), inicio, fin);
+            return factura;
+        }
+        catch (IllegalPeriodException p) {
+            System.out.println("Periodo de fechas no válido");
+        }
+        return null;
     }
 
     public Calendar getFecha() {

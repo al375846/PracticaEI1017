@@ -108,6 +108,7 @@ public abstract class Cliente extends Fecha implements Serializable {
     public List<Factura> getFacturas() {
         return facturas;
     }
+
     public boolean contieneLlamada(Cliente cliente, Llamada llamada) {
         if (cliente.llamadas.contains(llamada))
             return true;

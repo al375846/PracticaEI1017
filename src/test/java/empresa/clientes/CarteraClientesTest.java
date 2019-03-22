@@ -1,6 +1,6 @@
 package empresa.clientes;
 
-import empresa.excepcion.ClienteNotFound;
+import empresa.excepcion.ClientNotFound;
 import empresa.facturas.Factura;
 import empresa.llamadas.Llamada;
 import empresa.tarifas.Tarifa;
@@ -56,7 +56,7 @@ public class CarteraClientesTest {
     }
 
     @Test
-    public void altaCliente() throws ClienteNotFound {
+    public void altaCliente() throws ClientNotFound {
         carteraClientes.altaCliente(clienteEmpresa);
         boolean prueba = carteraClientes.contieneCliente(clienteEmpresa);
         assertEquals(true, prueba);
@@ -71,7 +71,7 @@ public class CarteraClientesTest {
     }
 
     @Test
-    public void bajaCliente() throws ClienteNotFound {
+    public void bajaCliente() throws ClientNotFound {
 
         carteraClientes.altaCliente(clienteEmpresa);
         boolean prueba = carteraClientes.contieneCliente(clienteEmpresa);
@@ -100,7 +100,7 @@ public class CarteraClientesTest {
     }
 
     @Test
-    public void altaLlamada() throws ClienteNotFound {
+    public void altaLlamada() throws ClientNotFound {
 
         carteraClientes.altaCliente(clienteParticular);
         carteraClientes.altaLlamada(clienteParticular.getCodigo(), nueva_llamada);
@@ -112,7 +112,7 @@ public class CarteraClientesTest {
     }
 
     @Test
-    public void datosCliente() throws  ClienteNotFound{
+    public void datosCliente() throws ClientNotFound {
         carteraClientes.altaCliente(clienteParticular);
         assertEquals(clienteParticular, carteraClientes.datosCliente(clienteParticular.getCodigo()));
         carteraClientes.altaCliente(clienteEmpresa);
@@ -120,7 +120,7 @@ public class CarteraClientesTest {
     }
 
     @Test
-    public void listaClientes() throws ClienteNotFound{
+    public void listaClientes() throws ClientNotFound {
 
         CarteraClientes carteraEnB = new CarteraClientes();
         carteraEnB.altaCliente(clienteEmpresa);
@@ -133,7 +133,7 @@ public class CarteraClientesTest {
     }
 
     @Test
-    public void listaLlamadas() throws ClienteNotFound{
+    public void listaLlamadas() throws ClientNotFound {
 
         carteraClientes.altaCliente(clienteEmpresa);
         List<Llamada> registroLlamadas = new ArrayList<>();
@@ -148,7 +148,7 @@ public class CarteraClientesTest {
     }
 
     @Test
-    public void addFactura() throws ClienteNotFound{
+    public void addFactura() throws ClientNotFound {
 
         carteraClientes.altaCliente(clienteEmpresa);
         boolean prueba = carteraClientes.contieneFactura(clienteEmpresa, factura);
@@ -160,7 +160,7 @@ public class CarteraClientesTest {
     }
 
     @Test
-    public void listaFacturas() throws ClienteNotFound{
+    public void listaFacturas() throws ClientNotFound {
 
         carteraClientes.altaCliente(clienteParticular);
         List<Factura> facturas = new ArrayList<>();

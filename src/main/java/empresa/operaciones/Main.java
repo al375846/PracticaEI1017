@@ -4,8 +4,8 @@ import empresa.clientes.CarteraClientes;
 import empresa.clientes.Cliente;
 import empresa.clientes.ClienteEmpresa;
 import empresa.clientes.Direccion;
-import empresa.excepcion.ClienteNotFound;
-import empresa.excepcion.FacturaNotFound;
+import empresa.excepcion.ClientNotFound;
+import empresa.excepcion.InvoiceNotFound;
 import empresa.excepcion.IllegalPeriodException;
 import empresa.excepcion.UnexpectedAnswerException;
 import empresa.facturas.ConjuntoFacturas;
@@ -17,13 +17,14 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class Main {
-    public static void main(String[] args) throws ClienteNotFound, FacturaNotFound, UnexpectedAnswerException, IllegalPeriodException {
+    public static void main(String[] args) throws ClientNotFound, InvoiceNotFound, UnexpectedAnswerException, IllegalPeriodException {
 
         ConjuntoFacturas conjunto_facturas = new ConjuntoFacturas();
         CarteraClientes cartera_clientes = new CarteraClientes();
         Cliente cliente = new ClienteEmpresa(new Tarifa(7), "empresa", "@correo", "1", new Direccion("12", "CS", "Cs"));
         System.out.printf(cliente.toString());
         cartera_clientes.altaCliente(cliente);
+        System.out.println(cartera_clientes.toString());
         Calendar fecha_1 = new GregorianCalendar(2019, 2, 10);
 
         Llamada llamada_1 = new Llamada("111",1.1, fecha_1);

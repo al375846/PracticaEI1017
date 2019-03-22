@@ -16,20 +16,29 @@ public class Fecha implements Serializable {
     }
 
     public <T extends Fecha> HashSet<T> extraerEnPeriodo(Collection<T> datos, Calendar fecha_inicio, Calendar fecha_fin) throws IllegalPeriodException {
-        if(fecha_inicio.after(fecha_fin)){
+        if(fecha_inicio.after(fecha_fin))
             throw new IllegalPeriodException();
-        }
         Collection<T> resultado = new HashSet<>();
         for(T dato: datos) {
             if (fecha_inicio.before(dato.getFecha()) && fecha_fin.after(dato.getFecha())) {
                 resultado.add(dato);
-                System.out.println(dato.toString());
             }
         }
         return (HashSet<T>) resultado;
     }
 
-
+    public <T extends Fecha> String toStringConjunto(HashSet<T> lista) {
+        StringBuilder listado = new StringBuilder();
+        listado.append("\n");
+        for(T dato: lista)
+            listado.append(dato.toString());
+        return listado.toString();
+    }
+    /*public static boolean validezPeriodo(Calendar inicio, Calendar fin) throws IllegalPeriodException {
+        if(inicio.after(fin))
+            throw new IllegalPeriodException();
+        return true;
+    }*/
     public Calendar getFecha() {
         return this.fecha;
     }

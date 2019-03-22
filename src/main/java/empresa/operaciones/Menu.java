@@ -1,17 +1,18 @@
 package empresa.operaciones;
 import empresa.clientes.*;
-import empresa.excepcion.ClienteNotFound;
-import empresa.excepcion.FacturaNotFound;
+import empresa.excepcion.ClientNotFound;
+import empresa.excepcion.InvoiceNotFound;
 import empresa.excepcion.IllegalPeriodException;
 import empresa.excepcion.UnexpectedAnswerException;
 import empresa.facturas.ConjuntoFacturas;
 import empresa.facturas.Factura;
 
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Menu {
 
-    public static void main(String[] args) throws ClienteNotFound, FacturaNotFound, UnexpectedAnswerException, IllegalPeriodException {
+    public static void main(String[] args) throws ClientNotFound, InvoiceNotFound, UnexpectedAnswerException, IllegalPeriodException {
 
         ConjuntoFacturas totalFacturas  = new ConjuntoFacturas();
         CarteraClientes cartera_clientes = new CarteraClientes();
@@ -77,7 +78,8 @@ public class Menu {
                     System.out.println(cartera_clientes.datosCliente(codigo_facturas).toStringFacturas());
                     break;
                 case CLIENTES_PERIODO:
-                    cartera_clientes.clientesEnPeriodo(CentroInformacion.fechaInicio(), CentroInformacion.fechaFinal());
+                    HashSet<Cliente> clientes = cartera_clientes.clientesEnPeriodo(CentroInformacion.fechaInicio(), CentroInformacion.fechaFinal());
+                    System.out.println(cartera_clientes.toStringConjunto(clientes));
                     break;
                 case LLAMADAS_PERIODO:
                     String cliente_llamadas = CentroInformacion.codigoCliente();

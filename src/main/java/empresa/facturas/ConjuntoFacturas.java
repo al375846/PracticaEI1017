@@ -1,6 +1,7 @@
 package empresa.facturas;
 
-import empresa.excepcion.FacturaNotFound;
+import empresa.excepcion.InvoiceNotFound;
+import empresa.excepcion.InvoiceAlreadyExistentException;
 import empresa.fecha.Fecha;
 
 import java.io.Serializable;
@@ -13,18 +14,36 @@ public class ConjuntoFacturas extends Fecha implements Serializable {
         this.facturas = new HashMap<>();
     }
 
-    public void addFactura(Factura factura) throws FacturaNotFound {
-        if(facturas.containsKey(factura.getCodigo())){
-            throw new FacturaNotFound();
+    public void addFactura(Factura factura) {
+        if (factura != null) {
+            try {
+                contieneFacturaExcepcion(factura.getCodigo());
+                facturas.put(factura.getCodigo(), factura);
+            }
+            catch (InvoiceAlreadyExistentException i) {
+                System.out.println("Factura ya existe");
+            }
         }
-        facturas.put(factura.getCodigo(), factura);
     }
 
-    public Factura obtenerFactura (String codigo) throws FacturaNotFound {
-        if(!facturas.containsKey(codigo)){
-            throw new FacturaNotFound();
+    public void contieneFacturaExcepcion(String codigo) throws InvoiceAlreadyExistentException {
+        if (facturas.containsKey(codigo))
+            throw new InvoiceAlreadyExistentException();
+    }
+
+    public void noContieneFacturaExcepcion(String codigo) throws InvoiceNotFound {
+        if (!facturas.containsKey(codigo))
+            throw new InvoiceNotFound();
+    }
+    public Factura obtenerFactura (String codigo) {
+        try {
+            noContieneFacturaExcepcion(codigo);
+            return facturas.get(codigo);
         }
-        return facturas.get(codigo);
+        catch (InvoiceNotFound i) {
+            System.out.println("Factura no existe");
+        }
+        return new Factura();
     }
 
     public HashMap<String, Factura> listaFacturas() {
