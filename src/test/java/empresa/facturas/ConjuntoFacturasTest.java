@@ -50,11 +50,8 @@ public class ConjuntoFacturasTest {
     @Test
     public void obtenerFactura() throws InvoiceNotFound {
 
-        try{
-            conjuntoFacturas.obtenerFactura(otra_factura.getCodigo());
-        } catch (InvoiceNotFound e){
-            assertEquals(true, true);
-        }
+        boolean prueba = conjuntoFacturas.contieneFactura(otra_factura);
+        assertEquals(false, prueba);
 
         conjuntoFacturas.addFactura(factura);
         assertEquals(factura, conjuntoFacturas.obtenerFactura(factura.getCodigo()));

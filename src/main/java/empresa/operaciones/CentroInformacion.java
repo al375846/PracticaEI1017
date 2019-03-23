@@ -63,7 +63,7 @@ public class CentroInformacion {
     }
     public static String codigoCliente(){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Inserte el codigo del cliente:");
+        System.out.print("Inserte el codigo del cliente: ");
         String codigo = scanner.next();
         return codigo;
     }
@@ -81,7 +81,7 @@ public class CentroInformacion {
         System.out.println("Inserte el numero al que llamó:");
         String numero = scanner.next();
         System.out.println("Inserte la duración de la llamada:");
-        Float duracion = scanner.nextFloat();
+        double duracion = scanner.nextDouble();
         Llamada llamada = new Llamada(numero, duracion, new GregorianCalendar());
         return llamada;
     }
