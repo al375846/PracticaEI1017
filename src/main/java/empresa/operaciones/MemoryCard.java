@@ -12,7 +12,7 @@ public class MemoryCard {
 
     public static String load() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("¿Desea cargar la información guardada?(Y/N):");
+        System.out.print("¿Desea cargar la información guardada?(Y/N): ");
         return scanner.next();
     }
 
@@ -62,7 +62,7 @@ public class MemoryCard {
 
     public static void save(ConjuntoFacturas total_facturas, CarteraClientes cartera_clientes) throws UnexpectedAnswerException {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("¿Desea guardar la información actualizada?(Y/N):");
+        System.out.print("¿Desea guardar la información actualizada?(Y/N): ");
         String respuesta = scanner.next();
         if (respuesta.compareTo("Y") == 0 || respuesta.compareTo("y") == 0) {
             try {

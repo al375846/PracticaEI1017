@@ -13,6 +13,9 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 
 public class Factura extends Fecha implements Serializable {
+
+    private static final long serialVersionUID = 5631L;
+
     private double importe;
     private String codigo;
     private Tarifa tarifa;

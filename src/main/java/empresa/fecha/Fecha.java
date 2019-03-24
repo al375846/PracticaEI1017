@@ -9,6 +9,9 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 
 public class Fecha implements Serializable {
+
+    private static final long serialVersionUID = 5631L;
+
     private Calendar fecha;
 
     public Fecha() {
@@ -34,11 +37,6 @@ public class Fecha implements Serializable {
             listado.append(dato.toString());
         return listado.toString();
     }
-    /*public static boolean validezPeriodo(Calendar inicio, Calendar fin) throws IllegalPeriodException {
-        if(inicio.after(fin))
-            throw new IllegalPeriodException();
-        return true;
-    }*/
     public Calendar getFecha() {
         return this.fecha;
     }

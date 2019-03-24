@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 public class ClienteEmpresa extends Cliente implements Serializable {
 
+    private static final long serialVersionUID = 5631L;
+
     public ClienteEmpresa() {
         super();
     }

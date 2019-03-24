@@ -5,9 +5,13 @@ import empresa.tarifas.Tarifa;
 import java.io.Serializable;
 
 public class ClienteParticular extends Cliente implements Serializable {
+
+    private static final long serialVersionUID = 5631L;
+
     private String apellidos;
     public ClienteParticular() {
         super();
+        this.apellidos = null;
     }
     public ClienteParticular(Tarifa tarifa, String nombre, String apellidos, String correo, String codigo, Direccion direccion) {
         super(tarifa, nombre, correo, codigo, direccion);
@@ -15,12 +19,9 @@ public class ClienteParticular extends Cliente implements Serializable {
     }
 
     @Override
-   /* public void datos() {
-        super.datos();
-        System.out.println("Apellidos: " + this.getApellidos());
-    }*/
-
     public String toString() {
+        if (this.apellidos == null)
+            return "";
         String cliente = super.toString();
         StringBuilder clientePar = new StringBuilder();
         clientePar.append(cliente);

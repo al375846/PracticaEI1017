@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class ConjuntoFacturas extends Fecha implements Serializable {
+
+    private static final long serialVersionUID = 5631L;
+
     private HashMap<String, Factura> facturas;
 
     public ConjuntoFacturas() {

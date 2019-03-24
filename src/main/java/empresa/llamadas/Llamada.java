@@ -7,6 +7,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class Llamada extends Fecha implements Serializable {
+
+    private static final long serialVersionUID = 5631L;
+
     private String num_llamo;
     private Calendar fecha_efectuo;
     private double duracion;

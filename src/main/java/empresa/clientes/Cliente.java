@@ -11,6 +11,9 @@ import java.util.*;
 import java.util.List;
 
 public abstract class Cliente extends Fecha implements Serializable {
+
+    private static final long serialVersionUID = 5631L;
+
     private Tarifa tarifa; //euros por minuto
     private Calendar fecha_alta;
     private List<Llamada> llamadas;
@@ -21,7 +24,7 @@ public abstract class Cliente extends Fecha implements Serializable {
     private Direccion direccion;
 
     public Cliente() {
-        this.fecha_alta = new GregorianCalendar(0,0,0);
+        this.fecha_alta = new GregorianCalendar(1,0,1);
         this.llamadas = new ArrayList<>();
         this.facturas = new ArrayList<>();
         this.tarifa = new Tarifa(0);
@@ -72,6 +75,8 @@ public abstract class Cliente extends Fecha implements Serializable {
     }
 
     public String toString() {
+        if (this.codigo == null)
+            return "";
         String fecha = (this.fecha_alta.get(Calendar.DAY_OF_MONTH) + "/" + (this.fecha_alta.get(Calendar.MONTH) + 1)+ "/" + this.fecha_alta.get(Calendar.YEAR));
         StringBuilder cliente = new StringBuilder();
         cliente.append("Nombre: " + this.nombre);

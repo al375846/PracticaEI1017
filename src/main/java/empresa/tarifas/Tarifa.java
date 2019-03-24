@@ -3,6 +3,9 @@ package empresa.tarifas;
 import java.io.Serializable;
 
 public class Tarifa implements Serializable {
+
+    private static final long serialVersionUID = 5631L;
+
     private int precio; //euros por minuto
 
     public Tarifa() {
