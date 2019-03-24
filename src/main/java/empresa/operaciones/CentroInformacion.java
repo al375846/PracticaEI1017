@@ -15,7 +15,7 @@ public class CentroInformacion {
     }
 
     public static Cliente nuevoClienteEmpresa() {
-        System.out.println("Inserte datos de la empresa");
+        System.out.print("Inserte datos de la empresa");
         Scanner scanner = new Scanner(System.in);
         System.out.print("Indique el nombre de la empresa:");
         String nombre = scanner.next();
@@ -70,35 +70,35 @@ public class CentroInformacion {
     public static Tarifa tarifaCliente(){
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Inserte la nueva tarifa");
+        System.out.print("Inserte la nueva tarifa");
         int precio = scanner.nextInt();
         Tarifa tarifa = new Tarifa(precio);
         return tarifa;
     }
     public static Llamada nuevaLlamada(){
-        System.out.println("Inserte los datos de la llamada...");
+        System.out.print("Inserte los datos de la llamada...");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Inserte el numero al que llamó:");
+        System.out.print("Inserte el numero al que llamó:");
         String numero = scanner.next();
-        System.out.println("Inserte la duración de la llamada:");
+        System.out.print("Inserte la duración de la llamada:");
         double duracion = scanner.nextDouble();
         Llamada llamada = new Llamada(numero, duracion, new GregorianCalendar());
         return llamada;
     }
     public static String codigoFactura(){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Inserte el codigo de la factura:");
+        System.out.print("Inserte el codigo de la factura:");
         String codigo_factura = scanner.next();
         return codigo_factura;
     }
 
     public static Calendar fechaInicio(){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Inserte el dia de inicio del periodo de facturacion:");
+        System.out.print("Inserte el dia de inicio del periodo de facturacion:");
         int dia_inicio = scanner.nextInt();
-        System.out.println("Inserte el mes de inicio del periodo de facturacion:");
+        System.out.print("Inserte el mes de inicio del periodo de facturacion:");
         int mes_inicio = scanner.nextInt();
-        System.out.println("Inserte el año de inicio del periodo de facturacion:");
+        System.out.print("Inserte el año de inicio del periodo de facturacion:");
         int año_inicio = scanner.nextInt();
         Calendar inicio_periodo = new GregorianCalendar(año_inicio, mes_inicio, dia_inicio);
         //inicio_periodo.set(año_inicio, mes_inicio, dia_inicio);
@@ -106,11 +106,11 @@ public class CentroInformacion {
     }
     public static Calendar fechaFinal(){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Inserte el dia de fin del periodo de facturacion:");
+        System.out.print("Inserte el dia de fin del periodo de facturacion:");
         int dia_fin = scanner.nextInt();
-        System.out.println("Inserte el mes de fin del periodo de facturacion:");
+        System.out.print("Inserte el mes de fin del periodo de facturacion:");
         int mes_fin = scanner.nextInt();
-        System.out.println("Inserte el año de fin del periodo de facturacion:");
+        System.out.print("Inserte el año de fin del periodo de facturacion:");
         int año_fin = scanner.nextInt();
         Calendar fin_periodo = new GregorianCalendar(año_fin, mes_fin - 1, dia_fin);
         //fin_periodo.set(año_fin, mes_fin, dia_fin);

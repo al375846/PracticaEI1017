@@ -47,32 +47,52 @@ public class CarteraClientes extends Fecha implements Serializable {
             throw new ClientNotFound();
     }
 
-    public void cambiarTarifa(Tarifa tarifa, String codigo) throws ClientNotFound {
-        if (!cartera_clientes.containsKey(codigo))
-            throw new ClientNotFound();
-        cartera_clientes.get(codigo).cambiarTarifa(tarifa);
+    public void cambiarTarifa(Tarifa tarifa, String codigo) {
+        try {
+            this.noContieneClienteExcepcion(codigo);
+            cartera_clientes.get(codigo).cambiarTarifa(tarifa);
+        }
+        catch (ClientNotFound c) {
+            System.out.println("El cliente no existe");
+        }
     }
 
-    public void altaLlamada(String codigo, Llamada llamada) throws ClientNotFound {
-        if (!cartera_clientes.containsKey(codigo))
-            throw new ClientNotFound();
-        cartera_clientes.get(codigo).addLlamada(llamada);
+    public void altaLlamada(String codigo, Llamada llamada){
+        try {
+            this.noContieneClienteExcepcion(codigo);
+            cartera_clientes.get(codigo).addLlamada(llamada);
+        }
+        catch (ClientNotFound c) {
+            System.out.println("El cliente no existe");
+        }
     }
 
-    public Cliente datosCliente(String codigo) throws ClientNotFound {
-        if (!cartera_clientes.containsKey(codigo))
-            throw new ClientNotFound();
-        return cartera_clientes.get(codigo);
+    public Cliente datosCliente(String codigo) {
+        try {
+            this.noContieneClienteExcepcion(codigo);
+            if (this.contieneCodigo(codigo))
+                return cartera_clientes.get(codigo);
+            else return new ClienteParticular();
+        }
+        catch (ClientNotFound c) {
+            System.out.println("El cliente no existe");
+            return new ClienteParticular();
+        }
     }
 
     public HashMap<String, Cliente> listaClientes() {
         return cartera_clientes;
     }
 
-    public List<Llamada> listaLlamadas(String codigo) throws ClientNotFound {
-        if (!cartera_clientes.containsKey(codigo))
-            throw new ClientNotFound();
-        return cartera_clientes.get(codigo).getLlamadas();
+    public List<Llamada> listaLlamadas(String codigo) {
+        try {
+            this.noContieneClienteExcepcion(codigo);
+            return cartera_clientes.get(codigo).getLlamadas();
+        }
+        catch (ClientNotFound c) {
+            System.out.println("El cliente no existe");
+            return new ArrayList<>();
+        }
     }
 
     public void addFactura(Factura factura, Cliente cliente) {
@@ -80,10 +100,15 @@ public class CarteraClientes extends Fecha implements Serializable {
             cartera_clientes.get(cliente.getCodigo()).addFactura(factura);
     }
 
-    public List<Factura> listaFacturas(String codigo) throws ClientNotFound {
-        if (!cartera_clientes.containsKey(codigo))
-            throw new ClientNotFound();
-        return cartera_clientes.get(codigo).getFacturas();
+    public List<Factura> listaFacturas(String codigo){
+        try {
+            this.noContieneClienteExcepcion(codigo);
+            return cartera_clientes.get(codigo).getFacturas();
+        }
+        catch (ClientNotFound c) {
+            System.out.println("El cliente no existe");
+            return new ArrayList<>();
+        }
     }
 
     public String toString(){
@@ -99,7 +124,11 @@ public class CarteraClientes extends Fecha implements Serializable {
         return true;
     }
 
-
+    public boolean contieneCodigo(String codigo) {
+        if (!cartera_clientes.containsKey(codigo))
+            return false;
+        return true;
+    }
 
     public boolean contieneLlamada(Cliente cliente, Llamada llamada) {
         return cliente.contieneLlamada(cliente, llamada);
@@ -125,21 +154,15 @@ public class CarteraClientes extends Fecha implements Serializable {
         catch (IllegalPeriodException p) {
             System.out.println("Periodo de fechas no válido");
         }
-        catch (ClientNotFound c) {
-            System.out.println("El cliente no existe");
-        }
         return new HashSet<>();
     }
 
-    public HashSet<Factura> facturasEnPeriodo(String codigo, Calendar fecha_inicio, Calendar fecha_fin) throws IllegalPeriodException, ClientNotFound {
+    public HashSet<Factura> facturasEnPeriodo(String codigo, Calendar fecha_inicio, Calendar fecha_fin) {
         try {
             return extraerEnPeriodo(this.datosCliente(codigo).getFacturas(), fecha_inicio, fecha_fin);
         }
         catch (IllegalPeriodException p) {
             System.out.println("Periodo de fechas no válido");
-        }
-        catch (ClientNotFound c) {
-            System.out.println("El cliente no existe");
         }
         return new HashSet<>();
     }

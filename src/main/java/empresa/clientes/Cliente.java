@@ -21,7 +21,11 @@ public abstract class Cliente extends Fecha implements Serializable {
     private Direccion direccion;
 
     public Cliente() {
-
+        this.fecha_alta = new GregorianCalendar(0,0,0);
+        this.llamadas = new ArrayList<>();
+        this.facturas = new ArrayList<>();
+        this.tarifa = new Tarifa(0);
+        this.direccion = new Direccion("", "", "");
     }
 
     public Cliente(Tarifa tarifa, String nombre, String correo, String codigo, Direccion direccion) {

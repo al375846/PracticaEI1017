@@ -7,6 +7,7 @@ import java.io.Serializable;
 public class ClienteParticular extends Cliente implements Serializable {
     private String apellidos;
     public ClienteParticular() {
+        super();
     }
     public ClienteParticular(Tarifa tarifa, String nombre, String apellidos, String correo, String codigo, Direccion direccion) {
         super(tarifa, nombre, correo, codigo, direccion);
