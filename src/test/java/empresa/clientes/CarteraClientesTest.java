@@ -4,6 +4,7 @@ import empresa.excepcion.ClientNotFound;
 import empresa.facturas.Factura;
 import empresa.llamadas.Llamada;
 import empresa.tarifas.Tarifa;
+import empresa.tarifas.TarifaBasica;
 import es.uji.www.GeneradorDatosINE;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,20 +37,20 @@ public class CarteraClientesTest {
         datos = new GeneradorDatosINE();
         String nombre_empresa = datos.getNombre();
         String nif_empresa = datos.getNIF();
-        Tarifa tarifa_empresa = new Tarifa(27);
+        Tarifa tarifa_empresa = new TarifaBasica(0.15);
         String provincia_empresa = datos.getProvincia();
         Direccion direccion_empresa = new Direccion("288", provincia_empresa, datos.getPoblacion(provincia_empresa));
         String correo_empresa = nombre_empresa.toLowerCase().replace(" ", "" ) + "@gmail.com";
-        clienteEmpresa = new ClienteEmpresa(tarifa_empresa, nombre_empresa, correo_empresa, nif_empresa, direccion_empresa);
+        clienteEmpresa = new ClienteEmpresa(nombre_empresa, tarifa_empresa, correo_empresa, nif_empresa, direccion_empresa);
         datos = new GeneradorDatosINE();
         String nombre_particular = datos.getNombre();
         String nif_particular = datos.getNIF();
-        Tarifa tarifa_particular = new Tarifa(13);
+        Tarifa tarifa_particular = new TarifaBasica(0.15);
         String apellidos_particular = datos.getApellido();
         String provincia_particular = datos.getProvincia();
         Direccion direccion_particular = new Direccion("353", provincia_particular, datos.getPoblacion(provincia_particular));
         String correo_particular = nombre_particular.toLowerCase().replace(" ", "" ) + "@gmail.com";
-        clienteParticular = new ClienteParticular(tarifa_particular, nombre_particular, apellidos_particular, correo_particular, nif_particular, direccion_particular);
+        clienteParticular = new ClienteParticular(nombre_particular, tarifa_particular, apellidos_particular, correo_particular, nif_particular, direccion_particular);
         Calendar fecha_1 = new GregorianCalendar(2019, 2, 10);
         llamada_1 = new Llamada("111",1.1, fecha_1);
         Calendar fecha_2 = new GregorianCalendar(2019, 2, 13);
@@ -64,8 +65,8 @@ public class CarteraClientesTest {
         otra_llamada = new Llamada("674668915", 10.67, new GregorianCalendar());
         fecha_inicio = new GregorianCalendar(2019,0,25);
         fecha_fin = new GregorianCalendar(2019,1,25);
-        factura = new Factura(86.38, "factura1", new Tarifa(31), fecha_inicio, fecha_fin);
-        otra_factura = new Factura(96.03, "factura2", new Tarifa(5), fecha_inicio, fecha_fin);
+        factura = new Factura(86.38, "factura1", new TarifaBasica(0.15), fecha_inicio, fecha_fin);
+        otra_factura = new Factura(96.03, "factura2", new TarifaBasica(0.15), fecha_inicio, fecha_fin);
     }
 
     @Test
@@ -105,7 +106,7 @@ public class CarteraClientesTest {
     @Test
     public void cambiarTarifa() {
 
-        Tarifa nuevaTarifa = new Tarifa(15);
+        Tarifa nuevaTarifa = new TarifaBasica(0.15);
         assertNotEquals(nuevaTarifa, clienteEmpresa.getTarifa());
         clienteEmpresa.cambiarTarifa(nuevaTarifa);
         assertEquals(nuevaTarifa, clienteEmpresa.getTarifa());

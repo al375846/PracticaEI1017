@@ -12,8 +12,12 @@ public class ClienteEmpresa extends Cliente implements Serializable {
         super();
     }
 
-    public ClienteEmpresa(Tarifa tarifa, String nombre, String correo, String codigo, Direccion direccion) {
-        super(tarifa, nombre, correo, codigo, direccion);
+    public ClienteEmpresa(String nombre, Tarifa tarifa, String correo, String codigo, Direccion direccion) {
+        super(nombre, tarifa, correo, codigo, direccion);
+    }
+    @Override
+    public void establecerCliente(String nombre, Tarifa tarifa, String correo, String codigo, Direccion direccion ) {
+        super.establecerCliente(nombre, tarifa, correo, codigo, direccion);
     }
 
 }

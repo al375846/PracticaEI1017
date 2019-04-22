@@ -36,6 +36,15 @@ public class Llamada extends Fecha implements Serializable {
         return duracion;
     }
 
+    public int getDia() {
+
+        return this.fecha_efectuo.get(Calendar.DAY_OF_WEEK);
+    }
+
+    public int getHora() {
+        return this.fecha_efectuo.get(Calendar.HOUR_OF_DAY);
+    }
+
     public String toString() {
         String fecha = (this.fecha_efectuo.get(Calendar.DAY_OF_MONTH) + "/" + (this.fecha_efectuo.get(Calendar.MONTH) + 1)+ "/" + this.fecha_efectuo.get(Calendar.YEAR));
         StringBuilder llamada = new StringBuilder();

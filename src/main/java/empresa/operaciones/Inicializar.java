@@ -12,6 +12,7 @@ import empresa.facturas.ConjuntoFacturas;
 import empresa.facturas.Factura;
 import empresa.llamadas.Llamada;
 import empresa.tarifas.Tarifa;
+import empresa.tarifas.TarifaBasica;
 import es.uji.www.GeneradorDatosINE;
 
 import java.util.Calendar;
@@ -25,7 +26,7 @@ public class Inicializar {
 
         if (cartera_clientes.listaClientes().keySet().isEmpty()){
 
-            Cliente cliente_0 = new ClienteEmpresa(new Tarifa(1), "empresa_0", "empresa_0@correo", "1", new Direccion("12", "CS", "Cs"));
+            Cliente cliente_0 = new ClienteEmpresa( "empresa_0", new TarifaBasica(0.15), "empresa_0@correo", "1", new Direccion("12", "CS", "Cs"));
             cliente_0.getFecha().set(2019, 0, 1);
             cartera_clientes.altaCliente(cliente_0);
             Calendar fecha_1 = new GregorianCalendar(2019, 1, 10);
@@ -58,11 +59,11 @@ public class Inicializar {
                 datos = new GeneradorDatosINE();
                 String nombre_empresa = datos.getNombre();
                 String nif_empresa = datos.getNIF();
-                Tarifa tarifa_empresa = new Tarifa(i+2);
+                Tarifa tarifa_empresa = new TarifaBasica(0.15);
                 String provincia_empresa = datos.getProvincia();
                 Direccion direccion_empresa = new Direccion("288", provincia_empresa, datos.getPoblacion(provincia_empresa));
                 String correo_empresa = nombre_empresa.toLowerCase().replace(" ", "" ) + "@gmail.com";
-                Cliente clienteEmpresa = new ClienteEmpresa(tarifa_empresa, nombre_empresa, correo_empresa, nif_empresa, direccion_empresa);
+                Cliente clienteEmpresa = new ClienteEmpresa(nombre_empresa, tarifa_empresa, correo_empresa, nif_empresa, direccion_empresa);
                 cartera_clientes.altaCliente(clienteEmpresa);
             }
         }

@@ -1,6 +1,7 @@
 package empresa.clientes;
 
 import empresa.tarifas.Tarifa;
+import empresa.tarifas.TarifaBasica;
 
 import java.io.Serializable;
 
@@ -13,8 +14,8 @@ public class ClienteParticular extends Cliente implements Serializable {
         super();
         this.apellidos = null;
     }
-    public ClienteParticular(Tarifa tarifa, String nombre, String apellidos, String correo, String codigo, Direccion direccion) {
-        super(tarifa, nombre, correo, codigo, direccion);
+    public ClienteParticular( String nombre, Tarifa tarifa, String apellidos, String correo, String codigo, Direccion direccion) {
+        super( nombre, tarifa, correo, codigo, direccion);
         this.apellidos = apellidos;
     }
 

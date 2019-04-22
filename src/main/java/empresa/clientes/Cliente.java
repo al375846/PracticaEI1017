@@ -5,6 +5,7 @@ import empresa.facturas.Factura;
 import empresa.fecha.Fecha;
 import empresa.llamadas.Llamada;
 import empresa.tarifas.Tarifa;
+import empresa.tarifas.TarifaBasica;
 
 import java.io.Serializable;
 import java.util.*;
@@ -27,11 +28,11 @@ public abstract class Cliente extends Fecha implements Serializable {
         this.fecha_alta = new GregorianCalendar(1,0,1);
         this.llamadas = new ArrayList<>();
         this.facturas = new ArrayList<>();
-        this.tarifa = new Tarifa(0);
+        this.tarifa = new TarifaBasica(0.15);
         this.direccion = new Direccion("", "", "");
     }
 
-    public Cliente(Tarifa tarifa, String nombre, String correo, String codigo, Direccion direccion) {
+    public Cliente(String nombre, Tarifa tarifa, String correo, String codigo, Direccion direccion) {
         this.tarifa = tarifa;
         this.nombre = nombre;
         this.correo = correo;
@@ -40,6 +41,14 @@ public abstract class Cliente extends Fecha implements Serializable {
         this.fecha_alta = new GregorianCalendar();
         this.llamadas = new ArrayList<>();
         this.facturas = new ArrayList<>();
+    }
+
+    public void establecerCliente(String nombre, Tarifa tarifa, String correo, String codigo, Direccion direccion ) {
+        this.nombre = nombre;
+        this.tarifa = tarifa;
+        this.correo = correo;
+        this.codigo = codigo;
+        this.direccion = direccion;
     }
 
     public Calendar getFecha() {

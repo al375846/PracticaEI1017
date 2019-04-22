@@ -1,22 +1,26 @@
 package empresa.tarifas;
 
+import empresa.llamadas.Llamada;
+
 import java.io.Serializable;
 
-public class Tarifa implements Serializable {
+public abstract class Tarifa implements Serializable {
 
     private static final long serialVersionUID = 5631L;
 
-    private int precio; //euros por minuto
+    private double precio; //euros por minuto
 
-    public Tarifa() {
-        Tarifa tarifa = new Tarifa();
-    }
+    public Tarifa() {}
 
-    public Tarifa(int precio) {
+    public Tarifa(double precio) {
         this.precio = precio;
     }
 
-    public int getPrecio() {
+    public double getPrecio() {
+        return precio;
+    }
+
+    public double getPrecioLlamada(Llamada llamada) {
         return precio;
     }
 

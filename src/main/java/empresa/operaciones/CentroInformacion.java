@@ -3,6 +3,7 @@ package empresa.operaciones;
 import empresa.clientes.*;
 import empresa.llamadas.Llamada;
 import empresa.tarifas.Tarifa;
+import empresa.tarifas.TarifaBasica;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -15,6 +16,8 @@ public class CentroInformacion {
     }
 
     public static Cliente nuevoClienteEmpresa() {
+
+
         System.out.print("Inserte datos de la empresa:");
         Scanner scanner = new Scanner(System.in);
         System.out.print("Indique el nombre de la empresa: ");
@@ -23,7 +26,7 @@ public class CentroInformacion {
         String codigo = scanner.next();
         System.out.print("Indique la tarifa que se aplicará: ");
         int precio = scanner.nextInt();
-        Tarifa tarifa = new Tarifa(precio);
+        Tarifa tarifa = new TarifaBasica(precio);
         System.out.print("Indique el correo de la empresa: ");
         String correo = scanner.next();
         System.out.print("Indique el codigo postal de la empresa: ");
@@ -33,7 +36,7 @@ public class CentroInformacion {
         System.out.print("Indique la población de la empresa: ");
         String poblacion = scanner.next();
         Direccion direccion = new Direccion(cp, provincia, poblacion);
-        Cliente nuevoCliente = new ClienteEmpresa(tarifa, nombre, correo, codigo, direccion);
+        Cliente nuevoCliente = new ClienteEmpresa( nombre, tarifa, correo, codigo, direccion);
         return nuevoCliente;
     }
 
@@ -46,7 +49,7 @@ public class CentroInformacion {
         String apellidos = scanner.next();
         System.out.print("Indique la tarifa que se aplicará al cliente: ");
         int precio = scanner.nextInt();
-        Tarifa tarifa = new Tarifa(precio);
+        Tarifa tarifa = new TarifaBasica(precio);
         System.out.print("Indique el correo del cliente: ");
         String correo = scanner.next();
         System.out.print("Indique el nif del clientes: ");
@@ -58,7 +61,7 @@ public class CentroInformacion {
         System.out.print("Indique la población del cliente: ");
         String poblacion = scanner.next();
         Direccion direccion = new Direccion(cp, provincia, poblacion);
-        Cliente nuevoCliente = new ClienteParticular(tarifa, nombre, apellidos, correo, codigo, direccion);
+        Cliente nuevoCliente = new ClienteParticular(nombre, tarifa, apellidos, correo, codigo, direccion);
         return nuevoCliente;
     }
     public static String codigoCliente(){
@@ -72,7 +75,7 @@ public class CentroInformacion {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Inserte la nueva tarifa: ");
         int precio = scanner.nextInt();
-        Tarifa tarifa = new Tarifa(precio);
+        Tarifa tarifa = new TarifaBasica(precio);
         return tarifa;
     }
     public static Llamada nuevaLlamada(){
