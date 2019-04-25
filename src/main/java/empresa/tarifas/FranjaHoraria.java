@@ -13,17 +13,15 @@ public class FranjaHoraria extends CasosEspecialesTarifa implements Serializable
 
     static double precioHoraria = 0.12;
 
-    public FranjaHoraria(Tarifa tarifa) {} //Para inicializar una tarifa general
+    public FranjaHoraria(Tarifa tarifa) {
+        super(tarifa, precioHoraria);
+    } //Para inicializar una tarifa general
 
     public FranjaHoraria(Tarifa tarifa, double precio_extra, int inicio, int fin) { //Para inicializar una tarifa presonalizada
 
         super(tarifa, precio_extra);
         hora_inicio = inicio;
         hora_fin = fin;
-    }
-
-    public double getPrecio() {
-        return precioHoraria;
     }
 
     public boolean aplicable(int hora) {
@@ -57,10 +55,10 @@ public class FranjaHoraria extends CasosEspecialesTarifa implements Serializable
     public String toString() {
         StringBuilder tarifa = new StringBuilder();
         tarifa.append(descripcion() + " " + getPrecio());
-        System.out.println(tarifa);
+        //System.out.println(tarifa);
         tarifa.append("\n");
         tarifa.append(getTarifaLlamada().toString());
-        System.out.println(tarifa);
+        //System.out.println(tarifa);
         return tarifa.toString();
     }
 }

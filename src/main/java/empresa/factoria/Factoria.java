@@ -28,8 +28,11 @@ public class Factoria{
 
     public Tarifa crearTarifa() {
         Tarifa tarifa = new TarifaBasica();
+        System.out.println(tarifa.toString());
         tarifa = new Diaria(tarifa);
+        System.out.println(tarifa.toString());
         tarifa = new FranjaHoraria(tarifa);
+        System.out.println(tarifa.toString());
         return tarifa;
     }
 

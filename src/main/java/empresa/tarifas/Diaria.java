@@ -13,6 +13,7 @@ public class Diaria extends CasosEspecialesTarifa implements Serializable {
     static double precioDiaria = 0.1;
 
     public Diaria(Tarifa tarifa){ //Para inicializar una tarifa general
+        super(tarifa, precioDiaria);
     }
 
     public Diaria(Tarifa tarifa, double precio_extra, int dia_aplicable) { //Para inicializar una tarifa presonalizada
@@ -26,9 +27,6 @@ public class Diaria extends CasosEspecialesTarifa implements Serializable {
         return false;
     }
 
-    public double getPrecio() {
-        return precioDiaria;
-    }
 
     public double getPrecioLlamada(Llamada llamada){
         boolean aplicar = this.aplicable(llamada.getDia());
@@ -54,10 +52,10 @@ public class Diaria extends CasosEspecialesTarifa implements Serializable {
     public String toString() {
         StringBuilder tarifa = new StringBuilder();
         tarifa.append(descripcion() + " " + getPrecio());
-        System.out.println(tarifa);
+        //System.out.println(tarifa);
         tarifa.append("\n");
         tarifa.append(getTarifaLlamada().toString());
-        System.out.println(tarifa);
+        //System.out.println(tarifa);
         return tarifa.toString();
     }
 }
