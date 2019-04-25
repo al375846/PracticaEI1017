@@ -2,15 +2,28 @@ package empresa.tarifas;
 
 import empresa.llamadas.Llamada;
 
-public class FranjaHoraria extends CasosEspecialesTarifa {
+import java.io.Serializable;
 
-    private int hora_inicio = 20;
-    private int hora_fin = 23;
+public class FranjaHoraria extends CasosEspecialesTarifa implements Serializable {
 
-    public FranjaHoraria() {}
+    private static final long serialVersionUID = 5631L;
 
-    public FranjaHoraria(Tarifa tarifa, double precio_extra) {
+    static int hora_inicio = 20;
+    static int hora_fin = 23;
+
+    static double precioHoraria = 0.12;
+
+    public FranjaHoraria(Tarifa tarifa) {} //Para inicializar una tarifa general
+
+    public FranjaHoraria(Tarifa tarifa, double precio_extra, int inicio, int fin) { //Para inicializar una tarifa presonalizada
+
         super(tarifa, precio_extra);
+        hora_inicio = inicio;
+        hora_fin = fin;
+    }
+
+    public double getPrecio() {
+        return precioHoraria;
     }
 
     public boolean aplicable(int hora) {
@@ -29,5 +42,25 @@ public class FranjaHoraria extends CasosEspecialesTarifa {
         }
         else
             return super.getTarifaLlamada().getPrecioLlamada(llamada);
+    }
+
+    public static void modificarHoraria(double precio, int inicio, int fin) {
+        precioHoraria = precio;
+        hora_inicio = inicio;
+        hora_fin = fin;
+    }
+
+    public String descripcion() {
+        return super.descripcion() + "Horaria";
+    }
+
+    public String toString() {
+        StringBuilder tarifa = new StringBuilder();
+        tarifa.append(descripcion() + " " + getPrecio());
+        System.out.println(tarifa);
+        tarifa.append("\n");
+        tarifa.append(getTarifaLlamada().toString());
+        System.out.println(tarifa);
+        return tarifa.toString();
     }
 }

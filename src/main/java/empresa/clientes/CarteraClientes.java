@@ -50,7 +50,7 @@ public class CarteraClientes extends Fecha implements Serializable {
             throw new ClientNotFound();
     }
 
-    public void cambiarTarifa(Tarifa tarifa, String codigo) {
+    public void cambiarTarifa(String codigo, Tarifa tarifa) {
         try {
             this.clienteNoExistente(codigo);
             cartera_clientes.get(codigo).cambiarTarifa(tarifa);

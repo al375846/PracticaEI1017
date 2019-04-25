@@ -1,8 +1,7 @@
 package empresa.operaciones;
 
 public enum OpcionesMenu {
-    ALTA_CLIENTE_PARTICULAR("Dar de alta a un cliente particular."),
-    ALTA_CLIENTE_EMPRESA("Dar de alta a un cliente empresa."),
+    ALTA_CLIENTE("Dar de alta a un cliente."),
     BAJA_CLIENTE("Dar de baja un cliente"),
     CAMBIAR_TARIFA("Cambiar tarifa de un cliente"),
     DATOS_CLIENTE("Obtener datos del cliente"),

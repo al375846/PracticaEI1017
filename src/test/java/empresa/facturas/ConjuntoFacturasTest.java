@@ -35,8 +35,8 @@ public class ConjuntoFacturasTest {
     @Test
     public void decorador() {
         Tarifa tarifa = new TarifaBasica(0.15);
-        tarifa = new Diaria(tarifa, 0.09);
-        tarifa = new FranjaHoraria(tarifa, 0.1);
+        tarifa = new Diaria(tarifa, 0.09, 7);
+        tarifa = new FranjaHoraria(tarifa, 0.1, 20, 23);
         GregorianCalendar fecha = new GregorianCalendar(2019, 3, 13);
         fecha.set(2019, 3,13,21,30);
         Llamada llamada = new Llamada("1", 1, fecha);

@@ -22,7 +22,7 @@ public class Inicializar {
 
     public static void datosIniciales(CarteraClientes cartera_clientes, ConjuntoFacturas conjunto_facturas, int cantidad_clientes){
 
-        GeneradorDatosINE datos;
+       /* GeneradorDatosINE datos;
 
         if (cartera_clientes.listaClientes().keySet().isEmpty()){
 
@@ -66,6 +66,6 @@ public class Inicializar {
                 Cliente clienteEmpresa = new ClienteEmpresa(nombre_empresa, tarifa_empresa, correo_empresa, nif_empresa, direccion_empresa);
                 cartera_clientes.altaCliente(clienteEmpresa);
             }
-        }
+        }*/
     }
 }

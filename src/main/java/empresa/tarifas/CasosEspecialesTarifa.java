@@ -2,7 +2,11 @@ package empresa.tarifas;
 
 import empresa.llamadas.Llamada;
 
-public abstract class CasosEspecialesTarifa extends Tarifa {
+import java.io.Serializable;
+
+public abstract class CasosEspecialesTarifa extends Tarifa implements Serializable {
+
+    private static final long serialVersionUID = 5631L;
 
     private Tarifa tarifa;
 
@@ -18,6 +22,10 @@ public abstract class CasosEspecialesTarifa extends Tarifa {
         if(super.getPrecio() > tarifa.getPrecioLlamada(llamada))
             return tarifa.getPrecioLlamada(llamada);
         return super.getPrecio();
+    }
+
+    public String descripcion() {
+        return super.descripcion() + " especial: ";
     }
 
     public Tarifa getTarifaLlamada() {

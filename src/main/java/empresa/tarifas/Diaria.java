@@ -2,16 +2,20 @@ package empresa.tarifas;
 
 import empresa.llamadas.Llamada;
 
-public class Diaria extends CasosEspecialesTarifa {
+import java.io.Serializable;
 
-    private int dia_aplicable = 7;      //sabado
+public class Diaria extends CasosEspecialesTarifa implements Serializable {
 
+    private static final long serialVersionUID = 5631L;
 
-    public Diaria(){
+    static int dia_aplicable = 7;      //sabado
 
+    static double precioDiaria = 0.1;
+
+    public Diaria(Tarifa tarifa){ //Para inicializar una tarifa general
     }
 
-    public Diaria(Tarifa tarifa, double precio_extra) {
+    public Diaria(Tarifa tarifa, double precio_extra, int dia_aplicable) { //Para inicializar una tarifa presonalizada
         super(tarifa, precio_extra);
         this.dia_aplicable = dia_aplicable;
     }
@@ -20,6 +24,10 @@ public class Diaria extends CasosEspecialesTarifa {
         if (dia == this.dia_aplicable)
             return true;
         return false;
+    }
+
+    public double getPrecio() {
+        return precioDiaria;
     }
 
     public double getPrecioLlamada(Llamada llamada){
@@ -34,4 +42,22 @@ public class Diaria extends CasosEspecialesTarifa {
             return super.getTarifaLlamada().getPrecioLlamada(llamada);
     }
 
+    public static void modificarDiaria(double precio, int dia) {
+        precioDiaria = precio;
+        dia_aplicable = dia;
+    }
+
+    public String descripcion() {
+        return super.descripcion() + "Diaria";
+    }
+
+    public String toString() {
+        StringBuilder tarifa = new StringBuilder();
+        tarifa.append(descripcion() + " " + getPrecio());
+        System.out.println(tarifa);
+        tarifa.append("\n");
+        tarifa.append(getTarifaLlamada().toString());
+        System.out.println(tarifa);
+        return tarifa.toString();
+    }
 }

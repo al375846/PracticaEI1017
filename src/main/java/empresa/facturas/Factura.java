@@ -36,10 +36,10 @@ public class Factura extends Fecha implements Serializable {
     public static Factura emitirFactura(Cliente cliente, String codigo, Calendar inicio, Calendar fin) {
         try {
             HashSet<Llamada> llamadas = cliente.extraerEnPeriodo(cliente.getLlamadas(), inicio, fin);
-            double totalMinutos = 0;
-            for (Llamada llamada : llamadas)
-                totalMinutos += llamada.getDuracion();
-            double importe = totalMinutos * cliente.getTarifa().getPrecio();
+           int importe = 0;
+           for (Llamada llamada: llamadas) {
+               importe += llamada.getDuracion() * cliente.getTarifa().getPrecioLlamada(llamada);
+           }
             Factura factura = new Factura(importe, codigo, cliente.getTarifa(), inicio, fin);
             return factura;
         }

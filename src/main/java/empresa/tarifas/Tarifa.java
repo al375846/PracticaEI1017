@@ -20,6 +20,10 @@ public abstract class Tarifa implements Serializable {
         return precio;
     }
 
+    public String descripcion() {
+        return "Tarifa";
+    }
+
     public double getPrecioLlamada(Llamada llamada) {
         return precio;
     }

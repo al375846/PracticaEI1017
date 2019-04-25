@@ -31,21 +31,85 @@ public class Menu {
             opcionMenu = OpcionesMenu.obtenerOpcion(opcion);
 
             switch (opcionMenu) {
-                case ALTA_CLIENTE_PARTICULAR:
-                    cartera_clientes.altaCliente(CentroInformacion.nuevoClienteParticular());
-                    System.out.print(cartera_clientes.toString());
-                    break;
-                case ALTA_CLIENTE_EMPRESA:
-                    cartera_clientes.altaCliente(CentroInformacion.nuevoClienteEmpresa());
-                    System.out.print(cartera_clientes.toString());
+                case ALTA_CLIENTE:
+                    System.out.println(OpcionesSubMenuClientes.getSubMenuClientes());
+                    Scanner scan = new Scanner(System.in);
+                    System.out.print("Elige tipo del cliente: ");
+                    byte opcionCliente = scan.nextByte();
+                    System.out.print("\n");
+                    OpcionesSubMenuClientes opcionClientes = OpcionesSubMenuClientes.obtenerOpcion(opcionCliente);
+                    switch (opcionClientes) {
+                        case ALTA_CLIENTE_EMPRESA:
+                            System.out.println(OpcionesCrearTarifa.getCrearTarifa());
+                            Scanner scr = new Scanner(System.in);
+                            System.out.println("Elige el tipo de tarifa del cliente");
+                            byte opcion_tipo_tarifa = scr.nextByte();
+                            System.out.println("\n");
+                            OpcionesCrearTarifa opcionCrear = OpcionesCrearTarifa.obtenerOpcion(opcion_tipo_tarifa);
+                            switch (opcionCrear) {
+                                case TARIFA_GENERAL:
+                                    cartera_clientes.altaCliente(CentroInformacion.nuevoClienteEmpresa());
+                                    break;
+                                case TARIFA_PERSONALIZA:
+                                    cartera_clientes.altaCliente(CentroInformacion.nuevoClienteEmpresaPersonalizado());
+                                    break;
+                            }
+                            break;
+                        case ALTA_CLIENTE_PARTICULAR:
+                            System.out.println(OpcionesCrearTarifa.getCrearTarifa());
+                            Scanner scr2 = new Scanner(System.in);
+                            System.out.println("Elige el tipo de tarifa del cliente");
+                            byte opcion_tipo_tarifa2 = scr2.nextByte();
+                            System.out.println("\n");
+                            OpcionesCrearTarifa opcionCrear2 = OpcionesCrearTarifa.obtenerOpcion(opcion_tipo_tarifa2);
+                            switch (opcionCrear2) {
+                                case TARIFA_GENERAL:
+                                    cartera_clientes.altaCliente(CentroInformacion.nuevoClienteParticular());
+                                    break;
+                                case TARIFA_PERSONALIZA:
+                                    cartera_clientes.altaCliente(CentroInformacion.nuevoClienteParticularPersonalizado());
+                                    break;
+                            }
+                            break;
+                        case CANCELAR:
+                            break;
+                    }
                     break;
                 case BAJA_CLIENTE:
                     cartera_clientes.bajaCliente(CentroInformacion.codigoCliente());
                     System.out.print(cartera_clientes.toString());
                     break;
                 case CAMBIAR_TARIFA:
-                    cartera_clientes.cambiarTarifa(CentroInformacion.tarifaCliente(), CentroInformacion.codigoCliente());
-                    System.out.print(cartera_clientes.toString());
+                    System.out.println(OpcionesCambiarTarifa.getCambiarTarifa());
+                    Scanner sc = new Scanner(System.in);
+                    System.out.print("Elige el tipo de la tarifa a cambiar: ");
+                    byte valor = sc.nextByte();
+                    System.out.print("\n");
+                    OpcionesCambiarTarifa opcionTarifa = OpcionesCambiarTarifa.obtenerOpcion(valor);
+                    switch (opcionTarifa) {
+                        case TARIFA_GENERAL:
+                            System.out.println(OpcionesTipoTarifa.getTipoTarifa());
+                            Scanner sca = new Scanner(System.in);
+                            System.out.print("Elige el tipo de la tarifa a cambiar: ");
+                            byte tipovalor = sca.nextByte();
+                            System.out.print("\n");
+                            OpcionesTipoTarifa tipoopcion = OpcionesTipoTarifa.obtenerOpcion(tipovalor);
+                            switch (tipoopcion) {
+                                case TARIFA_BASICA:
+                                    CentroInformacion.tarifaBasica();
+                                    break;
+                                case TARIFA_DIARIA:
+                                    CentroInformacion.tarifaDiaria();
+                                    break;
+                                case TARIFA_HORARIA:
+                                    CentroInformacion.tarifaHoraria();
+                                    break;
+                            }
+                            break;
+                        case TARIFA_CLIENTE:
+                            cartera_clientes.cambiarTarifa(CentroInformacion.codigoCliente(), CentroInformacion.tarifaPersonalizada());
+                            break;
+                    }
                     break;
                 case DATOS_CLIENTE:
                     System.out.print(cartera_clientes.datosCliente(CentroInformacion.codigoCliente()).toString());
