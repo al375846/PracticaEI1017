@@ -1,10 +1,10 @@
 package empresa.facturas;
 
+import empresa.clientes.Cliente;
 import empresa.excepcion.IllegalPeriodException;
 import empresa.fecha.Fecha;
 import empresa.llamadas.Llamada;
 import empresa.tarifas.Tarifa;
-import empresa.clientes.Cliente;
 
 import java.io.Serializable;
 import java.util.Calendar;

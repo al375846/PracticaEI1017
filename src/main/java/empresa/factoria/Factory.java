@@ -8,7 +8,7 @@ import empresa.tarifas.FranjaHoraria;
 import empresa.tarifas.Tarifa;
 import empresa.tarifas.TarifaBasica;
 
-public class Factoria{
+public class Factory {
 
     public ClienteParticular crearClienteParticular(String nombre, String apellidos, String correo, String codigo, Direccion direccion) {
         return new ClienteParticular(nombre, crearTarifa(), apellidos, correo, codigo, direccion);
@@ -28,11 +28,8 @@ public class Factoria{
 
     public Tarifa crearTarifa() {
         Tarifa tarifa = new TarifaBasica();
-        System.out.println(tarifa.toString());
         tarifa = new Diaria(tarifa);
-        System.out.println(tarifa.toString());
         tarifa = new FranjaHoraria(tarifa);
-        System.out.println(tarifa.toString());
         return tarifa;
     }
 

@@ -1,7 +1,7 @@
 package empresa.operaciones;
 
 import empresa.clientes.*;
-import empresa.factoria.Factoria;
+import empresa.factoria.Factory;
 import empresa.llamadas.Llamada;
 import empresa.tarifas.Diaria;
 import empresa.tarifas.FranjaHoraria;
@@ -35,7 +35,7 @@ public class CentroInformacion {
         System.out.print("Indique la población de la empresa: ");
         String poblacion = scanner.next();
         Direccion direccion = new Direccion(cp, provincia, poblacion);
-        Factoria factory = new Factoria();
+        Factory factory = new Factory();
         Cliente nuevoCliente = factory.crearClienteEmpresa(nombre, correo, codigo, direccion);
         return nuevoCliente;
     }
@@ -58,7 +58,7 @@ public class CentroInformacion {
         System.out.print("Indique la población de la empresa: ");
         String poblacion = sc.next();
         Direccion direccion = new Direccion(cp, provincia, poblacion);
-        Factoria factory = new Factoria();
+        Factory factory = new Factory();
         Cliente nuevoCliente = factory.crearClienteEmpresaPersonalizado(nombre, tarifa, correo, codigo, direccion);
         return nuevoCliente;
     }
@@ -82,7 +82,7 @@ public class CentroInformacion {
         System.out.print("Indique la población del cliente: ");
         String poblacion = scanner.next();
         Direccion direccion = new Direccion(cp, provincia, poblacion);
-        Factoria factory = new Factoria();
+        Factory factory = new Factory();
         Cliente nuevoCliente = factory.crearClienteParticular(nombre, apellidos, correo, codigo, direccion);
         return nuevoCliente;
     }
@@ -107,7 +107,7 @@ public class CentroInformacion {
         System.out.print("Indique la población del cliente: ");
         String poblacion = scanner.next();
         Direccion direccion = new Direccion(cp, provincia, poblacion);
-        Factoria factory = new Factoria();
+        Factory factory = new Factory();
         Cliente nuevoCliente = factory.crearClienteParticularPersonalizado(nombre, apellidos, tarifa, correo, codigo, direccion);
         return nuevoCliente;
     }
@@ -135,7 +135,7 @@ public class CentroInformacion {
         int hora_inicio = scanner.nextInt();
         System.out.println("Inserte la hora final de la tarifa horaria: ");
         int hora_fin = scanner.nextInt();
-        Factoria factory = new Factoria();
+        Factory factory = new Factory();
         Tarifa tarifa = factory.tarifaPersonalizada(precioBasica, precioDiaria, dia, precioHoraria, hora_inicio, hora_fin);
         return tarifa;
     }

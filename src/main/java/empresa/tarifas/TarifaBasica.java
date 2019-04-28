@@ -27,7 +27,7 @@ public class TarifaBasica extends Tarifa implements Serializable {
     }
 
     public String descripcion() {
-        return super.descripcion() + "Basica";
+        return super.descripcion() + " Basica";
     }
 
     public double getPrecio() {

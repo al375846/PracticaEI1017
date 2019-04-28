@@ -55,10 +55,8 @@ public class FranjaHoraria extends CasosEspecialesTarifa implements Serializable
     public String toString() {
         StringBuilder tarifa = new StringBuilder();
         tarifa.append(descripcion() + " " + getPrecio());
-        //System.out.println(tarifa);
         tarifa.append("\n");
         tarifa.append(getTarifaLlamada().toString());
-        //System.out.println(tarifa);
         return tarifa.toString();
     }
 }
