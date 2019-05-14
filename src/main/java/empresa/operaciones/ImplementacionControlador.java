@@ -4,7 +4,7 @@ import empresa.clientes.*;
 import empresa.interfacesUsuario.Interfaz;
 import empresa.interfacesUsuario.Vista;
 
-public class ImplementacionControlador {
+public class ImplementacionControlador implements Controlador{
     private Vista vista;
     private Modelo modelo;
 

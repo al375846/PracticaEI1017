@@ -453,9 +453,9 @@ public class Interfaz implements Vista{
         StyleConstants.setItalic(s, true);
     }
 
-    public void setTodo(ImplementacionModelo modelo, ImplementacionControlador control) {
+    public void setTodo(ImplementacionModelo model, ImplementacionControlador control) {
         this.controlador = control;
-        this.modelo = modelo;
+        this.modelo = model;
     }
     public ClienteParticular getClientePart() {
         return clienteParticular;
