@@ -11,12 +11,11 @@ import empresa.operaciones.ImplementacionControlador;
 import empresa.operaciones.ImplementacionModelo;
 import empresa.operaciones.Modelo;
 
-import javax.swing.*;
-import javax.swing.text.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.text.*;
 import java.util.Calendar;
 
 import static javax.swing.SwingConstants.CENTER;
@@ -31,14 +30,6 @@ public class Interfaz implements Vista{
     JFrame altacliente = new JFrame("Alta Cliente");
     JDialog alta = new JDialog(ventana, "Alta Cliente");
     JTabbedPane tablaCliente = new JTabbedPane();
-    private JMenuItem particular;
-    private JMenuItem empresa;
-    private JMenuItem baja;
-    private JMenuItem guardar;
-    private JMenuItem cargar;
-    private JButton datosCli;
-    private JButton datosFac;
-    private JButton periodo;
     private JTextField setnombre;
     private JTextField setapellidos;
     private JTextField setcodigo;
@@ -46,21 +37,21 @@ public class Interfaz implements Vista{
     private JTextField setcp;
     private JTextField setpoblacion;
     private JTextField setprovincia;
-    private JButton siguiente;
-    private JRadioButton genereal;
-    private JRadioButton personalizada;
     private JTextField setbasica;
     private JTextField setdiaria;
     private JTextField sethoraria;
     private JComboBox setdiaAplicable;
     private JComboBox sethoraInicio;
     private JComboBox sethoraFin;
-    private JButton siguiente2;
-    private JButton finalizar;
     private JTextPane datos;
-    private JPanel panel3;
+    private JPanel printearAlta;
     private ClienteParticular clienteParticular;
     private ClienteEmpresa clienteEmpresa;
+    private DefaultListModel modeloClientes;
+    private JList listaClientes;
+    private JPanel panelTarifa;
+
+    public Interfaz() {}
 
     public void principal() {
        //Definir el menu
@@ -74,26 +65,26 @@ public class Interfaz implements Vista{
        alta.setPreferredSize(new Dimension(100,20));
        alta.setMnemonic(KeyEvent.VK_A);
        //Definir submenu alta
-            particular = new JMenuItem("Alta Cliente Particular");
+            JMenuItem particular = new JMenuItem("Alta Cliente Particular");
             particular.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
             alta.add(particular);
             particular.addActionListener(new Alta("P"));
-            empresa = new JMenuItem("Alta Cliente Empresa");
+            JMenuItem empresa = new JMenuItem("Alta Cliente Empresa");
             empresa.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
             empresa.addActionListener(new Alta("E"));
        alta.add(empresa);
        //Submenu alta definido
        menu.add(alta);
        menu.addSeparator();
-       baja = new JMenuItem("Baja", KeyEvent.VK_B);
+        JMenuItem baja = new JMenuItem("Baja", KeyEvent.VK_B);
        baja.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, ActionEvent.CTRL_MASK));
        menu.add(baja);
        menu.addSeparator();
-       guardar = new JMenuItem("Guardar");
+        JMenuItem guardar = new JMenuItem("Guardar");
        guardar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
        menu.add(guardar);
        menu.addSeparator();
-       cargar = new JMenuItem("Cargar");
+        JMenuItem cargar = new JMenuItem("Cargar");
        cargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
        menu.add(cargar);
        ventana.setJMenuBar(menuBar);
@@ -102,9 +93,10 @@ public class Interfaz implements Vista{
        ventana.add(tabbedPane);
        JPanel panel1 = new JPanel();
        //Botones de accion
-       datosCli = new JButton("Datos Cliente");
-       datosFac = new JButton("Datos Factura");
-       periodo = new JButton("Periodo");
+        JButton datosCli = new JButton("Datos Cliente");
+       datosCli.addActionListener(new DatosCliente());
+        JButton datosFac = new JButton("Datos Factura");
+        JButton periodo = new JButton("Periodo");
        panel1.setLayout(null);
        datosCli.setBounds(10, 10,120,20);
        datosFac.setBounds(140,10,120,20);
@@ -115,22 +107,19 @@ public class Interfaz implements Vista{
        //Fin botones de accion
 
        //Listas
-       String[] clientes = new String[30];
-       for(int i=0;i<15;i=i+2) {
-           clientes[i] = "Cosa" + i;
-           clientes[i + 1] = "Hola" + i;
-       }
-       JList listaPanel1 = new JList(clientes);
-       listaPanel1.setLayout(null);
-       listaPanel1.setLayoutOrientation(JList.VERTICAL);
-       JScrollPane scroller = new JScrollPane(listaPanel1);
+        modeloClientes = new DefaultListModel();
+       listaClientes = new JList();
+       listaClientes.setModel(modeloClientes);
+       listaClientes.setLayout(null);
+       listaClientes.setLayoutOrientation(JList.VERTICAL);
+       JScrollPane scroller = new JScrollPane(listaClientes);
        scroller.setBounds(10,80,150,200);
        panel1.add(scroller);
        JLabel lisCli = new JLabel("Lista de clientes");
        lisCli.setBounds(35, 60, 120, 20);
        panel1.add(lisCli);
 
-       JList listaPanel2 = new JList(clientes);
+       JList listaPanel2 = new JList(modeloClientes);
        listaPanel2.setLayout(null);
        listaPanel2.setLayoutOrientation(JList.VERTICAL);
        JScrollPane scroller2 = new JScrollPane(listaPanel2);
@@ -229,7 +218,7 @@ public class Interfaz implements Vista{
         direccion.setBounds(10, 130, 70, 20);
         JLabel cp = new JLabel("CP: ");
         cp.setBounds(40, 160, 70, 20);
-        setcp = new JTextField("Introduzca el correo", 80);
+        setcp = new JTextField("Introduzca el código postal", 80);
         setcp.setBounds(120, 160, 200, 20);
         setcp.setHorizontalAlignment(JTextField.TRAILING);
         JLabel poblacion = new JLabel("Población: ");
@@ -250,24 +239,28 @@ public class Interfaz implements Vista{
         panel1.add(provincia);
         panel1.add(setprovincia);
         //Siguiente
-        siguiente = new JButton("Siguiente");
+        JButton siguiente = new JButton("Siguiente");
         siguiente.setBounds(400, 300, 100, 50);
         siguiente.addActionListener(new Siguiente(1));
         panel1.add(siguiente);
         //Tarifa
         //RadioButtons
-        JPanel panel2 = new JPanel();
-        panel2.setLayout(null);
-        genereal = new JRadioButton("Añadir cliente con la tarifa genereal");
+        panelTarifa = new JPanel();
+        JPanel panel3 = new JPanel();
+        panel3.setLayout(null);
+        panelTarifa.setLayout(null);
+        JRadioButton genereal = new JRadioButton("Añadir cliente con la tarifa genereal");
         genereal.setSelected(true);
+        genereal.addActionListener(new TarifaNormal());
         genereal.setBounds(10, 10, 400, 30);
-        personalizada = new JRadioButton("Añadir cliente con una tarifa personalizada");
+        JRadioButton personalizada = new JRadioButton("Añadir cliente con una tarifa personalizada");
+        personalizada.addActionListener(new TarifaPersonalizada());
         personalizada.setBounds(10, 40, 400, 30);
         ButtonGroup group = new ButtonGroup();
         group.add(genereal);
         group.add(personalizada);
-        panel2.add(genereal);
-        panel2.add(personalizada);
+        panel3.add(genereal);
+        panel3.add(personalizada);
         //Tarifa personalizada
         JLabel basica = new JLabel("Tarifa Básica: ");
         basica.setBounds(20, 80, 100, 20);
@@ -300,50 +293,43 @@ public class Interfaz implements Vista{
         sethoraFin = new JComboBox(horas);
         sethoraFin.setBounds(410, 200, 100, 20);
         //Siguiente
-        siguiente2 = new JButton("Siguiente");
+        JButton siguiente2 = new JButton("Siguiente");
         siguiente2.setBounds(400, 300, 100, 50);
         siguiente2.addActionListener(new Siguiente(2));
         panel1.add(siguiente);
-        panel2.add(basica);
-        panel2.add(setbasica);
-        panel2.add(diaria);
-        panel2.add(setdiaria);
-        panel2.add(diaApliacable);
-        panel2.add(setdiaAplicable);
-        panel2.add(horaria);
-        panel2.add(sethoraria);
-        panel2.add(horaInicio);
-        panel2.add(sethoraInicio);
-        panel2.add(horaFin);
-        panel2.add(sethoraFin);
-        panel2.add(siguiente2);
+        panelTarifa.add(basica);
+        panelTarifa.add(setbasica);
+        panelTarifa.add(diaria);
+        panelTarifa.add(setdiaria);
+        panelTarifa.add(diaApliacable);
+        panelTarifa.add(setdiaAplicable);
+        panelTarifa.add(horaria);
+        panelTarifa.add(sethoraria);
+        panelTarifa.add(horaInicio);
+        panelTarifa.add(sethoraInicio);
+        panelTarifa.add(horaFin);
+        panelTarifa.add(sethoraFin);
+        panelTarifa.setBounds(0, 0, 550, 450);
+        panelTarifa.setVisible(false);
+        panel3.add(siguiente2);
+        panel3.add(panelTarifa);
         //Cliente
-        panel3 = new JPanel();
-        panel3.setLayout(null);
-        //Factory creador = new Factory();
-        //ClienteParticular cliente = creador.crearClienteParticular("Jose", "Mar", "al", "20", new Direccion("Cs", "Cs", "Cs"));
-        //datos = createClientePartPane(cliente);
-        //datos.setEditable(false);
-        //datos.setPreferredSize(new Dimension(500, 400));
-        //datos.setBounds(0, 0,300,450);
-        finalizar = new JButton("Finalizar");
-        finalizar.setBounds(400, 300, 100, 50);
-        finalizar.addActionListener(new Finalizar());
+        printearAlta = new JPanel();
+        printearAlta.setLayout(null);
+        JButton terminar = new JButton("Finalizar");
+        terminar.setBounds(400, 300, 100, 50);
+        terminar.addActionListener(new Fin());
         //panel3.add(datos);
-        panel3.add(finalizar);
-        //Ventana
+        printearAlta.add(terminar);
         tablaCliente.addTab("Datos", null, panel1, "Introduce los datos personales del cliente");
-        tablaCliente.addTab("Tarifa", null, panel2, "Introduce los datos de la tarifa");
-        tablaCliente.addTab("Cliente", null, panel3, "No hace nada");
+        tablaCliente.addTab("Tarifa", null, panel3, "Introduce los datos de la tarifa");
+        tablaCliente.addTab("Cliente", null, printearAlta, "No hace nada");
         tablaCliente.setEnabledAt(1, false);
         tablaCliente.setEnabledAt(2, false);
         altacliente.add(tablaCliente);
-        //altacliente.setSize(550, 450);
-        //altacliente.setResizable(false);
-        //altacliente.setVisible(true);
-        alta.add(tablaCliente);
-        alta.setSize(550,450);
-        alta.setVisible(true);
+        altacliente.setSize(550, 450);
+        altacliente.setResizable(false);
+        altacliente.setVisible(true);
     }
 
     public void fichaUsuario(ClienteParticular cliente){
@@ -458,7 +444,27 @@ public class Interfaz implements Vista{
         this.modelo = model;
     }
     public ClienteParticular getClientePart() {
-        return clienteParticular;
+        return this.clienteParticular;
+    }
+
+    public void setModelLista(){
+        listaClientes.setModel(modelo.getClientes());
+    }
+
+    public void setClienteParticular() {
+        Factory factoria = new Factory();
+        clienteParticular = factoria.crearClienteParticular(setnombre.getText(), setapellidos.getText(), setcorreo.getText(), setcodigo.getText(), new Direccion(setcp.getText(), setpoblacion.getText(), setprovincia.getText()));
+    }
+
+    private class Fin implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            setClienteParticular();
+            controlador.altaClienteParticular();
+            altacliente.setVisible(false);
+            altacliente.dispose();
+        }
+
     }
 
 private class Siguiente implements ActionListener {
@@ -473,28 +479,15 @@ private class Siguiente implements ActionListener {
         tablaCliente.setSelectedIndex(i);
         if(i == 2) {
             if (setapellidos.isEnabled()) {
-                Factory factoria = new Factory();
-                clienteParticular = factoria.crearClienteParticular(setnombre.getText(), setapellidos.getText(), setcorreo.getText(), setcodigo.getText(), new Direccion(setcp.getText(), setpoblacion.getText(), setprovincia.getText()));
-                //System.out.println(setnombre.getText());
+                setClienteParticular();
                 datos = createClientePartPane(clienteParticular);
                 datos.setEditable(false);
                 datos.setVisible(true);
                 //datos.setPreferredSize(new Dimension(500, 400));
                 datos.setBounds(0, 0,300,450);
-                panel3.add(datos);
+                printearAlta.add(datos);
             }
         }
-    }
-}
-
-private class Finalizar implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        Factory factoria = new Factory();
-        clienteParticular = factoria.crearClienteParticular(setnombre.getText(), setapellidos.getText(), setcorreo.getText(), setcodigo.getText(), new Direccion(setcp.getText(), setpoblacion.getText(), setprovincia.getText()));
-        controlador.altaClienteParticular();
-        altacliente.setVisible(false);
-        altacliente.dispose();
     }
 }
 
@@ -507,6 +500,32 @@ private class Alta implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         new Interfaz().altaCliente(tipo);
+    }
+}
+
+private class DatosCliente implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Cliente clienteSel = modelo.datosCliente((String) modeloClientes.getElementAt(listaClientes.getSelectedIndex()));
+        if(clienteSel.isParticular()) {
+            clienteParticular = (ClienteParticular) clienteSel;
+            fichaUsuario(clienteParticular);
+        }
+    }
+}
+
+private class TarifaPersonalizada implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        panelTarifa.add(new JButton("Hola"));
+            panelTarifa.setVisible(true);
+    }
+}
+
+private class TarifaNormal implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        panelTarifa.setVisible(false);
     }
 }
 }

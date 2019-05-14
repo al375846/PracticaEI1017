@@ -8,8 +8,13 @@ public class ImplementacionControlador implements Controlador{
     private Vista vista;
     private Modelo modelo;
 
+    public ImplementacionControlador() {
+
+    }
+
     public void altaClienteParticular() {
-        modelo.altaCliente(vista.getClientePart());
+        Cliente cliente = vista.getClientePart();
+        modelo.altaCliente(cliente);
     }
 
     public void setTodo(Interfaz vista, ImplementacionModelo modelo) {

@@ -19,6 +19,10 @@ public class ClienteParticular extends Cliente implements Serializable {
         this.apellidos = apellidos;
     }
 
+    public boolean isParticular() {
+            return true;
+    }
+
     @Override
     public String toString() {
         if (this.apellidos == null)

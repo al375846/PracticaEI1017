@@ -83,6 +83,10 @@ public abstract class Cliente extends Fecha implements Serializable {
         this.tarifa = tarifa;
     }
 
+    public boolean isParticular() {
+        return true;
+    }
+
     public String toString() {
         if (this.codigo == null)
             return "";

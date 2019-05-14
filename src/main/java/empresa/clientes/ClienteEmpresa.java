@@ -20,4 +20,7 @@ public class ClienteEmpresa extends Cliente implements Serializable {
         super.establecerCliente(nombre, tarifa, correo, codigo, direccion);
     }
 
+    public boolean isParticular() {
+        return false;
+    }
 }
