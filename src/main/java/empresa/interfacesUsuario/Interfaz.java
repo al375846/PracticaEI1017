@@ -50,6 +50,9 @@ public class Interfaz implements Vista{
     private DefaultListModel modeloClientes;
     private JList listaClientes;
     private JPanel panelTarifa;
+    private JButton datosCli;
+    private JButton datosFac;
+    private JButton periodo;
 
     public Interfaz() {}
 
@@ -93,10 +96,13 @@ public class Interfaz implements Vista{
        ventana.add(tabbedPane);
        JPanel panel1 = new JPanel();
        //Botones de accion
-        JButton datosCli = new JButton("Datos Cliente");
+        datosCli = new JButton("Datos Cliente");
        datosCli.addActionListener(new DatosCliente());
-        JButton datosFac = new JButton("Datos Factura");
-        JButton periodo = new JButton("Periodo");
+       datosCli.setEnabled(false);
+        datosFac = new JButton("Datos Factura");
+        datosFac.setEnabled(false);
+        periodo = new JButton("Periodo");
+        periodo.setEnabled(false);
        panel1.setLayout(null);
        datosCli.setBounds(10, 10,120,20);
        datosFac.setBounds(140,10,120,20);
@@ -338,7 +344,7 @@ public class Interfaz implements Vista{
         //Logo
         JPanel panel_1 = new JPanel();
         panel_1.setLayout(null);
-        ImageIcon imagen = new ImageIcon ("src/descarga.png");
+        ImageIcon imagen = new ImageIcon ("src/Images/descarga.png");
         ImageIcon icon = new ImageIcon(imagen.getImage().getScaledInstance(250,250, Image.SCALE_SMOOTH));
         JLabel label = new JLabel(icon, CENTER);
         label.setBounds(100,170,250,250);
@@ -463,6 +469,7 @@ public class Interfaz implements Vista{
             controlador.altaClienteParticular();
             altacliente.setVisible(false);
             altacliente.dispose();
+            datosCli.setEnabled(true);
         }
 
     }
