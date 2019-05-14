@@ -499,14 +499,14 @@ private class Alta implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new Interfaz().altaCliente(tipo);
+        altaCliente(tipo);
     }
 }
 
 private class DatosCliente implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-        Cliente clienteSel = modelo.datosCliente((String) modeloClientes.getElementAt(listaClientes.getSelectedIndex()));
+        Cliente clienteSel = modelo.datosCliente(listaClientes.getSelectedValue().toString());
         if(clienteSel.isParticular()) {
             clienteParticular = (ClienteParticular) clienteSel;
             fichaUsuario(clienteParticular);

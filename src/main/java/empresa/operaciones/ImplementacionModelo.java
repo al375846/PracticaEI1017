@@ -14,7 +14,10 @@ public class ImplementacionModelo implements Modelo {
     private CarteraClientes carteraClientes;
     private ConjuntoFacturas conjuntoFacturas;
 
-    public ImplementacionModelo() {}
+    public ImplementacionModelo() {
+        carteraClientes = new CarteraClientes();
+        conjuntoFacturas = new ConjuntoFacturas();
+    }
 
     public void altaCliente(Cliente cliente) {
         carteraClientes.altaCliente(cliente);
