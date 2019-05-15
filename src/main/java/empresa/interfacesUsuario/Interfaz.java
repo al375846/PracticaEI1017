@@ -28,15 +28,15 @@ import static javax.swing.SwingConstants.CENTER;
 public class Interfaz implements Vista{
     private Controlador controlador;
     private Modelo modelo;
-    JFrame ventana = new JFrame("Principal");
-    JFrame data = new JFrame("Perfil de cliente");
-    JTabbedPane tabbedPane = new JTabbedPane();
-    JTabbedPane tabla = new JTabbedPane();
-    JFrame altacliente = new JFrame("Alta Cliente");
-    JFrame altaLlamada = new JFrame("Alta Llamada");
-    JTabbedPane tablaCliente = new JTabbedPane();
-    JTable llamadas = new JTable();
-    JTable llamadasPerfil = new JTable();
+    private JFrame ventana = new JFrame("Principal");
+    private JFrame data = new JFrame("Perfil de cliente");
+    private JTabbedPane tabbedPane = new JTabbedPane();
+    private JTabbedPane tabla = new JTabbedPane();
+    private JFrame altacliente = new JFrame("Alta Cliente");
+    private JFrame altaLlamada = new JFrame("Alta Llamada");
+    private JTabbedPane tablaCliente = new JTabbedPane();
+    private JTable llamadas = new JTable();
+    private JTable llamadasPerfil = new JTable();
     private JTextField setnombre;
     private JTextField setapellidos;
     private JTextField setcodigo;
@@ -513,6 +513,7 @@ public class Interfaz implements Vista{
     }
 
     public void altaLlamada() {
+        llamadas.setModel(modeloLlamadas);
         JPanel panel_llamada = new JPanel();
         panel_llamada.setLayout(null);
         JLabel num_llamo = new JLabel("Número al que llamó: ");
@@ -676,6 +677,7 @@ public class Interfaz implements Vista{
             tabla.remove(0);
             tabla.remove(0);
             tabla.remove(0);
+            llamadasPerfil.setModel(modeloLlamadas);
         }
     }
 
@@ -730,10 +732,14 @@ public class Interfaz implements Vista{
         if(clienteSel.isParticular()) {
             clienteParticular = (ClienteParticular) clienteSel;
             datos  = createClientePartPane(clienteParticular);
+            datos.setEditable(false);
+            llamadasPerfil.setModel(modelo.getLlamadas(clienteParticular));
             fichaUsuario(clienteParticular);
         } else {
             clienteEmpresa = (ClienteEmpresa) clienteSel;
             datos = createClienteEmpPane(clienteEmpresa);
+            datos.setEditable(false);
+            llamadasPerfil.setModel(modelo.getLlamadas(clienteEmpresa));
             fichaUsuario(clienteEmpresa);
         }
     }
