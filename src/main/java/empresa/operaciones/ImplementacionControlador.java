@@ -16,6 +16,10 @@ public class ImplementacionControlador implements Controlador{
         Cliente cliente = vista.getClientePart();
         modelo.altaCliente(cliente);
     }
+    public void altaClienteEmpresa() {
+        Cliente cliente = vista.getClienteEmp();
+        modelo.altaCliente(cliente);
+    }
 
     public void setTodo(Interfaz vista, ImplementacionModelo modelo) {
         this.vista = vista;

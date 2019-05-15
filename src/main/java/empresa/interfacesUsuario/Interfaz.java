@@ -185,18 +185,30 @@ public class Interfaz implements Vista{
         //Nombre
         JPanel panel1 = new JPanel();
         panel1.setLayout(null);
-        JLabel nombre = new JLabel("Nombre: ");
-        nombre.setBounds(10, 10, 70, 20);
-        setnombre = new JTextField("Introduzca el nombre", 80);
-        setnombre.setBounds(90, 10, 200, 20);
+        if (tipo.equals("P")){
+            JLabel particular = new JLabel("CLIENTE PARTICULAR");
+            particular.setBounds(200, 20, 200, 20);
+            JLabel nombre = new JLabel("Nombre: ");
+            nombre.setBounds(20, 60, 80, 20);
+            panel1.add(particular);
+            panel1.add(nombre);
+        } else{
+            JLabel empresa = new JLabel("CLIENTE EMPRESA");
+            empresa.setBounds(200, 20, 200, 20);
+            JLabel nombre = new JLabel("Empresa: ");
+            nombre.setBounds(20, 60, 80, 20);
+            panel1.add(empresa);
+            panel1.add(nombre);
+        }
+        setnombre = new JTextField("Introduzca el nombre", 300);
+        setnombre.setBounds(130, 60, 300, 20);
         setnombre.setHorizontalAlignment(JTextField.TRAILING);
-        panel1.add(nombre);
         panel1.add(setnombre);
         //Apellidos
         JLabel apellidos = new JLabel("Apellidos: ");
-        apellidos.setBounds(10, 40, 70, 20);
-        setapellidos = new JTextField("Introduzca los apellidos", 150);
-        setapellidos.setBounds(90, 40, 300, 20);
+        apellidos.setBounds(20, 100, 80, 20);
+        setapellidos = new JTextField("Introduzca los apellidos", 300);
+        setapellidos.setBounds(130, 100, 300, 20);
         setapellidos.setHorizontalAlignment(JTextField.TRAILING);
         panel1.add(apellidos);
         panel1.add(setapellidos);
@@ -206,37 +218,37 @@ public class Interfaz implements Vista{
         }
         //Codigo
         JLabel codigo = new JLabel("Código: ");
-        codigo.setBounds(10, 70, 70, 20);
-        setcodigo = new JTextField("Introduzca el código", 80);
-        setcodigo.setBounds(90, 70, 200, 20);
+        codigo.setBounds(20, 140, 80, 20);
+        setcodigo = new JTextField("Código", 100);
+        setcodigo.setBounds(130, 140, 100, 20);
         setcodigo.setHorizontalAlignment(JTextField.TRAILING);
         panel1.add(codigo);
         panel1.add(setcodigo);
         //Correo
         JLabel correo = new JLabel("Correo: ");
-        correo.setBounds(10, 100, 70, 20);
-        setcorreo = new JTextField("Introduzca el correo", 200);
-        setcorreo.setBounds(90, 100, 300, 20);
+        correo.setBounds(20, 180, 80, 20);
+        setcorreo = new JTextField("Introduzca el correo", 300);
+        setcorreo.setBounds(130, 180, 300, 20);
         setcorreo.setHorizontalAlignment(JTextField.TRAILING);
         panel1.add(correo);
         panel1.add(setcorreo);
         //Direccion
         JLabel direccion = new JLabel("Dirección: ");
-        direccion.setBounds(10, 130, 70, 20);
+        direccion.setBounds(20, 220, 80, 20);
         JLabel cp = new JLabel("CP: ");
-        cp.setBounds(40, 160, 70, 20);
-        setcp = new JTextField("Introduzca el código postal", 80);
-        setcp.setBounds(120, 160, 200, 20);
+        cp.setBounds(100, 260, 80, 20);
+        setcp = new JTextField("Cp", 80);
+        setcp.setBounds(200, 260, 80, 20);
         setcp.setHorizontalAlignment(JTextField.TRAILING);
         JLabel poblacion = new JLabel("Población: ");
-        poblacion.setBounds(40, 190, 70, 20);
-        setpoblacion = new JTextField("Introduzca la población", 80);
-        setpoblacion.setBounds(120, 190, 200, 20);
+        poblacion.setBounds(100, 300, 80, 20);
+        setpoblacion = new JTextField("Población", 120);
+        setpoblacion.setBounds(200, 300, 120, 20);
         setpoblacion.setHorizontalAlignment(JTextField.TRAILING);
         JLabel provincia = new JLabel("Provincia: ");
-        provincia.setBounds(40, 220, 70, 20);
-        setprovincia = new JTextField("Introduzca la provincia", 80);
-        setprovincia.setBounds(120, 220, 200, 20);
+        provincia.setBounds(100, 340, 80, 20);
+        setprovincia = new JTextField("Provincia", 120);
+        setprovincia.setBounds(200, 340, 120, 20);
         setprovincia.setHorizontalAlignment(JTextField.TRAILING);
         panel1.add(direccion);
         panel1.add(cp);
@@ -247,7 +259,7 @@ public class Interfaz implements Vista{
         panel1.add(setprovincia);
         //Siguiente
         JButton siguiente = new JButton("Siguiente");
-        siguiente.setBounds(400, 300, 100, 50);
+        siguiente.setBounds(480, 340, 100, 40);
         siguiente.addActionListener(new Siguiente(1));
         panel1.add(siguiente);
         //Tarifa
@@ -259,10 +271,10 @@ public class Interfaz implements Vista{
         JRadioButton genereal = new JRadioButton("Añadir cliente con la tarifa genereal");
         genereal.setSelected(true);
         genereal.addActionListener(new TarifaNormal());
-        genereal.setBounds(10, 10, 400, 30);
+        genereal.setBounds(20, 20, 400, 20);
         JRadioButton personalizada = new JRadioButton("Añadir cliente con una tarifa personalizada");
         personalizada.addActionListener(new TarifaPersonalizada());
-        personalizada.setBounds(10, 40, 400, 30);
+        personalizada.setBounds(20, 60, 400, 20);
         ButtonGroup group = new ButtonGroup();
         group.add(genereal);
         group.add(personalizada);
@@ -270,38 +282,38 @@ public class Interfaz implements Vista{
         panel3.add(personalizada);
         //Tarifa personalizada
         JLabel basica = new JLabel("Tarifa Básica: ");
-        basica.setBounds(20, 80, 100, 20);
-        setbasica = new JTextField( 40);
-        setbasica.setBounds(130, 80, 100, 20);
+        basica.setBounds(50, 100, 105, 20);
+        setbasica = new JTextField( 80);
+        setbasica.setBounds(165, 100, 80, 20);
         setbasica.setHorizontalAlignment(JTextField.TRAILING);
         JLabel diaria = new JLabel("Tarifa Diaria: ");
-        diaria.setBounds(20, 110, 100, 20);
-        setdiaria = new JTextField( 40);
-        setdiaria.setBounds(130, 110, 100, 20);
+        diaria.setBounds(50, 140, 105, 20);
+        setdiaria = new JTextField( 80);
+        setdiaria.setBounds(165, 140, 80, 20);
         setdiaria.setHorizontalAlignment(JTextField.TRAILING);
         JLabel diaApliacable = new JLabel("Dia aplicable: ");
-        diaApliacable.setBounds(50, 140, 100, 20);
+        diaApliacable.setBounds(100, 180, 100, 20);
         String[] dias = { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
         setdiaAplicable = new JComboBox(dias);
-        setdiaAplicable.setBounds(160, 140, 100, 20);
+        setdiaAplicable.setBounds(210, 180, 120, 20);
         JLabel horaria = new JLabel("Tarifa Horaria: ");
-        horaria.setBounds(20, 170, 100, 20);
-        sethoraria = new JTextField( 40);
-        sethoraria.setBounds(130, 170, 100, 20);
+        horaria.setBounds(50, 220, 105, 20);
+        sethoraria = new JTextField( 80);
+        sethoraria.setBounds(165, 220, 100, 20);
         sethoraria.setHorizontalAlignment(JTextField.TRAILING);
         String[] horas = { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
                 "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
         JLabel horaInicio = new JLabel("Hora Inicio: ");
-        horaInicio.setBounds(50, 200, 100, 20);
+        horaInicio.setBounds(100, 260, 85, 20);
         sethoraInicio = new JComboBox(horas);
-        sethoraInicio.setBounds(160, 200, 100, 20);
+        sethoraInicio.setBounds(200, 260, 60, 20);
         JLabel horaFin = new JLabel("Hora fin: ");
-        horaFin.setBounds(300, 200, 100, 20);
+        horaFin.setBounds(280, 260, 70, 20);
         sethoraFin = new JComboBox(horas);
-        sethoraFin.setBounds(410, 200, 100, 20);
+        sethoraFin.setBounds(365, 260, 60, 20);
         //Siguiente
         JButton siguiente2 = new JButton("Siguiente");
-        siguiente2.setBounds(400, 300, 100, 50);
+        siguiente2.setBounds(480, 340, 100, 40);
         siguiente2.addActionListener(new Siguiente(2));
         panel1.add(siguiente);
         panelTarifa.add(basica);
@@ -324,8 +336,8 @@ public class Interfaz implements Vista{
         printearAlta = new JPanel();
         printearAlta.setLayout(null);
         JButton terminar = new JButton("Finalizar");
-        terminar.setBounds(400, 300, 100, 50);
-        terminar.addActionListener(new Fin());
+        terminar.setBounds(480, 340, 100, 40);
+        terminar.addActionListener(new Fin(tipo));
         //panel3.add(datos);
         printearAlta.add(terminar);
 
@@ -335,38 +347,50 @@ public class Interfaz implements Vista{
         tablaCliente.setEnabledAt(1, false);
         tablaCliente.setEnabledAt(2, false);
         altacliente.add(tablaCliente);
-        altacliente.setSize(550, 450);
+        altacliente.setSize(600, 450);
         altacliente.setResizable(false);
         altacliente.setVisible(true);
     }
 
-    public void fichaUsuario(ClienteParticular cliente){
+    public void fichaUsuario(Cliente cliente) {
         JPanel panel_0 = new JPanel();
 
         //Logo
         JPanel panel_1 = new JPanel();
         panel_1.setLayout(null);
-        ImageIcon imagen = new ImageIcon ("src/Images/descarga.png");
-        ImageIcon icon = new ImageIcon(imagen.getImage().getScaledInstance(250,250, Image.SCALE_SMOOTH));
+        ImageIcon imagen = new ImageIcon("src/Images/descarga.png");
+        ImageIcon icon = new ImageIcon(imagen.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH));
         JLabel label = new JLabel(icon, CENTER);
-        label.setBounds(100,170,250,250);
+        label.setBounds(50, 50, 250, 250);
         JLabel label2 = new JLabel(cliente.getNombre(), CENTER);
-        label2.setBounds(100, 430, 250, 30);
+        label2.setBounds(50, 310, 250, 30);
         panel_1.add(label);
         panel_1.add(label2);
 
         //Acciones
-        JButton tarifa = new JButton("Cambiar Tarifa");
-        tarifa.setBounds(10,10, 150, 40);
-        JButton llamada = new JButton("Añadir Llamada");
-        llamada.setBounds(170,10, 150, 40);
-        panel_1.add(tarifa);
-        panel_1.add(llamada);
-
+        ImageIcon configuracion = new ImageIcon("src/media/ajustes.jpeg");
+        ImageIcon im_configuracion = new ImageIcon(configuracion.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
+        JButton ajustes = new JButton(im_configuracion);
+        ajustes.setBounds(720, 400, 40, 40);
+        panel_1.add(ajustes);
+        ImageIcon llamada = new ImageIcon("src/media/telefono.png");
+        ImageIcon im_llamada = new ImageIcon(llamada.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        JButton alta_llamada = new JButton(im_llamada);
+        alta_llamada.setBounds(50, 350, 50, 50);
+        panel_1.add(alta_llamada);
+        ImageIcon factura = new ImageIcon("src/media/facturas.png");
+        ImageIcon im_factura = new ImageIcon(factura.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        JButton emitir_factura = new JButton(im_factura);
+        emitir_factura.setBounds(150, 350, 50, 50);
+        panel_1.add(emitir_factura);
+        ImageIcon buscar = new ImageIcon("src/media/buscar.png");
+        ImageIcon im_buscar = new ImageIcon(buscar.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        JButton buscar_Periodo = new JButton(im_buscar);
+        buscar_Periodo.setBounds(250, 350, 50, 50);
+        panel_1.add(buscar_Periodo);
 
         //Visor de datos
         JPanel panel_2 = new JPanel();
-        JTextPane datos = createClientePartPane(cliente);
         datos.setEditable(false);
         datos.setPreferredSize(new Dimension(300, 300));
         panel_2.add(datos);
@@ -381,22 +405,20 @@ public class Interfaz implements Vista{
         //meses.setVisibleRowCount(4);
         tabla.addTab("Llamadas", null, panel_3);
 
-        JPanel panel_4= new JPanel();
+        JPanel panel_4 = new JPanel();
         tabla.addTab("Facturas", null, panel_4);
 
         panel_0.setLayout(null);
-        panel_1.setBounds(0, 0, 400, 600);
-        tabla.setBounds(400, 150, 300, 300);
+        panel_1.setBounds(0, 0, 400, 500);
+        tabla.setBounds(400, 50, 300, 300);
         panel_0.add(panel_1);
         //panel_0.add(label2);
         panel_0.add(tabla);
         data.add(panel_0);
-        data.setSize(800,600);
+        data.setSize(800, 500);
         data.setResizable(false);
         data.setVisible(true);
-
     }
-
 
     private JTextPane createClientePartPane(ClienteParticular clienteParticular) {
         String fecha = (clienteParticular.getFecha().get(Calendar.DAY_OF_MONTH) + "/" + (clienteParticular.getFecha().get(Calendar.MONTH) + 1)+ "/" + clienteParticular.getFecha().get(Calendar.YEAR));
@@ -415,6 +437,39 @@ public class Interfaz implements Vista{
 
         String[] initStyles =
                 { "bold", "regular", "bold", "regular", "bold", "regular", "bold", "regular", "bold", "italic", "regular", "italic", "regular", "italic", "regular", "bold", "regular", "bold", "regular"
+                };
+        JTextPane textPane = new JTextPane();
+        StyledDocument doc = textPane.getStyledDocument();
+        addStylesToDocument(doc);
+
+        try {
+            for (int i=0; i < initString.length; i++) {
+                doc.insertString(doc.getLength(), initString[i],
+                        doc.getStyle(initStyles[i]));
+            }
+        } catch (BadLocationException ble) {
+            System.err.println("Couldn't insert initial text into text pane.");
+        }
+
+        return textPane;
+    }
+
+    private JTextPane createClienteEmpPane(ClienteEmpresa clienteEmpresa) {
+        String fecha = (clienteEmpresa.getFecha().get(Calendar.DAY_OF_MONTH) + "/" + (clienteEmpresa.getFecha().get(Calendar.MONTH) + 1)+ "/" + clienteEmpresa.getFecha().get(Calendar.YEAR));
+        String[] initString =
+                { "Empresa: ", clienteEmpresa.getNombre() + "\n",
+                        "Nif: ", clienteEmpresa.getCodigo() + "\n",
+                        "Correo: ",  clienteEmpresa.getCorreo() + "\n",
+                        "Dirección: " + "\n",
+                        "\t" + "Cp: ", clienteEmpresa.getDireccion().getCp() + "\n",
+                        "\t" + "Población: ", clienteEmpresa.getDireccion().getPoblacion() + "\n",
+                        "\t" + "Provincia: ", clienteEmpresa.getDireccion().getProvincia() + "\n",
+                        "Fecha alta: ", fecha + "\n",
+                        "Tarifa: " + "\n", clienteEmpresa.getTarifa().toString()
+                };
+
+        String[] initStyles =
+                { "bold", "regular", "bold", "regular", "bold", "regular", "bold", "italic", "regular", "italic", "regular", "italic", "regular", "bold", "regular", "bold", "regular"
                 };
         JTextPane textPane = new JTextPane();
         StyledDocument doc = textPane.getStyledDocument();
@@ -454,6 +509,10 @@ public class Interfaz implements Vista{
     public ClienteParticular getClientePart() {
         return this.clienteParticular;
     }
+    public ClienteEmpresa getClienteEmp() {
+        return this.clienteEmpresa;
+    }
+
 
     public void setModelLista(){
         listaClientes.setModel(modelo.getClientes());
@@ -473,12 +532,36 @@ public class Interfaz implements Vista{
         else
             clienteParticular = factoria.crearClienteParticular(setnombre.getText(), setapellidos.getText(), setcorreo.getText(), setcodigo.getText(), new Direccion(setcp.getText(), setpoblacion.getText(), setprovincia.getText()));
     }
+    public void setClienteEmpresa() {
+        Factory factoria = new Factory();
+        if(panelTarifa.isVisible()) {
+            int selecDia = setdiaAplicable.getSelectedIndex();
+            if (selecDia >= 0)
+                selecDia += 2;
+            if (selecDia > 7)
+                selecDia = 1;
+            Tarifa tarifa = factoria.tarifaPersonalizada(Double.parseDouble(setbasica.getText()), Double.parseDouble(setdiaria.getText()),selecDia, Double.parseDouble(sethoraria.getText()), sethoraInicio.getSelectedIndex(), sethoraFin.getSelectedIndex());
+            clienteEmpresa = factoria.crearClienteEmpresaPersonalizado(setnombre.getText(), tarifa, setcorreo.getText(), setcodigo.getText(), new Direccion(setcp.getText(), setpoblacion.getText(), setprovincia.getText()));
+        }
+        else
+            clienteEmpresa = factoria.crearClienteEmpresa(setnombre.getText(), setcorreo.getText(), setcodigo.getText(), new Direccion(setcp.getText(), setpoblacion.getText(), setprovincia.getText()));
+    }
 
     private class Fin implements ActionListener{
+        private String tipo;
+        public Fin(String tipo){
+            this.tipo = tipo;
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            setClienteParticular();
-            controlador.altaClienteParticular();
+            if(tipo.equals("P")){
+                setClienteParticular();
+                controlador.altaClienteParticular();
+            } else {
+                setClienteEmpresa();
+                controlador.altaClienteEmpresa();
+            }
             altacliente.setVisible(false);
             altacliente.dispose();
             altacliente.pack();
@@ -511,6 +594,14 @@ private class Siguiente implements ActionListener {
                 //datos.setPreferredSize(new Dimension(500, 400));
                 datos.setBounds(0, 0,300,450);
                 printearAlta.add(datos);
+            } else {
+                setClienteEmpresa();
+                datos = createClienteEmpPane(clienteEmpresa);
+                datos.setEditable(false);
+                datos.setVisible(true);
+                //datos.setPreferredSize(new Dimension(500, 400));
+                datos.setBounds(0, 0,300,450);
+                printearAlta.add(datos);
             }
         }
     }
@@ -535,6 +626,9 @@ private class DatosCliente implements ActionListener {
         if(clienteSel.isParticular()) {
             clienteParticular = (ClienteParticular) clienteSel;
             fichaUsuario(clienteParticular);
+        } else {
+            clienteEmpresa = (ClienteEmpresa) clienteSel;
+            fichaUsuario(clienteEmpresa);
         }
     }
 }

@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static void main(String[] args) throws ClientNotFound, InvoiceNotFound, UnexpectedAnswerException, IllegalPeriodException {
+    public static void main(String[] args) throws  UnexpectedAnswerException {
         ConjuntoFacturas conjunto_facturas  = new ConjuntoFacturas();
         CarteraClientes cartera_clientes = new CarteraClientes();
         OpcionesMenu opcionMenu;
