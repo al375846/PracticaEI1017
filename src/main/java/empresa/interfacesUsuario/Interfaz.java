@@ -10,6 +10,7 @@ import empresa.operaciones.Controlador;
 import empresa.operaciones.ImplementacionControlador;
 import empresa.operaciones.ImplementacionModelo;
 import empresa.operaciones.Modelo;
+import empresa.tarifas.Tarifa;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -327,6 +328,7 @@ public class Interfaz implements Vista{
         terminar.addActionListener(new Fin());
         //panel3.add(datos);
         printearAlta.add(terminar);
+
         tablaCliente.addTab("Datos", null, panel1, "Introduce los datos personales del cliente");
         tablaCliente.addTab("Tarifa", null, panel3, "Introduce los datos de la tarifa");
         tablaCliente.addTab("Cliente", null, printearAlta, "No hace nada");
@@ -459,7 +461,17 @@ public class Interfaz implements Vista{
 
     public void setClienteParticular() {
         Factory factoria = new Factory();
-        clienteParticular = factoria.crearClienteParticular(setnombre.getText(), setapellidos.getText(), setcorreo.getText(), setcodigo.getText(), new Direccion(setcp.getText(), setpoblacion.getText(), setprovincia.getText()));
+        if(panelTarifa.isVisible()) {
+            int selecDia = setdiaAplicable.getSelectedIndex();
+            if (selecDia >= 0)
+                selecDia += 2;
+            if (selecDia > 7)
+                selecDia = 1;
+            Tarifa tarifa = factoria.tarifaPersonalizada(Double.parseDouble(setbasica.getText()), Double.parseDouble(setdiaria.getText()),selecDia, Double.parseDouble(sethoraria.getText()), sethoraInicio.getSelectedIndex(), sethoraFin.getSelectedIndex());
+            clienteParticular = factoria.crearClienteParticularPersonalizado(setnombre.getText(), setapellidos.getText(), tarifa, setcorreo.getText(), setcodigo.getText(), new Direccion(setcp.getText(), setpoblacion.getText(), setprovincia.getText()));
+        }
+        else
+            clienteParticular = factoria.crearClienteParticular(setnombre.getText(), setapellidos.getText(), setcorreo.getText(), setcodigo.getText(), new Direccion(setcp.getText(), setpoblacion.getText(), setprovincia.getText()));
     }
 
     private class Fin implements ActionListener{
@@ -469,7 +481,13 @@ public class Interfaz implements Vista{
             controlador.altaClienteParticular();
             altacliente.setVisible(false);
             altacliente.dispose();
+            altacliente.pack();
+            ventana.setVisible(true);
             datosCli.setEnabled(true);
+            periodo.setEnabled(true);
+            tablaCliente.remove(0);
+            tablaCliente.remove(0);
+            tablaCliente.remove(0);
         }
 
     }
@@ -524,8 +542,7 @@ private class DatosCliente implements ActionListener {
 private class TarifaPersonalizada implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-        panelTarifa.add(new JButton("Hola"));
-            panelTarifa.setVisible(true);
+        panelTarifa.setVisible(true);
     }
 }
 
