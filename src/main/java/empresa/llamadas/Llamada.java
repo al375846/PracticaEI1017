@@ -24,9 +24,12 @@ public class Llamada extends Fecha implements Serializable {
         this.duracion = duracion;
     }
 
+
+
     public Calendar getFecha() {
         return fecha_efectuo;
     }
+
     public String impFecha(){
         return (this.fecha_efectuo.get(Calendar.DAY_OF_MONTH) + "/" + (this.fecha_efectuo.get(Calendar.MONTH) + 1)+ "/" + this.fecha_efectuo.get(Calendar.YEAR));
     }
@@ -37,6 +40,10 @@ public class Llamada extends Fecha implements Serializable {
 
     public double getDuracion() {
         return duracion;
+    }
+
+    public void setFecha(int year, int month, int day, int hour, int minute) {
+        this.fecha_efectuo.set(year, month, day, hour, minute);
     }
 
     public int getDia() {

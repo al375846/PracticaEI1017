@@ -1,11 +1,13 @@
 package empresa.interfacesUsuario;
 
 
+import com.sun.deploy.panel.JreTableModel;
 import empresa.clientes.Cliente;
 import empresa.clientes.ClienteEmpresa;
 import empresa.clientes.ClienteParticular;
 import empresa.clientes.Direccion;
 import empresa.factoria.Factory;
+import empresa.llamadas.Llamada;
 import empresa.operaciones.Controlador;
 import empresa.operaciones.ImplementacionControlador;
 import empresa.operaciones.ImplementacionModelo;
@@ -16,8 +18,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.*;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static javax.swing.SwingConstants.CENTER;
 
@@ -29,8 +33,10 @@ public class Interfaz implements Vista{
     JTabbedPane tabbedPane = new JTabbedPane();
     JTabbedPane tabla = new JTabbedPane();
     JFrame altacliente = new JFrame("Alta Cliente");
-    JDialog alta = new JDialog(ventana, "Alta Cliente");
+    JFrame altaLlamada = new JFrame("Alta Llamada");
     JTabbedPane tablaCliente = new JTabbedPane();
+    JTable llamadas = new JTable();
+    JTable llamadasPerfil = new JTable();
     private JTextField setnombre;
     private JTextField setapellidos;
     private JTextField setcodigo;
@@ -54,6 +60,18 @@ public class Interfaz implements Vista{
     private JButton datosCli;
     private JButton datosFac;
     private JButton periodo;
+    private JPanel panelUsuario = new JPanel();
+    private JTextField setNumLlamo;
+    private JTextField setDuracion;
+    private JTextField setYear;
+    private JTextField setMonth;
+    private JTextField setDay;
+    private JTextField setHour;
+    private JTextField setMinute;
+    private Cliente clienteAdd;
+    private Llamada llamadaAdd;
+    String[] columnasLlamadas = {"Número", "Duración", "Fecha", "Hora"};
+    DefaultTableModel modeloLlamadas = new DefaultTableModel(columnasLlamadas, 1);
 
     public Interfaz() {}
 
@@ -178,6 +196,10 @@ public class Interfaz implements Vista{
        ventana.setSize(600,600);
        ventana.setResizable(false);
        ventana.setVisible(true);
+
+       //setear modelos
+        llamadas.setModel(modeloLlamadas);
+        llamadasPerfil.setModel(modeloLlamadas);
     }
 
     public void altaCliente(String tipo){
@@ -353,12 +375,11 @@ public class Interfaz implements Vista{
     }
 
     public void fichaUsuario(Cliente cliente) {
-        JPanel panel_0 = new JPanel();
-
+        panelUsuario.setLayout(null);
         //Logo
         JPanel panel_1 = new JPanel();
         panel_1.setLayout(null);
-        ImageIcon imagen = new ImageIcon("src/Images/descarga.png");
+        ImageIcon imagen = new ImageIcon("src/media/logoUsuario.png");
         ImageIcon icon = new ImageIcon(imagen.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH));
         JLabel label = new JLabel(icon, CENTER);
         label.setBounds(50, 50, 250, 250);
@@ -372,10 +393,11 @@ public class Interfaz implements Vista{
         ImageIcon im_configuracion = new ImageIcon(configuracion.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
         JButton ajustes = new JButton(im_configuracion);
         ajustes.setBounds(720, 400, 40, 40);
-        panel_1.add(ajustes);
+        panelUsuario.add(ajustes);
         ImageIcon llamada = new ImageIcon("src/media/telefono.png");
         ImageIcon im_llamada = new ImageIcon(llamada.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JButton alta_llamada = new JButton(im_llamada);
+        alta_llamada.addActionListener(new addLlamadaCliente(cliente));
         alta_llamada.setBounds(50, 350, 50, 50);
         panel_1.add(alta_llamada);
         ImageIcon factura = new ImageIcon("src/media/facturas.png");
@@ -398,26 +420,29 @@ public class Interfaz implements Vista{
 
         //Llamadas
         JPanel panel_3 = new JPanel();
-        //List <Llamada> llamadas = cliente.getLlamadas();
-        //JFrame ventana = new JFrame("Ejemplo de JList");
-        //JList meses = new JList(datos);
-        //JScrollPane scroll = new JScrollPane(meses);
-        //meses.setVisibleRowCount(4);
+        llamadasPerfil.setPreferredSize(new Dimension(200, 200));
+        //setModelLlamadas();
+        panel_3.add(llamadas);
         tabla.addTab("Llamadas", null, panel_3);
 
         JPanel panel_4 = new JPanel();
         tabla.addTab("Facturas", null, panel_4);
+        JButton salir = new JButton("Salir");
+        salir.addActionListener(new FinFichaUsuario());
+        salir.setBounds(560, 400, 100, 50);
+        panelUsuario.add(salir);
 
-        panel_0.setLayout(null);
         panel_1.setBounds(0, 0, 400, 500);
         tabla.setBounds(400, 50, 300, 300);
-        panel_0.add(panel_1);
+        panelUsuario.add(panel_1);
         //panel_0.add(label2);
-        panel_0.add(tabla);
-        data.add(panel_0);
+        panelUsuario.add(tabla);
+        tabla.setVisible(true);
+        data.add(panelUsuario);
         data.setSize(800, 500);
         data.setResizable(false);
         data.setVisible(true);
+        //data.addWindowListener(new CerrarFichaUsuario());
     }
 
     private JTextPane createClientePartPane(ClienteParticular clienteParticular) {
@@ -487,6 +512,63 @@ public class Interfaz implements Vista{
         return textPane;
     }
 
+    public void altaLlamada() {
+        JPanel panel_llamada = new JPanel();
+        panel_llamada.setLayout(null);
+        JLabel num_llamo = new JLabel("Número al que llamó: ");
+        JLabel duracion = new JLabel("Duración de la llamada: ");
+        JLabel fecha = new JLabel("Fecha en la que se efectuó: ");
+        JLabel hour = new JLabel("Hora en la que se efectuó: ");
+        num_llamo.setBounds(10,10, 200, 30);
+        duracion.setBounds(10,50, 200, 30);
+        fecha.setBounds(10,90, 200, 30);
+        hour.setBounds(10,130, 200, 30);
+        panel_llamada.add(num_llamo);
+        panel_llamada.add(duracion);
+        panel_llamada.add(fecha);
+        panel_llamada.add(hour);
+        setNumLlamo = new JTextField(80);
+        setDuracion = new JTextField(80);
+        setYear = new JTextField(4);
+        setMonth = new JTextField(2);
+        setDay = new JTextField(2);
+        setHour = new JTextField(2);
+        setMinute = new JTextField(2);
+        setNumLlamo.setBounds(220, 10, 100, 30);
+        setDuracion.setBounds(220, 50, 100, 30);
+        setDay.setBounds(220, 90, 40, 30);
+        setMonth.setBounds(280, 90, 40, 30);
+        setYear.setBounds(340, 90, 80, 30);
+        setHour.setBounds(220, 130, 40, 30);
+        setMinute.setBounds(280, 130, 40, 30);
+        panel_llamada.add(setNumLlamo);
+        panel_llamada.add(setDuracion);
+        panel_llamada.add(setYear);
+        panel_llamada.add(setMonth);
+        panel_llamada.add(setDay);
+        panel_llamada.add(setHour);
+        panel_llamada.add(setMinute);
+        JLabel slash1 = new JLabel("/", CENTER);
+        JLabel slash2 = new JLabel("/", CENTER);
+        JLabel puntos = new JLabel(":", CENTER);
+        slash1.setBounds(260, 90, 20, 30);
+        slash2.setBounds(320, 90, 20, 30);
+        puntos.setBounds(260, 130, 20, 30);
+        panel_llamada.add(slash1);
+        panel_llamada.add(slash2);
+        panel_llamada.add(puntos);
+        JButton add = new JButton("Añadir");
+        add.addActionListener(new AltaLlamada());
+        add.setBounds(560, 130, 20, 20);
+        panel_llamada.add(add);
+        llamadas.setPreferredSize(new Dimension(550, 250));
+        llamadas.setBounds(10, 210, 550, 250);
+        panel_llamada.add(llamadas);
+        altaLlamada.add(panel_llamada);
+        altaLlamada.setSize(600, 500);
+        altaLlamada.setVisible(true);
+    }
+
     protected void addStylesToDocument(StyledDocument doc) {
         //Initialize some styles.
         Style def = StyleContext.getDefaultStyleContext().
@@ -513,9 +595,21 @@ public class Interfaz implements Vista{
         return this.clienteEmpresa;
     }
 
-
     public void setModelLista(){
         listaClientes.setModel(modelo.getClientes());
+    }
+
+    public Cliente getClienteAdd() {
+        return this.clienteAdd;
+    }
+
+    public Llamada getLlamadaAdd() {
+        return this.llamadaAdd;
+    }
+
+    public void setModelLlamadas(){
+        llamadas.setModel(modelo.getLlamadas(clienteAdd));
+        llamadasPerfil.setModel(modelo.getLlamadas(clienteAdd));
     }
 
     public void setClienteParticular() {
@@ -575,7 +669,17 @@ public class Interfaz implements Vista{
 
     }
 
-private class Siguiente implements ActionListener {
+    private class FinFichaUsuario implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            data.setVisible(false);
+            tabla.remove(0);
+            tabla.remove(0);
+            tabla.remove(0);
+        }
+    }
+
+    private class Siguiente implements ActionListener {
     private int i;
     public Siguiente(int i) {
         this.i = i;
@@ -607,7 +711,7 @@ private class Siguiente implements ActionListener {
     }
 }
 
-private class Alta implements ActionListener {
+    private class Alta implements ActionListener {
         private String tipo;
         public Alta(String tipo) {
             this.tipo = tipo;
@@ -619,31 +723,64 @@ private class Alta implements ActionListener {
     }
 }
 
-private class DatosCliente implements ActionListener {
+    private class DatosCliente implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Cliente clienteSel = modelo.datosCliente(listaClientes.getSelectedValue().toString());
         if(clienteSel.isParticular()) {
             clienteParticular = (ClienteParticular) clienteSel;
+            datos  = createClientePartPane(clienteParticular);
             fichaUsuario(clienteParticular);
         } else {
             clienteEmpresa = (ClienteEmpresa) clienteSel;
+            datos = createClienteEmpPane(clienteEmpresa);
             fichaUsuario(clienteEmpresa);
         }
     }
 }
 
-private class TarifaPersonalizada implements ActionListener {
+    private class TarifaPersonalizada implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         panelTarifa.setVisible(true);
     }
 }
 
-private class TarifaNormal implements ActionListener {
+    private class TarifaNormal implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         panelTarifa.setVisible(false);
+    }
+}
+
+    private class addLlamadaCliente implements ActionListener {
+    private Cliente cliente;
+    public addLlamadaCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        clienteAdd = cliente;
+        altaLlamada();
+    }
+}
+
+    private class AltaLlamada implements ActionListener {
+        public AltaLlamada() {
+        }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        llamadaAdd = new Llamada(setNumLlamo.getText(), Double.parseDouble(setDuracion.getText()), new GregorianCalendar());
+        llamadaAdd.setFecha(Integer.parseInt(setYear.getText()), Integer.parseInt(setMonth.getText()), Integer.parseInt(setDay.getText()), Integer.parseInt(setHour.getText()), Integer.parseInt(setMinute.getText()));
+        setNumLlamo.setText("");
+        setDuracion.setText("");
+        setYear.setText("");
+        setMonth.setText("");
+        setDay.setText("");
+        setHour.setText("");
+        setMinute.setText("");
+        controlador.altaLlamada();
     }
 }
 }
