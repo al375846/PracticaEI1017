@@ -30,9 +30,7 @@ public class TarifaBasica extends Tarifa implements Serializable {
         return super.descripcion() + " Basica";
     }
 
-    public double getPrecio() {
-       return precioBasica;
-    }
+    //public double getPrecio() { }
 
     public String toString() {
         StringBuilder tarifa = new StringBuilder();
