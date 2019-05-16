@@ -25,15 +25,15 @@ import java.util.GregorianCalendar;
 
 import static javax.swing.SwingConstants.CENTER;
 
-public class Interfaz implements Vista{
+public class Interfaz extends JFrame implements Vista{
     private Controlador controlador;
     private Modelo modelo;
     private JFrame ventana = new JFrame("Principal");
-    private JFrame data = new JFrame("Perfil de cliente");
+    private JFrame data;
     private JTabbedPane tabbedPane = new JTabbedPane();
     private JTabbedPane tabla = new JTabbedPane();
-    private JFrame altacliente = new JFrame("Alta Cliente");
-    private JFrame altaLlamada = new JFrame("Alta Llamada");
+    private JFrame altacliente;
+    private JFrame altaLlamada;
     private JTabbedPane tablaCliente = new JTabbedPane();
     private JTable llamadas = new JTable();
     private JTable llamadasPerfil = new JTable();
@@ -203,6 +203,7 @@ public class Interfaz implements Vista{
     }
 
     public void altaCliente(String tipo){
+        altacliente = new JFrame("Alta Cliente");
         //Datos del cliente
         //Nombre
         JPanel panel1 = new JPanel();
@@ -375,6 +376,7 @@ public class Interfaz implements Vista{
     }
 
     public void fichaUsuario(Cliente cliente) {
+        data = new JFrame("Ficha Usuario");
         panelUsuario.setLayout(null);
         //Logo
         JPanel panel_1 = new JPanel();
@@ -420,9 +422,9 @@ public class Interfaz implements Vista{
 
         //Llamadas
         JPanel panel_3 = new JPanel();
-        llamadasPerfil.setPreferredSize(new Dimension(200, 200));
+        llamadasPerfil.setPreferredSize(new Dimension(300, 300));
         //setModelLlamadas();
-        panel_3.add(llamadas);
+        panel_3.add(llamadasPerfil);
         tabla.addTab("Llamadas", null, panel_3);
 
         JPanel panel_4 = new JPanel();
@@ -442,6 +444,14 @@ public class Interfaz implements Vista{
         data.setSize(800, 500);
         data.setResizable(false);
         data.setVisible(true);
+        data.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                tabla.remove(0);
+                tabla.remove(0);
+                tabla.remove(0);
+            }
+        });
         //data.addWindowListener(new CerrarFichaUsuario());
     }
 
@@ -513,6 +523,8 @@ public class Interfaz implements Vista{
     }
 
     public void altaLlamada() {
+        altaLlamada = new JFrame("Alta Llamada");
+        llamadas = new JTable();
         llamadas.setModel(modeloLlamadas);
         JPanel panel_llamada = new JPanel();
         panel_llamada.setLayout(null);
@@ -568,6 +580,14 @@ public class Interfaz implements Vista{
         altaLlamada.add(panel_llamada);
         altaLlamada.setSize(600, 500);
         altaLlamada.setVisible(true);
+        altaLlamada.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        altaLlamada.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                llamadas.setModel(new DefaultTableModel());
+                llamadas.removeAll();
+            }
+        });
     }
 
     protected void addStylesToDocument(StyledDocument doc) {
@@ -659,7 +679,6 @@ public class Interfaz implements Vista{
             }
             altacliente.setVisible(false);
             altacliente.dispose();
-            altacliente.pack();
             ventana.setVisible(true);
             datosCli.setEnabled(true);
             periodo.setEnabled(true);
