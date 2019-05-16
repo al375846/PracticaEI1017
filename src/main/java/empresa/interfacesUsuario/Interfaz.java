@@ -1,7 +1,6 @@
 package empresa.interfacesUsuario;
 
 
-import com.sun.deploy.panel.JreTableModel;
 import empresa.clientes.Cliente;
 import empresa.clientes.ClienteEmpresa;
 import empresa.clientes.ClienteParticular;
@@ -34,6 +33,7 @@ public class Interfaz extends JFrame implements Vista{
     private JTabbedPane tabla = new JTabbedPane();
     private JFrame altacliente;
     private JFrame altaLlamada;
+    private JFrame configuracion;
     private JTabbedPane tablaCliente = new JTabbedPane();
     private JTable llamadas = new JTable();
     private JTable llamadasPerfil = new JTable();
@@ -70,6 +70,14 @@ public class Interfaz extends JFrame implements Vista{
     private JTextField setMinute;
     private Cliente clienteAdd;
     private Llamada llamadaAdd;
+    private Tarifa tarifaNueva;
+    /*private JTextField setbasicausuario;
+    private JTextField setdiariausuario;
+    private JTextField sethorariausuario;
+    private JComboBox setdiaAplicableusuario;
+    private JComboBox sethoraIniciousuario;
+    private JComboBox sethoraFinusuario;
+     */
     String[] columnasLlamadas = {"Número", "Duración", "Fecha", "Hora"};
     DefaultTableModel modeloLlamadas = new DefaultTableModel(columnasLlamadas, 1);
 
@@ -394,6 +402,7 @@ public class Interfaz extends JFrame implements Vista{
         ImageIcon configuracion = new ImageIcon("src/media/ajustes.jpeg");
         ImageIcon im_configuracion = new ImageIcon(configuracion.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
         JButton ajustes = new JButton(im_configuracion);
+        ajustes.addActionListener(new Configuracion());
         ajustes.setBounds(720, 400, 40, 40);
         panelUsuario.add(ajustes);
         ImageIcon llamada = new ImageIcon("src/media/telefono.png");
@@ -416,17 +425,19 @@ public class Interfaz extends JFrame implements Vista{
         //Visor de datos
         JPanel panel_2 = new JPanel();
         datos.setEditable(false);
-        datos.setPreferredSize(new Dimension(300, 300));
+        datos.setPreferredSize(new Dimension(400, 300));
         panel_2.add(datos);
         tabla.addTab("Datos", null, panel_2, "Datos del cliente");
 
         //Llamadas
         JPanel panel_3 = new JPanel();
-        llamadasPerfil.setPreferredSize(new Dimension(300, 300));
+        llamadasPerfil.setPreferredSize(new Dimension(390, 300));
         //setModelLlamadas();
-        panel_3.add(llamadasPerfil);
+        JScrollPane scrollPane = new JScrollPane(llamadasPerfil);
+        panel_3.add(scrollPane);
         tabla.addTab("Llamadas", null, panel_3);
 
+        //Facturas
         JPanel panel_4 = new JPanel();
         tabla.addTab("Facturas", null, panel_4);
         JButton salir = new JButton("Salir");
@@ -434,8 +445,8 @@ public class Interfaz extends JFrame implements Vista{
         salir.setBounds(560, 400, 100, 50);
         panelUsuario.add(salir);
 
-        panel_1.setBounds(0, 0, 400, 500);
-        tabla.setBounds(400, 50, 300, 300);
+        panel_1.setBounds(0, 0, 350, 500);
+        tabla.setBounds(350, 50, 400, 300);
         panelUsuario.add(panel_1);
         //panel_0.add(label2);
         panelUsuario.add(tabla);
@@ -453,7 +464,137 @@ public class Interfaz extends JFrame implements Vista{
                 tabla.remove(0);
             }
         });
-        //data.addWindowListener(new CerrarFichaUsuario());
+    }
+
+
+    public void altaLlamada() {
+        altaLlamada = new JFrame("Alta Llamada");
+        llamadas = new JTable();
+        llamadas.setModel(modeloLlamadas);
+        JPanel panel_llamada = new JPanel();
+        panel_llamada.setLayout(null);
+        JLabel num_llamo = new JLabel("Número al que llamó: ");
+        JLabel duracion = new JLabel("Duración de la llamada: ");
+        JLabel fecha = new JLabel("Fecha en la que se efectuó: ");
+        JLabel hour = new JLabel("Hora en la que se efectuó: ");
+        num_llamo.setBounds(10,10, 200, 30);
+        duracion.setBounds(10,50, 200, 30);
+        fecha.setBounds(10,90, 200, 30);
+        hour.setBounds(10,130, 200, 30);
+        panel_llamada.add(num_llamo);
+        panel_llamada.add(duracion);
+        panel_llamada.add(fecha);
+        panel_llamada.add(hour);
+        setNumLlamo = new JTextField(80);
+        setDuracion = new JTextField(80);
+        setYear = new JTextField(4);
+        setMonth = new JTextField(2);
+        setDay = new JTextField(2);
+        setHour = new JTextField(2);
+        setMinute = new JTextField(2);
+        setNumLlamo.setBounds(220, 10, 100, 30);
+        setDuracion.setBounds(220, 50, 100, 30);
+        setDay.setBounds(220, 90, 40, 30);
+        setMonth.setBounds(280, 90, 40, 30);
+        setYear.setBounds(340, 90, 80, 30);
+        setHour.setBounds(220, 130, 40, 30);
+        setMinute.setBounds(280, 130, 40, 30);
+        panel_llamada.add(setNumLlamo);
+        panel_llamada.add(setDuracion);
+        panel_llamada.add(setYear);
+        panel_llamada.add(setMonth);
+        panel_llamada.add(setDay);
+        panel_llamada.add(setHour);
+        panel_llamada.add(setMinute);
+        JLabel slash1 = new JLabel("/", CENTER);
+        JLabel slash2 = new JLabel("/", CENTER);
+        JLabel puntos = new JLabel(":", CENTER);
+        slash1.setBounds(260, 90, 20, 30);
+        slash2.setBounds(320, 90, 20, 30);
+        puntos.setBounds(260, 130, 20, 30);
+        panel_llamada.add(slash1);
+        panel_llamada.add(slash2);
+        panel_llamada.add(puntos);
+        ImageIcon plus = new ImageIcon("src/media/añadir.jpg");
+        ImageIcon im_add = new ImageIcon(plus.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+        JButton add = new JButton(im_add);
+        add.addActionListener(new AltaLlamada());
+        add.setBounds(560, 130, 25, 25);
+        panel_llamada.add(add);
+        JScrollPane scrollPane = new JScrollPane(llamadas);
+        scrollPane.setPreferredSize(new Dimension(550, 250));
+        scrollPane.setBounds(10, 210, 550, 250);
+        panel_llamada.add(scrollPane);
+        altaLlamada.add(panel_llamada);
+        altaLlamada.setSize(600, 500);
+        altaLlamada.setVisible(true);
+        altaLlamada.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        altaLlamada.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                llamadas.setModel(new DefaultTableModel());
+                llamadas.removeAll();
+            }
+        });
+    }
+    private void configuracionUsuario(Cliente cliente){
+        configuracion = new JFrame(cliente.getNombre() + " - Configuración");
+        JPanel panel_1 = new JPanel();
+        panel_1.setLayout(null);
+        JLabel basica = new JLabel("Tarifa Básica: ");
+        basica.setBounds(20, 20, 105, 20);
+        setbasica = new JTextField( 80);
+        setbasica.setBounds(135, 20, 80, 20);
+        setbasica.setHorizontalAlignment(JTextField.TRAILING);
+        JLabel diaria = new JLabel("Tarifa Diaria: ");
+        diaria.setBounds(20, 60, 105, 20);
+        setdiaria = new JTextField( 80);
+        setdiaria.setBounds(135, 60, 80, 20);
+        setdiaria.setHorizontalAlignment(JTextField.TRAILING);
+        JLabel diaApliacable = new JLabel("Dia aplicable: ");
+        diaApliacable.setBounds(60, 100, 100, 20);
+        String[] dias = { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
+        setdiaAplicable = new JComboBox(dias);
+        setdiaAplicable.setBounds(175, 100, 100, 20);
+        JLabel horaria = new JLabel("Tarifa Horaria: ");
+        horaria.setBounds(20, 140, 105, 20);
+        sethoraria = new JTextField( 80);
+        sethoraria.setBounds(135, 140, 80, 20);
+        sethoraria.setHorizontalAlignment(JTextField.TRAILING);
+        String[] horas = { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
+                "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
+        JLabel horaInicio = new JLabel("Hora Inicio: ");
+        horaInicio.setBounds(60, 180, 85, 20);
+        sethoraInicio = new JComboBox(horas);
+        sethoraInicio.setBounds(155, 180, 60, 20);
+        JLabel horaFin = new JLabel("Hora fin: ");
+        horaFin.setBounds(225, 180, 70, 20);
+        sethoraFin = new JComboBox(horas);
+        sethoraFin.setBounds(305, 180, 60, 20);
+        //Aplicar
+        JButton aplicar = new JButton("Aplicar");
+        aplicar.setBounds(295, 220, 85, 30);
+        aplicar.addActionListener(new NuevaTarifa());
+        panel_1.add(basica);
+        panel_1.add(setbasica);
+        panel_1.add(diaria);
+        panel_1.add(setdiaria);
+        panel_1.add(diaApliacable);
+        panel_1.add(setdiaAplicable);
+        panel_1.add(horaria);
+        panel_1.add(sethoraria);
+        panel_1.add(horaInicio);
+        panel_1.add(sethoraInicio);
+        panel_1.add(horaFin);
+        panel_1.add(sethoraFin);
+        panel_1.add(aplicar);
+
+        configuracion.add(panel_1);
+        configuracion.setSize(400, 300);
+        configuracion.setResizable(false);
+        configuracion.setVisible(true);
+
+
     }
 
     private JTextPane createClientePartPane(ClienteParticular clienteParticular) {
@@ -523,75 +664,6 @@ public class Interfaz extends JFrame implements Vista{
         return textPane;
     }
 
-
-    public void altaLlamada() {
-        altaLlamada = new JFrame("Alta Llamada");
-        llamadas = new JTable();
-        llamadas.setModel(modeloLlamadas);
-        JPanel panel_llamada = new JPanel();
-        panel_llamada.setLayout(null);
-        JLabel num_llamo = new JLabel("Número al que llamó: ");
-        JLabel duracion = new JLabel("Duración de la llamada: ");
-        JLabel fecha = new JLabel("Fecha en la que se efectuó: ");
-        JLabel hour = new JLabel("Hora en la que se efectuó: ");
-        num_llamo.setBounds(10,10, 200, 30);
-        duracion.setBounds(10,50, 200, 30);
-        fecha.setBounds(10,90, 200, 30);
-        hour.setBounds(10,130, 200, 30);
-        panel_llamada.add(num_llamo);
-        panel_llamada.add(duracion);
-        panel_llamada.add(fecha);
-        panel_llamada.add(hour);
-        setNumLlamo = new JTextField(80);
-        setDuracion = new JTextField(80);
-        setYear = new JTextField(4);
-        setMonth = new JTextField(2);
-        setDay = new JTextField(2);
-        setHour = new JTextField(2);
-        setMinute = new JTextField(2);
-        setNumLlamo.setBounds(220, 10, 100, 30);
-        setDuracion.setBounds(220, 50, 100, 30);
-        setDay.setBounds(220, 90, 40, 30);
-        setMonth.setBounds(280, 90, 40, 30);
-        setYear.setBounds(340, 90, 80, 30);
-        setHour.setBounds(220, 130, 40, 30);
-        setMinute.setBounds(280, 130, 40, 30);
-        panel_llamada.add(setNumLlamo);
-        panel_llamada.add(setDuracion);
-        panel_llamada.add(setYear);
-        panel_llamada.add(setMonth);
-        panel_llamada.add(setDay);
-        panel_llamada.add(setHour);
-        panel_llamada.add(setMinute);
-        JLabel slash1 = new JLabel("/", CENTER);
-        JLabel slash2 = new JLabel("/", CENTER);
-        JLabel puntos = new JLabel(":", CENTER);
-        slash1.setBounds(260, 90, 20, 30);
-        slash2.setBounds(320, 90, 20, 30);
-        puntos.setBounds(260, 130, 20, 30);
-        panel_llamada.add(slash1);
-        panel_llamada.add(slash2);
-        panel_llamada.add(puntos);
-        JButton add = new JButton("Añadir");
-        add.addActionListener(new AltaLlamada());
-        add.setBounds(560, 130, 20, 20);
-        panel_llamada.add(add);
-        llamadas.setPreferredSize(new Dimension(550, 250));
-        llamadas.setBounds(10, 210, 550, 250);
-        panel_llamada.add(llamadas);
-        altaLlamada.add(panel_llamada);
-        altaLlamada.setSize(600, 500);
-        altaLlamada.setVisible(true);
-        altaLlamada.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        altaLlamada.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                llamadas.setModel(new DefaultTableModel());
-                llamadas.removeAll();
-            }
-        });
-    }
-
     protected void addStylesToDocument(StyledDocument doc) {
         //Initialize some styles.
         Style def = StyleContext.getDefaultStyleContext().
@@ -633,6 +705,11 @@ public class Interfaz extends JFrame implements Vista{
     public void setModelLlamadas(){
         llamadas.setModel(modelo.getLlamadas(clienteAdd));
         llamadasPerfil.setModel(modelo.getLlamadas(clienteAdd));
+    }
+
+    @Override
+    public Tarifa getTarifaNueva() {
+        return this.tarifaNueva;
     }
 
     public void setClienteParticular() {
@@ -689,6 +766,15 @@ public class Interfaz extends JFrame implements Vista{
             tablaCliente.remove(0);
         }
 
+    }
+
+    private  class Configuracion implements ActionListener{
+        public Configuracion(){ }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            configuracionUsuario(clienteAdd);
+        }
     }
 
     private class FinFichaUsuario implements ActionListener {
@@ -809,4 +895,21 @@ public class Interfaz extends JFrame implements Vista{
         controlador.altaLlamada();
     }
 }
+
+    private class NuevaTarifa implements ActionListener {
+        public NuevaTarifa(){
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            Factory factoria = new Factory();
+            int selecDia = setdiaAplicable.getSelectedIndex();
+            if (selecDia >= 0)
+                selecDia += 2;
+            if (selecDia > 7)
+                selecDia = 1;
+            tarifaNueva = factoria.tarifaPersonalizada(Double.parseDouble(setbasica.getText()), Double.parseDouble(setdiaria.getText()),selecDia, Double.parseDouble(sethoraria.getText()), sethoraInicio.getSelectedIndex(), sethoraFin.getSelectedIndex());
+            controlador.modificarTarifa();
+        }
+    }
 }

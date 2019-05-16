@@ -6,4 +6,5 @@ public interface Controlador {
     void altaClienteParticular();
     void altaClienteEmpresa();
     void altaLlamada();
+    void modificarTarifa();
 }

@@ -5,6 +5,7 @@ import empresa.facturas.ConjuntoFacturas;
 import empresa.interfacesUsuario.Interfaz;
 import empresa.interfacesUsuario.Vista;
 import empresa.llamadas.Llamada;
+import empresa.tarifas.Tarifa;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -65,6 +66,10 @@ public class ImplementacionModelo implements Modelo {
         }
         return nuevo;
 
+    }
+
+    public void cambiarTarifaCliente(String codigo, Tarifa tarifa){
+        carteraClientes.cambiarTarifa(codigo, tarifa);
     }
 
 }
