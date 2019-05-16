@@ -6,6 +6,7 @@ import empresa.clientes.ClienteEmpresa;
 import empresa.clientes.ClienteParticular;
 import empresa.clientes.Direccion;
 import empresa.factoria.Factory;
+import empresa.facturas.Factura;
 import empresa.llamadas.Llamada;
 import empresa.operaciones.Controlador;
 import empresa.operaciones.ImplementacionControlador;
@@ -23,6 +24,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import static javax.swing.SwingConstants.CENTER;
+import static javax.swing.SwingConstants.TRAILING;
 
 public class Interfaz extends JFrame implements Vista{
     private Controlador controlador;
@@ -34,6 +36,7 @@ public class Interfaz extends JFrame implements Vista{
     private JFrame altacliente;
     private JFrame altaLlamada;
     private JFrame configuracion;
+    private JFrame factura;
     private JTabbedPane tablaCliente = new JTabbedPane();
     private JTable llamadas = new JTable();
     private JTable llamadasPerfil = new JTable();
@@ -71,6 +74,7 @@ public class Interfaz extends JFrame implements Vista{
     private Cliente clienteAdd;
     private Llamada llamadaAdd;
     private Tarifa tarifaNueva;
+    private JPanel panelDatos;
     /*private JTextField setbasicausuario;
     private JTextField setdiariausuario;
     private JTextField sethorariausuario;
@@ -80,6 +84,19 @@ public class Interfaz extends JFrame implements Vista{
      */
     String[] columnasLlamadas = {"Número", "Duración", "Fecha", "Hora"};
     DefaultTableModel modeloLlamadas = new DefaultTableModel(columnasLlamadas, 1);
+    String[] columnasFactura = {"Código", "Importe", "Emisión", "Inicio", "Fin"};
+    DefaultTableModel modeloFacturasCliente = new DefaultTableModel(columnasFactura, 1);
+    private JTextField setCodigoFactura;
+    private JTextField setYearInicio;
+    private JTextField setMonthInicio;
+    private JTextField setDayInicio;
+    private JTextField setYearFin;
+    private JTextField setMonthFin;
+    private JTextField setDayFin;
+    private Factura facturaAdd;
+    private JList listaFacturas;
+    private DefaultListModel modeloFacturas;
+    private JTable facturasCliente = new JTable();
 
     public Interfaz() {}
 
@@ -152,10 +169,12 @@ public class Interfaz extends JFrame implements Vista{
        lisCli.setBounds(35, 60, 120, 20);
        panel1.add(lisCli);
 
-       JList listaPanel2 = new JList(modeloClientes);
-       listaPanel2.setLayout(null);
-       listaPanel2.setLayoutOrientation(JList.VERTICAL);
-       JScrollPane scroller2 = new JScrollPane(listaPanel2);
+       modeloFacturas = new DefaultListModel();
+       listaFacturas = new JList();
+       listaFacturas.setModel(modeloFacturas);
+       listaFacturas.setLayout(null);
+       listaFacturas.setLayoutOrientation(JList.VERTICAL);
+       JScrollPane scroller2 = new JScrollPane(listaFacturas);
        scroller2.setBounds(170,80,150,200);
        panel1.add(scroller2);
        JLabel lisFac = new JLabel("Lista de facturas");
@@ -173,7 +192,7 @@ public class Interfaz extends JFrame implements Vista{
        panel1.add(filtro);
        JTextField codigo = new JTextField("Introduzca el código", 50);
        codigo.setBounds(180, 300, 150, 20);
-       codigo.setHorizontalAlignment(JTextField.TRAILING);
+       codigo.setHorizontalAlignment(TRAILING);
        panel1.add(codigo);
        JButton buscar = new JButton("Buscar");
        buscar.setBounds(340, 300, 100, 20);
@@ -208,6 +227,7 @@ public class Interfaz extends JFrame implements Vista{
        //setear modelos
         llamadas.setModel(modeloLlamadas);
         llamadasPerfil.setModel(modeloLlamadas);
+        facturasCliente.setModel(modeloFacturasCliente);
     }
 
     public void altaCliente(String tipo){
@@ -414,6 +434,7 @@ public class Interfaz extends JFrame implements Vista{
         ImageIcon factura = new ImageIcon("src/media/facturas.png");
         ImageIcon im_factura = new ImageIcon(factura.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JButton emitir_factura = new JButton(im_factura);
+        emitir_factura.addActionListener(new AltaFactura());
         emitir_factura.setBounds(150, 350, 50, 50);
         panel_1.add(emitir_factura);
         ImageIcon buscar = new ImageIcon("src/media/buscar.png");
@@ -423,23 +444,28 @@ public class Interfaz extends JFrame implements Vista{
         panel_1.add(buscar_Periodo);
 
         //Visor de datos
-        JPanel panel_2 = new JPanel();
+        panelDatos = new JPanel();
         datos.setEditable(false);
         datos.setPreferredSize(new Dimension(400, 300));
-        panel_2.add(datos);
-        tabla.addTab("Datos", null, panel_2, "Datos del cliente");
+        panelDatos.add(datos);
+        tabla.addTab("Datos", null, panelDatos, "Datos del cliente");
 
         //Llamadas
         JPanel panel_3 = new JPanel();
-        llamadasPerfil.setPreferredSize(new Dimension(390, 300));
-        //setModelLlamadas();
+        llamadasPerfil.setPreferredSize(new Dimension(290, 300));
         JScrollPane scrollPane = new JScrollPane(llamadasPerfil);
+        scrollPane.setPreferredSize(new Dimension(395, 300));
         panel_3.add(scrollPane);
         tabla.addTab("Llamadas", null, panel_3);
 
         //Facturas
         JPanel panel_4 = new JPanel();
+        facturasCliente.setPreferredSize(new Dimension(290, 300));
+        JScrollPane scrollPane2 = new JScrollPane(facturasCliente);
+        scrollPane2.setPreferredSize(new Dimension(395, 300));
+        panel_4.add(scrollPane2);
         tabla.addTab("Facturas", null, panel_4);
+
         JButton salir = new JButton("Salir");
         salir.addActionListener(new FinFichaUsuario());
         salir.setBounds(560, 400, 100, 50);
@@ -593,8 +619,66 @@ public class Interfaz extends JFrame implements Vista{
         configuracion.setSize(400, 300);
         configuracion.setResizable(false);
         configuracion.setVisible(true);
+    }
 
-
+    public void altaFactura() {
+        factura = new JFrame("Alta Factura");
+        JPanel panelFactura = new JPanel();
+        panelFactura.setLayout(null);
+        JLabel codigoFactura = new JLabel("Código de la factura: ");
+        codigoFactura.setBounds(10, 10, 150, 30);
+        JLabel periodoFactura = new JLabel("Periodo de facturación");
+        periodoFactura.setBounds(10, 50, 150, 30);
+        JLabel fechaInicio = new JLabel("Fecha de inicio:");
+        fechaInicio.setBounds(50, 90, 100, 30);
+        JLabel fechaFinal = new JLabel("Fecha de fin: ");
+        fechaFinal.setBounds(50, 130, 100, 30);
+        panelFactura.add(codigoFactura);
+        panelFactura.add(periodoFactura);
+        panelFactura.add(fechaInicio);
+        panelFactura.add(fechaFinal);
+        setCodigoFactura = new JTextField(80);
+        setCodigoFactura.setBounds(170, 10, 100, 30);
+        setCodigoFactura.setHorizontalAlignment(TRAILING);
+        setYearInicio = new JTextField(4);
+        setMonthInicio = new JTextField(2);
+        setDayInicio = new JTextField(2);
+        setDayInicio.setBounds(170, 90, 40, 30);
+        setMonthInicio.setBounds(230, 90, 40, 30);
+        setYearInicio.setBounds(290, 90, 80, 30);
+        panelFactura.add(setCodigoFactura);
+        panelFactura.add(setDayInicio);
+        panelFactura.add(setMonthInicio);
+        panelFactura.add(setYearInicio);
+        JLabel slash1 = new JLabel("/", CENTER);
+        JLabel slash2 = new JLabel("/", CENTER);
+        slash1.setBounds(210, 90, 20, 30);
+        slash2.setBounds(270, 90, 20, 30);
+        panelFactura.add(slash1);
+        panelFactura.add(slash2);
+        setYearFin = new JTextField(4);
+        setMonthFin = new JTextField(2);
+        setDayFin = new JTextField(2);
+        setDayFin.setBounds(170, 130, 40, 30);
+        setMonthFin.setBounds(230, 130, 40, 30);
+        setYearFin.setBounds(290, 130, 80, 30);
+        panelFactura.add(setDayFin);
+        panelFactura.add(setMonthFin);
+        panelFactura.add(setYearFin);
+        JLabel slash3 = new JLabel("/", CENTER);
+        JLabel slash4 = new JLabel("/", CENTER);
+        slash3.setBounds(210, 130, 20, 30);
+        slash4.setBounds(270, 130, 20, 30);
+        panelFactura.add(slash3);
+        panelFactura.add(slash4);
+        JButton aplicar = new JButton("Añadir");
+        aplicar.addActionListener(new NuevaFactura());
+        aplicar.setBounds(295, 220, 85, 30);
+        panelFactura.add(aplicar);
+        factura.add(panelFactura);
+        factura.setSize(500, 500);
+        factura.setVisible(true);
+        factura.setResizable(false);
     }
 
     private JTextPane createClientePartPane(ClienteParticular clienteParticular) {
@@ -707,9 +791,17 @@ public class Interfaz extends JFrame implements Vista{
         llamadasPerfil.setModel(modelo.getLlamadas(clienteAdd));
     }
 
-    @Override
+    public void setModelFacturas() {
+        listaFacturas.setModel(modelo.getFacturas());
+        facturasCliente.setModel(modelo.getFacturasCliente(clienteAdd));
+    }
+
     public Tarifa getTarifaNueva() {
         return this.tarifaNueva;
+    }
+
+    public Factura getFacturaAdd() {
+        return this.facturaAdd;
     }
 
     public void setClienteParticular() {
@@ -910,6 +1002,56 @@ public class Interfaz extends JFrame implements Vista{
                 selecDia = 1;
             tarifaNueva = factoria.tarifaPersonalizada(Double.parseDouble(setbasica.getText()), Double.parseDouble(setdiaria.getText()),selecDia, Double.parseDouble(sethoraria.getText()), sethoraInicio.getSelectedIndex(), sethoraFin.getSelectedIndex());
             controlador.modificarTarifa();
+            panelDatos.remove(datos);
+            if(clienteAdd.isParticular())
+                datos = createClientePartPane((ClienteParticular) clienteAdd);
+            else
+                datos = createClienteEmpPane((ClienteEmpresa) clienteAdd);
+            datos.setPreferredSize(new Dimension(400, 300));
+            datos.setEditable(false);
+            panelDatos.add(datos);
+            //No se actualizada de ninguna manera, por eso fuerzo el cambio de datos y con esto simulo un click del raton para que pueda actualizarse
+            Robot bot = null;
+            try {
+                bot = new Robot();
+            } catch (AWTException e) {
+                e.printStackTrace();
+            }
+            bot.mouseMove(460, 180);
+            bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+            bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+            configuracion.dispose();
+        }
+    }
+
+    private class AltaFactura implements ActionListener{
+        public AltaFactura() {
+
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            altaFactura();
+        }
+    }
+
+    private class NuevaFactura implements ActionListener{
+        public NuevaFactura() {
+
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Cliente cliente = modelo.datosCliente(clienteAdd.getCodigo());
+            String codigo = setCodigoFactura.getText();
+            Calendar fecha_inicio = new GregorianCalendar();
+            fecha_inicio.set(Integer.parseInt(setYearInicio.getText()), Integer.parseInt(setMonthInicio.getText()), Integer.parseInt(setDayInicio.getText()));
+            Calendar fecha_fin = new GregorianCalendar();
+            fecha_fin.set(Integer.parseInt(setYearFin.getText()), Integer.parseInt(setMonthFin.getText()), Integer.parseInt(setDayFin.getText()));
+            facturaAdd = Factura.emitirFactura(cliente, codigo, fecha_inicio, fecha_fin);
+            controlador.altaFactura();
+            datosFac.setEnabled(true);
+            factura.dispose();
         }
     }
 }

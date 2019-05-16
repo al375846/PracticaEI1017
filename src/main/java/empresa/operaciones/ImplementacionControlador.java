@@ -1,6 +1,7 @@
 package empresa.operaciones;
 
 import empresa.clientes.*;
+import empresa.facturas.Factura;
 import empresa.interfacesUsuario.Interfaz;
 import empresa.interfacesUsuario.Vista;
 import empresa.llamadas.Llamada;
@@ -34,6 +35,12 @@ public class ImplementacionControlador implements Controlador{
         String codigo = vista.getClienteAdd().getCodigo();
         Tarifa tarifa = vista.getTarifaNueva();
         modelo.cambiarTarifaCliente(codigo, tarifa);
+    }
+
+    public void altaFactura() {
+        Cliente cliente = vista.getClienteAdd();
+        Factura factura = vista.getFacturaAdd();
+        modelo.altaFactura(cliente, factura);
     }
 
     public void setTodo(Interfaz vista, ImplementacionModelo modelo) {

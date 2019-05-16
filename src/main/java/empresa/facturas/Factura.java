@@ -49,6 +49,18 @@ public class Factura extends Fecha implements Serializable {
         return null;
     }
 
+    public String impFechaInicio(){
+        return (this.inicio_periodo.get(Calendar.DAY_OF_MONTH) + "/" + (this.inicio_periodo.get(Calendar.MONTH) + 1)+ "/" + this.inicio_periodo.get(Calendar.YEAR));
+    }
+
+    public String impFechaFin(){
+        return (this.fin_periodo.get(Calendar.DAY_OF_MONTH) + "/" + (this.fin_periodo.get(Calendar.MONTH) + 1)+ "/" + this.fin_periodo.get(Calendar.YEAR));
+    }
+
+    public String impFecha(){
+        return (this.fecha_emision.get(Calendar.DAY_OF_MONTH) + "/" + (this.fecha_emision.get(Calendar.MONTH) + 1)+ "/" + this.fecha_emision.get(Calendar.YEAR));
+    }
+
     public Calendar getFecha() {
         return fecha_emision;
     }

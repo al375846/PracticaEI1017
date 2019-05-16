@@ -2,6 +2,7 @@ package empresa.operaciones;
 
 import empresa.clientes.*;
 import empresa.facturas.ConjuntoFacturas;
+import empresa.facturas.Factura;
 import empresa.interfacesUsuario.Interfaz;
 import empresa.interfacesUsuario.Vista;
 import empresa.llamadas.Llamada;
@@ -33,6 +34,12 @@ public class ImplementacionModelo implements Modelo {
         vista.setModelLlamadas();
     }
 
+    public void altaFactura(Cliente cliente, Factura factura) {
+        carteraClientes.addFactura(factura, cliente);
+        conjuntoFacturas.addFactura(factura);
+        vista.setModelFacturas();
+    }
+
     public void setVista(Interfaz vista) {
         this.vista = vista;
     }
@@ -42,7 +49,17 @@ public class ImplementacionModelo implements Modelo {
     }
 
     public DefaultListModel getClientes(){
-        Set<String> listado= carteraClientes.listaClientes().keySet();
+        Set<String> listado = carteraClientes.listaClientes().keySet();
+        Iterator<String> iter = listado.iterator();
+        DefaultListModel nuevo = new DefaultListModel();
+        while(iter.hasNext()) {
+            nuevo.addElement(iter.next());
+        }
+        return nuevo;
+    }
+
+    public DefaultListModel getFacturas(){
+        Set<String> listado = conjuntoFacturas.listaFacturas().keySet();
         Iterator<String> iter = listado.iterator();
         DefaultListModel nuevo = new DefaultListModel();
         while(iter.hasNext()) {
@@ -62,6 +79,23 @@ public class ImplementacionModelo implements Modelo {
         while(iter.hasNext()) {
             Llamada llamada = iter.next();
             Object[] fila = {llamada.getNum_llamo(), llamada.getDuracion(), llamada.impFecha(), llamada.impHora()};
+            nuevo.addRow(fila);
+        }
+        return nuevo;
+
+    }
+
+    public DefaultTableModel getFacturasCliente(Cliente cliente){
+        List<Factura> facturas = carteraClientes.listaFacturas(cliente.getCodigo());
+        DefaultTableModel nuevo = new DefaultTableModel();
+        String[] columnas = {"Código", "Importe", "Emisión", "Inicio", "Fin"};
+        for(int i = 0; i < columnas.length; i++){
+            nuevo.addColumn(columnas[i]);
+        }
+        Iterator<Factura> iter = facturas.iterator();
+        while(iter.hasNext()) {
+            Factura factura = iter.next();
+            Object[] fila = {factura.getCodigo(), factura.getImporte(), factura.impFecha(), factura.impFechaInicio(), factura.impFechaFin()};
             nuevo.addRow(fila);
         }
         return nuevo;
