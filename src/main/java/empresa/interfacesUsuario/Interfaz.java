@@ -522,6 +522,7 @@ public class Interfaz extends JFrame implements Vista{
         return textPane;
     }
 
+
     public void altaLlamada() {
         altaLlamada = new JFrame("Alta Llamada");
         llamadas = new JTable();
