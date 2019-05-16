@@ -9,6 +9,7 @@ public interface Vista {
     ClienteParticular getClientePart();
     ClienteEmpresa getClienteEmp();
 
+
     void setModelLista();
     Cliente getClienteAdd();
     Llamada getLlamadaAdd();
