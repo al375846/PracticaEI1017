@@ -399,7 +399,7 @@ public class Interfaz extends JFrame implements Vista{
         ImageIcon llamada = new ImageIcon("src/media/telefono.png");
         ImageIcon im_llamada = new ImageIcon(llamada.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JButton alta_llamada = new JButton(im_llamada);
-        alta_llamada.addActionListener(new addLlamadaCliente(cliente));
+        alta_llamada.addActionListener(new addLlamadaCliente());
         alta_llamada.setBounds(50, 350, 50, 50);
         panel_1.add(alta_llamada);
         ImageIcon factura = new ImageIcon("src/media/facturas.png");
@@ -444,9 +444,10 @@ public class Interfaz extends JFrame implements Vista{
         data.setSize(800, 500);
         data.setResizable(false);
         data.setVisible(true);
+        data.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         data.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e) {
+            public void windowClosed(WindowEvent e) {
                 tabla.remove(0);
                 tabla.remove(0);
                 tabla.remove(0);
@@ -754,12 +755,14 @@ public class Interfaz extends JFrame implements Vista{
             datos  = createClientePartPane(clienteParticular);
             datos.setEditable(false);
             llamadasPerfil.setModel(modelo.getLlamadas(clienteParticular));
+            clienteAdd = clienteParticular;
             fichaUsuario(clienteParticular);
         } else {
             clienteEmpresa = (ClienteEmpresa) clienteSel;
             datos = createClienteEmpPane(clienteEmpresa);
             datos.setEditable(false);
             llamadasPerfil.setModel(modelo.getLlamadas(clienteEmpresa));
+            clienteAdd = clienteEmpresa;
             fichaUsuario(clienteEmpresa);
         }
     }
@@ -780,13 +783,10 @@ public class Interfaz extends JFrame implements Vista{
 }
 
     private class addLlamadaCliente implements ActionListener {
-    private Cliente cliente;
-    public addLlamadaCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public addLlamadaCliente(){
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        clienteAdd = cliente;
         altaLlamada();
     }
 }
@@ -798,7 +798,7 @@ public class Interfaz extends JFrame implements Vista{
     @Override
     public void actionPerformed(ActionEvent e) {
         llamadaAdd = new Llamada(setNumLlamo.getText(), Double.parseDouble(setDuracion.getText()), new GregorianCalendar());
-        llamadaAdd.setFecha(Integer.parseInt(setYear.getText()), Integer.parseInt(setMonth.getText()), Integer.parseInt(setDay.getText()), Integer.parseInt(setHour.getText()), Integer.parseInt(setMinute.getText()));
+        llamadaAdd.setFecha(Integer.parseInt(setYear.getText()), Integer.parseInt(setMonth.getText()) - 1, Integer.parseInt(setDay.getText()), Integer.parseInt(setHour.getText()), Integer.parseInt(setMinute.getText()));
         setNumLlamo.setText("");
         setDuracion.setText("");
         setYear.setText("");
