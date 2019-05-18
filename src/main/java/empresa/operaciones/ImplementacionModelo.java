@@ -6,7 +6,10 @@ import empresa.facturas.Factura;
 import empresa.interfacesUsuario.Interfaz;
 import empresa.interfacesUsuario.Vista;
 import empresa.llamadas.Llamada;
+import empresa.tarifas.Diaria;
+import empresa.tarifas.FranjaHoraria;
 import empresa.tarifas.Tarifa;
+import empresa.tarifas.TarifaBasica;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -100,6 +103,26 @@ public class ImplementacionModelo implements Modelo {
         }
         return nuevo;
 
+    }
+
+    @Override
+    public Factura datosFactura(String codigo) {
+        return conjuntoFacturas.obtenerFactura(codigo);
+    }
+
+    @Override
+    public void cambiarTarifaBasica(double precio) {
+        TarifaBasica.cambiarPrecio(precio);
+    }
+
+    @Override
+    public void cambiarTarifaDiaria(double precio, int dia) {
+        Diaria.modificarDiaria(precio, dia);
+    }
+
+    @Override
+    public void cambiarTarifaHoraria(double precio, int inicio, int fin) {
+        FranjaHoraria.modificarHoraria(precio, inicio, fin);
     }
 
     public void cambiarTarifaCliente(String codigo, Tarifa tarifa){

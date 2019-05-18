@@ -17,4 +17,10 @@ public interface Vista {
     Tarifa getTarifaNueva();
     Factura getFacturaAdd();
     void setModelFacturas();
+    Double getNueva_tarifaBasica();
+    Double getNueva_tarifaDiaria();
+    int getNuevo_dia();
+    Double getNueva_tarifaHoraria();
+    int getNueva_horaInicio();
+    int getNueva_horaFin();
 }

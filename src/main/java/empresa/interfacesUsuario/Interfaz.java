@@ -12,7 +12,10 @@ import empresa.operaciones.Controlador;
 import empresa.operaciones.ImplementacionControlador;
 import empresa.operaciones.ImplementacionModelo;
 import empresa.operaciones.Modelo;
+import empresa.tarifas.Diaria;
+import empresa.tarifas.FranjaHoraria;
 import empresa.tarifas.Tarifa;
+import empresa.tarifas.TarifaBasica;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -75,13 +78,8 @@ public class Interfaz extends JFrame implements Vista{
     private Llamada llamadaAdd;
     private Tarifa tarifaNueva;
     private JPanel panelDatos;
-    /*private JTextField setbasicausuario;
-    private JTextField setdiariausuario;
-    private JTextField sethorariausuario;
-    private JComboBox setdiaAplicableusuario;
-    private JComboBox sethoraIniciousuario;
-    private JComboBox sethoraFinusuario;
-     */
+    private JFrame datosFactura;
+    private JFrame tarifaGeneral;
     String[] columnasLlamadas = {"Número", "Duración", "Fecha", "Hora"};
     DefaultTableModel modeloLlamadas = new DefaultTableModel(columnasLlamadas, 1);
     String[] columnasFactura = {"Código", "Importe", "Emisión", "Inicio", "Fin"};
@@ -97,6 +95,17 @@ public class Interfaz extends JFrame implements Vista{
     private JList listaFacturas;
     private DefaultListModel modeloFacturas;
     private JTable facturasCliente = new JTable();
+    private JPanel panel_basica;
+    private JPanel panel_diaria;
+    private JPanel panel_horaria;
+    private Double nueva_tarifaBasica;
+    private Double nueva_tarifaDiaria;
+    private int nuevo_dia;
+    private Double nueva_tarifaHoraria;
+    private int nueva_horaInicio;
+    private int nueva_horaFin;
+
+
 
     public Interfaz() {}
 
@@ -127,57 +136,65 @@ public class Interfaz extends JFrame implements Vista{
        baja.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, ActionEvent.CTRL_MASK));
        menu.add(baja);
        menu.addSeparator();
+       JMenuItem cambiarTarifa = new JMenuItem(("Cambiar tarifa general"));
+       cambiarTarifa.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK));
+       cambiarTarifa.addActionListener(new NuevaTarifaGeneral());
+       menu.add(cambiarTarifa);
+       menu.addSeparator();
         JMenuItem guardar = new JMenuItem("Guardar");
        guardar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
        menu.add(guardar);
        menu.addSeparator();
         JMenuItem cargar = new JMenuItem("Cargar");
-       cargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
-       menu.add(cargar);
-       ventana.setJMenuBar(menuBar);
+        cargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
+        menu.add(cargar);
+        ventana.setJMenuBar(menuBar);
        //Menu definido
 
-       ventana.add(tabbedPane);
-       JPanel panel1 = new JPanel();
+
+        ventana.add(tabbedPane);
+        JPanel panel1 = new JPanel();
        //Botones de accion
+
         datosCli = new JButton("Datos Cliente");
-       datosCli.addActionListener(new DatosCliente());
-       datosCli.setEnabled(false);
+        datosCli.addActionListener(new DatosCliente());
+        datosCli.setEnabled(false);
         datosFac = new JButton("Datos Factura");
+        datosFac.addActionListener(new DatosFactura());
         datosFac.setEnabled(false);
         periodo = new JButton("Periodo");
         periodo.setEnabled(false);
-       panel1.setLayout(null);
-       datosCli.setBounds(10, 10,120,20);
-       datosFac.setBounds(140,10,120,20);
-       periodo.setBounds(270, 10, 120, 20);
-       panel1.add(datosCli);
-       panel1.add(datosFac);
-       panel1.add(periodo);
-       //Fin botones de accion
+        panel1.setLayout(null);
+        datosCli.setBounds(10, 10,120,20);
+        datosFac.setBounds(140,10,120,20);
+        periodo.setBounds(270, 10, 120, 20);
+        panel1.add(datosCli);
+        panel1.add(datosFac);
+        panel1.add(periodo);
+        //Fin botones de accion
 
-       //Listas
+        //Listas
         modeloClientes = new DefaultListModel();
-       listaClientes = new JList();
-       listaClientes.setModel(modeloClientes);
-       listaClientes.setLayout(null);
-       listaClientes.setLayoutOrientation(JList.VERTICAL);
-       JScrollPane scroller = new JScrollPane(listaClientes);
-       scroller.setBounds(10,80,150,200);
-       panel1.add(scroller);
-       JLabel lisCli = new JLabel("Lista de clientes");
-       lisCli.setBounds(35, 60, 120, 20);
-       panel1.add(lisCli);
+        listaClientes = new JList();
+        listaClientes.setModel(modeloClientes);
+        listaClientes.setLayout(null);
+        listaClientes.setLayoutOrientation(JList.VERTICAL);
+        JScrollPane scroller = new JScrollPane(listaClientes);
+        scroller.setBounds(10,80,150,200);
+        panel1.add(scroller);
+        JLabel lisCli = new JLabel("Lista de clientes");
+        lisCli.setBounds(35, 60, 120, 20);
+        panel1.add(lisCli);
 
-       modeloFacturas = new DefaultListModel();
-       listaFacturas = new JList();
-       listaFacturas.setModel(modeloFacturas);
-       listaFacturas.setLayout(null);
-       listaFacturas.setLayoutOrientation(JList.VERTICAL);
-       JScrollPane scroller2 = new JScrollPane(listaFacturas);
-       scroller2.setBounds(170,80,150,200);
-       panel1.add(scroller2);
-       JLabel lisFac = new JLabel("Lista de facturas");
+        modeloFacturas = new DefaultListModel();
+        listaFacturas = new JList();
+        listaFacturas.setModel(modeloFacturas);
+        listaFacturas.setLayout(null);
+        listaFacturas.setLayoutOrientation(JList.VERTICAL);
+        JScrollPane scroller2 = new JScrollPane(listaFacturas);
+        scroller2.setBounds(170,80,150,200);
+        panel1.add(scroller2);
+        JLabel lisFac = new JLabel("Lista de facturas");
        lisFac.setBounds(195, 60, 120, 20);
        panel1.add(lisFac);
        //Fin listas
@@ -204,27 +221,27 @@ public class Interfaz extends JFrame implements Vista{
       for (int c = 0; c < resultado.getColumnCount(); c++) {
            Class<?> col_class = resultado.getColumnClass(c);
            resultado.setDefaultEditor(col_class, null);        // remove editor
-       }
-       JScrollPane scrollPane = new JScrollPane(resultado);
-       scrollPane.setBounds(10, 350, 200, 150);
-       resultado.setFillsViewportHeight(true);
-       panel1.add(scrollPane);
+      }
+      JScrollPane scrollPane = new JScrollPane(resultado);
+      scrollPane.setBounds(10, 350, 200, 150);
+        resultado.setFillsViewportHeight(true);
+        panel1.add(scrollPane);
 
 
-       tabbedPane.addTab("Gestor", null, panel1, "No hace nada");
-       tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-       //tabbedPane.setEnabledAt(0, true);
-       JComponent label3 = new JLabel("Text-Only Label");
-       tabbedPane.addTab("Perfil de cliente", label3);
-       tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
-       //tabbedPane.setEnabledAt(1, true);
-       //tabbedPane.setVisible(true);
-       tabbedPane.setForegroundAt(0, Color.red);
-       ventana.setSize(600,600);
-       ventana.setResizable(false);
-       ventana.setVisible(true);
+        tabbedPane.addTab("Gestor", null, panel1, "No hace nada");
+        tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+        //tabbedPane.setEnabledAt(0, true);
+        JComponent label3 = new JLabel("Text-Only Label");
+        tabbedPane.addTab("Perfil de cliente", label3);
+        tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
+        //tabbedPane.setEnabledAt(1, true);
+        //tabbedPane.setVisible(true);
+        tabbedPane.setForegroundAt(0, Color.red);
+        ventana.setSize(600,600);
+        ventana.setResizable(false);
+        ventana.setVisible(true);
 
-       //setear modelos
+        //setear modelos
         llamadas.setModel(modeloLlamadas);
         llamadasPerfil.setModel(modeloLlamadas);
         facturasCliente.setModel(modeloFacturasCliente);
@@ -423,7 +440,7 @@ public class Interfaz extends JFrame implements Vista{
         ImageIcon im_configuracion = new ImageIcon(configuracion.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
         JButton ajustes = new JButton(im_configuracion);
         ajustes.addActionListener(new Configuracion());
-        ajustes.setBounds(720, 400, 40, 40);
+        ajustes.setBounds(275, 350, 50, 50);
         panelUsuario.add(ajustes);
         ImageIcon llamada = new ImageIcon("src/media/telefono.png");
         ImageIcon im_llamada = new ImageIcon(llamada.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
@@ -435,46 +452,46 @@ public class Interfaz extends JFrame implements Vista{
         ImageIcon im_factura = new ImageIcon(factura.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JButton emitir_factura = new JButton(im_factura);
         emitir_factura.addActionListener(new AltaFactura());
-        emitir_factura.setBounds(150, 350, 50, 50);
+        emitir_factura.setBounds(125, 350, 50, 50);
         panel_1.add(emitir_factura);
         ImageIcon buscar = new ImageIcon("src/media/buscar.png");
         ImageIcon im_buscar = new ImageIcon(buscar.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JButton buscar_Periodo = new JButton(im_buscar);
-        buscar_Periodo.setBounds(250, 350, 50, 50);
+        buscar_Periodo.setBounds(200, 350, 50, 50);
         panel_1.add(buscar_Periodo);
 
         //Visor de datos
         panelDatos = new JPanel();
         datos.setEditable(false);
-        datos.setPreferredSize(new Dimension(400, 300));
+        datos.setPreferredSize(new Dimension(400, 400));
         panelDatos.add(datos);
         tabla.addTab("Datos", null, panelDatos, "Datos del cliente");
 
         //Llamadas
         JPanel panel_3 = new JPanel();
-        llamadasPerfil.setPreferredSize(new Dimension(290, 300));
+        llamadasPerfil.setPreferredSize(new Dimension(290, 400));
         JScrollPane scrollPane = new JScrollPane(llamadasPerfil);
-        scrollPane.setPreferredSize(new Dimension(395, 300));
+        scrollPane.setPreferredSize(new Dimension(395, 400));
         panel_3.add(scrollPane);
         tabla.addTab("Llamadas", null, panel_3);
 
         //Facturas
         JPanel panel_4 = new JPanel();
-        facturasCliente.setPreferredSize(new Dimension(290, 300));
+        facturasCliente.setPreferredSize(new Dimension(290, 400));
         JScrollPane scrollPane2 = new JScrollPane(facturasCliente);
-        scrollPane2.setPreferredSize(new Dimension(395, 300));
+        scrollPane2.setPreferredSize(new Dimension(395, 400));
         panel_4.add(scrollPane2);
         tabla.addTab("Facturas", null, panel_4);
 
-        JButton salir = new JButton("Salir");
+        /*JButton salir = new JButton("Salir");
         salir.addActionListener(new FinFichaUsuario());
         salir.setBounds(560, 400, 100, 50);
         panelUsuario.add(salir);
+         */
 
         panel_1.setBounds(0, 0, 350, 500);
-        tabla.setBounds(350, 50, 400, 300);
+        tabla.setBounds(350, 20, 400, 380);
         panelUsuario.add(panel_1);
-        //panel_0.add(label2);
         panelUsuario.add(tabla);
         tabla.setVisible(true);
         data.add(panelUsuario);
@@ -681,18 +698,146 @@ public class Interfaz extends JFrame implements Vista{
         factura.setResizable(false);
     }
 
+    public void datosFactura(Factura factura){
+        datosFactura = new JFrame("Factura: " + factura.getCodigo());
+        JPanel panel_1 = new JPanel();
+        JTextPane datos = createFacturaPane(factura);
+        datos.setPreferredSize(new Dimension(400, 400));
+        datos.setEditable(false);
+        panel_1.add(datos);
+        datosFactura.add(panel_1);
+        datosFactura.setSize(400, 400);
+        datosFactura.setVisible(true);
+        datosFactura.setResizable(false);
+    }
+
+    public void cambiarTarifaGeneral(){
+        tarifaGeneral = new JFrame ("Tarifas");
+        tarifaGeneral.setLayout(null);
+        JPanel panel_1 = new JPanel();
+        panel_1.setLayout(null);
+        JLabel texto = new JLabel("Seleccione la tarifa que desea cambiar");
+        texto.setBounds(20, 20, 350,20);
+        JRadioButton tarifa_básica = new JRadioButton("Tarifa Básica");
+        tarifa_básica.addActionListener(new ModificarTarifaBasica());
+        tarifa_básica.setBounds(20, 60, 150, 20);
+        JRadioButton tarifa_diaria = new JRadioButton("Tarifa Diaria");
+        tarifa_diaria.addActionListener( new ModificarTarifaDiaria());
+        tarifa_diaria.setBounds(20, 100, 150, 20);
+        JRadioButton tarifa_horaria = new JRadioButton("Tarifa Horaria");
+        tarifa_horaria.addActionListener(new ModificarTarifaHoraria());
+        tarifa_horaria.setBounds(20, 140, 150, 20);
+        ButtonGroup group = new ButtonGroup();
+        group.add(tarifa_básica);
+        group.add(tarifa_diaria);
+        group.add(tarifa_horaria);
+        panel_1.add(texto);
+        panel_1.add(tarifa_básica);
+        panel_1.add(tarifa_diaria);
+        panel_1.add(tarifa_horaria);
+        panel_1.setBounds(0, 0, 350, 160);
+
+        panel_basica = new JPanel();
+        panel_basica.setLayout(null);
+        JLabel basica = new JLabel("------------------TARIFA BÁSICA------------------");
+        basica.setBounds(20, 10, 320, 20);
+        JLabel precio_basica = new JLabel("Precio: ");
+        precio_basica.setBounds(50, 50, 60, 20);
+        setbasica = new JTextField( 70);
+        setbasica.setBounds(130, 50, 70, 20);
+        setbasica.setHorizontalAlignment(JTextField.TRAILING);
+        JButton aplicar_basica = new JButton("Aplicar");
+        aplicar_basica.setBounds(245, 160, 85, 30);
+        aplicar_basica.addActionListener(new NuevaTarifaBasica());
+        panel_basica.add(basica);
+        panel_basica.add(precio_basica);
+        panel_basica.add(setbasica);
+        panel_basica.add(aplicar_basica);
+        panel_basica.setBounds(0, 160, 350, 210);
+        panel_basica.setVisible(false);
+
+        panel_diaria = new JPanel();
+        panel_diaria.setLayout(null);
+        JLabel diaria = new JLabel("-------------------TARIFA DIARIA-------------------");
+        diaria.setBounds(20, 10, 320, 20);
+        JLabel precio_diaria = new JLabel("Precio: ");
+        precio_diaria.setBounds(20, 50, 60, 20);
+        setdiaria = new JTextField( 70);
+        setdiaria.setBounds(100, 50, 70, 20);
+        setdiaria.setHorizontalAlignment(JTextField.TRAILING);
+        JLabel diaApliacable = new JLabel("Dia aplicable: ");
+        diaApliacable.setBounds(20, 90, 100, 20);
+        String[] dias = { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
+        setdiaAplicable = new JComboBox(dias);
+        setdiaAplicable.setBounds(140, 90, 100, 20);
+        JButton aplicar_diaria = new JButton("Aplicar");
+        aplicar_diaria.setBounds(245, 160, 85, 30);
+        aplicar_diaria.addActionListener(new NuevaTarifaDiaria());
+        panel_diaria.add(diaria);
+        panel_diaria.add(precio_diaria);
+        panel_diaria.add(setdiaria);
+        panel_diaria.add(diaApliacable);
+        panel_diaria.add(setdiaAplicable);
+        panel_diaria.add(aplicar_diaria);
+        panel_diaria.setBounds(0, 160, 350, 210);
+        panel_diaria.setVisible(false);
+
+        panel_horaria = new JPanel();
+        panel_horaria.setLayout(null);
+        JLabel horaria = new JLabel("-----------------TARIFA HORARIA-----------------");
+        horaria.setBounds(20, 10, 320, 20);
+        JLabel precio_horaria = new JLabel("Precio: ");
+        precio_horaria.setBounds(20, 50, 60, 20);
+        sethoraria = new JTextField( 70);
+        sethoraria.setBounds(100, 50, 70, 20);
+        sethoraria.setHorizontalAlignment(JTextField.TRAILING);
+        String[] horas = { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
+                "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
+        JLabel horaInicio = new JLabel("Hora Inicio: ");
+        horaInicio.setBounds(20, 90, 85, 20);
+        sethoraInicio = new JComboBox(horas);
+        sethoraInicio.setBounds(115, 90, 50, 20);
+        JLabel horaFin = new JLabel("Hora fin: ");
+        horaFin.setBounds(185, 90, 70, 20);
+        sethoraFin = new JComboBox(horas);
+        sethoraFin.setBounds(265, 90, 50, 20);
+        JButton aplicar_horaria = new JButton("Aplicar");
+        aplicar_horaria.setBounds(245, 160, 85, 30);
+        aplicar_horaria.addActionListener(new NuevaTarifaHoraria());
+        panel_horaria.add(horaria);
+        panel_horaria.add(precio_horaria);
+        panel_horaria.add(sethoraria);
+        panel_horaria.add(horaInicio);
+        panel_horaria.add(sethoraInicio);
+        panel_horaria.add(horaFin);
+        panel_horaria.add(sethoraFin);
+        panel_horaria.add(aplicar_horaria);
+        panel_horaria.setBounds(0, 160, 350, 210);
+        panel_horaria.setVisible(false);
+
+        tarifaGeneral.add(panel_1);
+        tarifaGeneral.add(panel_basica);
+        tarifaGeneral.add(panel_diaria);
+        tarifaGeneral.add(panel_horaria);
+        tarifaGeneral.setSize(350, 400);
+        tarifaGeneral.setVisible(true);
+
+    }
+
+
+    // ---------------------------TEXTPANES-----------------------------------------------------
     private JTextPane createClientePartPane(ClienteParticular clienteParticular) {
         String fecha = (clienteParticular.getFecha().get(Calendar.DAY_OF_MONTH) + "/" + (clienteParticular.getFecha().get(Calendar.MONTH) + 1)+ "/" + clienteParticular.getFecha().get(Calendar.YEAR));
         String[] initString =
-                { "Nombre: ", clienteParticular.getNombre() + "\n",
-                        "Apellidos: ",  clienteParticular.getApellidos() + "\n",
-                        "DNI: ", clienteParticular.getCodigo() + "\n",
-                        "Correo: ",  clienteParticular.getCorreo() + "\n",
+                { "Nombre: ", clienteParticular.getNombre() + "\n\n",
+                        "Apellidos: ",  clienteParticular.getApellidos() + "\n\n",
+                        "DNI: ", clienteParticular.getCodigo() + "\n\n",
+                        "Correo: ",  clienteParticular.getCorreo() + "\n\n",
                         "Dirección: " + "\n",
                         "\t" + "Cp: ", clienteParticular.getDireccion().getCp() + "\n",
                         "\t" + "Población: ", clienteParticular.getDireccion().getPoblacion() + "\n",
-                        "\t" + "Provincia: ", clienteParticular.getDireccion().getProvincia() + "\n",
-                        "Fecha alta: ", fecha + "\n",
+                        "\t" + "Provincia: ", clienteParticular.getDireccion().getProvincia() + "\n\n",
+                        "Fecha alta: ", fecha + "\n\n",
                         "Tarifa: " + "\n", clienteParticular.getTarifa().toString()
                 };
 
@@ -714,18 +859,17 @@ public class Interfaz extends JFrame implements Vista{
 
         return textPane;
     }
-
     private JTextPane createClienteEmpPane(ClienteEmpresa clienteEmpresa) {
         String fecha = (clienteEmpresa.getFecha().get(Calendar.DAY_OF_MONTH) + "/" + (clienteEmpresa.getFecha().get(Calendar.MONTH) + 1)+ "/" + clienteEmpresa.getFecha().get(Calendar.YEAR));
         String[] initString =
-                { "Empresa: ", clienteEmpresa.getNombre() + "\n",
-                        "Nif: ", clienteEmpresa.getCodigo() + "\n",
-                        "Correo: ",  clienteEmpresa.getCorreo() + "\n",
+                { "Empresa: ", clienteEmpresa.getNombre() + "\n\n",
+                        "Nif: ", clienteEmpresa.getCodigo() + "\n\n",
+                        "Correo: ",  clienteEmpresa.getCorreo() + "\n\n",
                         "Dirección: " + "\n",
                         "\t" + "Cp: ", clienteEmpresa.getDireccion().getCp() + "\n",
                         "\t" + "Población: ", clienteEmpresa.getDireccion().getPoblacion() + "\n",
-                        "\t" + "Provincia: ", clienteEmpresa.getDireccion().getProvincia() + "\n",
-                        "Fecha alta: ", fecha + "\n",
+                        "\t" + "Provincia: ", clienteEmpresa.getDireccion().getProvincia() + "\n\n",
+                        "Fecha alta: ", fecha + "\n\n",
                         "Tarifa: " + "\n", clienteEmpresa.getTarifa().toString()
                 };
 
@@ -747,7 +891,34 @@ public class Interfaz extends JFrame implements Vista{
 
         return textPane;
     }
+    private JTextPane createFacturaPane(Factura factura) {
+        String[] initString =
+                { "Código de la factura: ", factura.getCodigo() + "\n\n",
+                        "Importe: ", factura.getImporte() + "\n\n",
+                        "Fecha inicio: ",  factura.impFechaInicio() + "\n\n",
+                        "Fecha fin: ", factura.impFechaFin() + "\n\n",
+                        "Fecha emisión: ", factura.impFecha() + "\n\n",
+                        "Tarifa: " + "\n", factura.getTarifa().toString()
+                };
 
+        String[] initStyles =
+                { "bold", "regular", "bold", "regular", "bold", "regular", "bold", "regular", "bold", "regular", "bold", "regular"
+                };
+        JTextPane textPane = new JTextPane();
+        StyledDocument doc = textPane.getStyledDocument();
+        addStylesToDocument(doc);
+
+        try {
+            for (int i=0; i < initString.length; i++) {
+                doc.insertString(doc.getLength(), initString[i],
+                        doc.getStyle(initStyles[i]));
+            }
+        } catch (BadLocationException ble) {
+            System.err.println("Couldn't insert initial text into text pane.");
+        }
+
+        return textPane;
+    }
     protected void addStylesToDocument(StyledDocument doc) {
         //Initialize some styles.
         Style def = StyleContext.getDefaultStyleContext().
@@ -755,6 +926,7 @@ public class Interfaz extends JFrame implements Vista{
 
         Style regular = doc.addStyle("regular", def);
         StyleConstants.setFontFamily(def, "SansSerif");
+        StyleConstants.setFontSize(def, 14);
 
         Style s = doc.addStyle("bold", regular);
         StyleConstants.setBold(s, true);
@@ -763,19 +935,14 @@ public class Interfaz extends JFrame implements Vista{
         StyleConstants.setItalic(s, true);
     }
 
-    public void setTodo(ImplementacionModelo model, ImplementacionControlador control) {
-        this.controlador = control;
-        this.modelo = model;
-    }
+    // -----------------------------GETTERS------------------------------------------------------
+
     public ClienteParticular getClientePart() {
         return this.clienteParticular;
     }
+
     public ClienteEmpresa getClienteEmp() {
         return this.clienteEmpresa;
-    }
-
-    public void setModelLista(){
-        listaClientes.setModel(modelo.getClientes());
     }
 
     public Cliente getClienteAdd() {
@@ -786,16 +953,6 @@ public class Interfaz extends JFrame implements Vista{
         return this.llamadaAdd;
     }
 
-    public void setModelLlamadas(){
-        llamadas.setModel(modelo.getLlamadas(clienteAdd));
-        llamadasPerfil.setModel(modelo.getLlamadas(clienteAdd));
-    }
-
-    public void setModelFacturas() {
-        listaFacturas.setModel(modelo.getFacturas());
-        facturasCliente.setModel(modelo.getFacturasCliente(clienteAdd));
-    }
-
     public Tarifa getTarifaNueva() {
         return this.tarifaNueva;
     }
@@ -803,6 +960,32 @@ public class Interfaz extends JFrame implements Vista{
     public Factura getFacturaAdd() {
         return this.facturaAdd;
     }
+
+    public Double getNueva_tarifaBasica() {
+        return this.nueva_tarifaBasica;
+    }
+
+    public Double getNueva_tarifaDiaria() {
+        return this.nueva_tarifaDiaria;
+    }
+
+    public int getNuevo_dia() {
+        return this.nuevo_dia;
+    }
+
+    public Double getNueva_tarifaHoraria() {
+        return this.nueva_tarifaHoraria;
+    }
+
+    public int getNueva_horaInicio() {
+        return this.nueva_horaInicio;
+    }
+
+    public int getNueva_horaFin() {
+        return this.nueva_horaFin;
+    }
+
+    // -----------------------------SETTERS------------------------------------------------------
 
     public void setClienteParticular() {
         Factory factoria = new Factory();
@@ -818,6 +1001,7 @@ public class Interfaz extends JFrame implements Vista{
         else
             clienteParticular = factoria.crearClienteParticular(setnombre.getText(), setapellidos.getText(), setcorreo.getText(), setcodigo.getText(), new Direccion(setcp.getText(), setpoblacion.getText(), setprovincia.getText()));
     }
+
     public void setClienteEmpresa() {
         Factory factoria = new Factory();
         if(panelTarifa.isVisible()) {
@@ -832,6 +1016,28 @@ public class Interfaz extends JFrame implements Vista{
         else
             clienteEmpresa = factoria.crearClienteEmpresa(setnombre.getText(), setcorreo.getText(), setcodigo.getText(), new Direccion(setcp.getText(), setpoblacion.getText(), setprovincia.getText()));
     }
+
+    public void setTodo(ImplementacionModelo model, ImplementacionControlador control) {
+        this.controlador = control;
+        this.modelo = model;
+    }
+
+    public void setModelLista(){
+        listaClientes.setModel(modelo.getClientes());
+    }
+
+    public void setModelLlamadas(){
+        llamadas.setModel(modelo.getLlamadas(clienteAdd));
+        llamadasPerfil.setModel(modelo.getLlamadas(clienteAdd));
+    }
+
+    public void setModelFacturas() {
+        listaFacturas.setModel(modelo.getFacturas());
+        facturasCliente.setModel(modelo.getFacturasCliente(clienteAdd));
+    }
+
+    // -----------------------------ACTIONLISTENERS-----------------------------------------------
+
 
     private class Fin implements ActionListener{
         private String tipo;
@@ -869,6 +1075,7 @@ public class Interfaz extends JFrame implements Vista{
         }
     }
 
+    /*
     private class FinFichaUsuario implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -879,6 +1086,8 @@ public class Interfaz extends JFrame implements Vista{
             llamadasPerfil.setModel(modeloLlamadas);
         }
     }
+
+    */
 
     private class Siguiente implements ActionListener {
     private int i;
@@ -896,7 +1105,6 @@ public class Interfaz extends JFrame implements Vista{
                 datos = createClientePartPane(clienteParticular);
                 datos.setEditable(false);
                 datos.setVisible(true);
-                //datos.setPreferredSize(new Dimension(500, 400));
                 datos.setBounds(0, 0,300,450);
                 printearAlta.add(datos);
             } else {
@@ -904,7 +1112,6 @@ public class Interfaz extends JFrame implements Vista{
                 datos = createClienteEmpPane(clienteEmpresa);
                 datos.setEditable(false);
                 datos.setVisible(true);
-                //datos.setPreferredSize(new Dimension(500, 400));
                 datos.setBounds(0, 0,300,450);
                 printearAlta.add(datos);
             }
@@ -1045,13 +1252,97 @@ public class Interfaz extends JFrame implements Vista{
             Cliente cliente = modelo.datosCliente(clienteAdd.getCodigo());
             String codigo = setCodigoFactura.getText();
             Calendar fecha_inicio = new GregorianCalendar();
-            fecha_inicio.set(Integer.parseInt(setYearInicio.getText()), Integer.parseInt(setMonthInicio.getText()), Integer.parseInt(setDayInicio.getText()));
+            fecha_inicio.set(Integer.parseInt(setYearInicio.getText()), Integer.parseInt(setMonthInicio.getText()) -1, Integer.parseInt(setDayInicio.getText()));
             Calendar fecha_fin = new GregorianCalendar();
-            fecha_fin.set(Integer.parseInt(setYearFin.getText()), Integer.parseInt(setMonthFin.getText()), Integer.parseInt(setDayFin.getText()));
+            fecha_fin.set(Integer.parseInt(setYearFin.getText()), Integer.parseInt(setMonthFin.getText()) -1, Integer.parseInt(setDayFin.getText()));
             facturaAdd = Factura.emitirFactura(cliente, codigo, fecha_inicio, fecha_fin);
             controlador.altaFactura();
             datosFac.setEnabled(true);
             factura.dispose();
+        }
+    }
+
+    private class DatosFactura implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Factura facturaSel = modelo.datosFactura(listaFacturas.getSelectedValue().toString());
+            datosFactura(facturaSel);
+
+        }
+    }
+
+    private class NuevaTarifaGeneral implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+        cambiarTarifaGeneral();
+        }
+    }
+
+    private class ModificarTarifaBasica implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            panel_diaria.setVisible(false);
+            panel_horaria.setVisible(false);
+            panel_basica.setVisible(true);
+
+        }
+    }
+    private class ModificarTarifaDiaria implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            panel_horaria.setVisible(false);
+            panel_basica.setVisible(false);
+            panel_diaria.setVisible(true);
+
+        }
+    }
+    private class ModificarTarifaHoraria implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            panel_basica.setVisible(false);
+            panel_diaria.setVisible(false);
+            panel_horaria.setVisible(true);
+        }
+    }
+
+    private class NuevaTarifaBasica implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            nueva_tarifaBasica = Double.parseDouble(setbasica.getText());
+            controlador.modificarTarifaBasica();
+            sethoraInicio.setSelectedIndex(0);
+            JOptionPane.showMessageDialog(tarifaGeneral, "La tarifa se ha cambiado correctamente.");
+            setbasica.setText("");
+        }
+    }
+    private class NuevaTarifaDiaria implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            nueva_tarifaDiaria = Double.parseDouble(setdiaria.getText());
+            int selecDia = setdiaAplicable.getSelectedIndex();
+            if (selecDia >= 0)
+                selecDia += 2;
+            if (selecDia > 7)
+                selecDia = 1;
+            nuevo_dia = selecDia;
+            controlador.modificarTarifaDiaria();
+            JOptionPane.showMessageDialog(tarifaGeneral, "La tarifa se ha cambiado correctamente.");
+
+            setdiaria.setText("");
+            setdiaAplicable.setSelectedIndex(0);
+        }
+    }
+    private class NuevaTarifaHoraria implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            nueva_tarifaHoraria = Double.parseDouble(sethoraria.getText());
+            nueva_horaInicio =  sethoraInicio.getSelectedIndex();
+            nueva_horaFin = sethoraFin.getSelectedIndex();
+            controlador.modificarTarifaHoraria();
+            JOptionPane.showMessageDialog(tarifaGeneral, "La tarifa se ha cambiado correctamente.");
+            sethoraria.setText("");
+            sethoraInicio.setSelectedIndex(0);
+            sethoraFin.setSelectedIndex(0);
         }
     }
 }

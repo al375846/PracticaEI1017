@@ -18,4 +18,9 @@ public interface Modelo {
     void altaFactura(Cliente cliente, Factura factura);
     DefaultListModel getFacturas();
     DefaultTableModel getFacturasCliente(Cliente cliente);
+    Factura datosFactura(String codigo);
+    void cambiarTarifaBasica(double precio);
+    void cambiarTarifaDiaria(double precio, int dia);
+    void cambiarTarifaHoraria(double precio, int inicio, int fin);
+
 }

@@ -8,4 +8,8 @@ public interface Controlador {
     void altaLlamada();
     void modificarTarifa();
     void altaFactura();
+    void modificarTarifaBasica();
+    void modificarTarifaDiaria();
+    void modificarTarifaHoraria();
+
 }

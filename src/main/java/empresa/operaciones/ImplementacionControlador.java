@@ -43,6 +43,27 @@ public class ImplementacionControlador implements Controlador{
         modelo.altaFactura(cliente, factura);
     }
 
+    @Override
+    public void modificarTarifaBasica() {
+        Double precio = vista.getNueva_tarifaBasica();
+        modelo.cambiarTarifaBasica(precio);
+    }
+
+    @Override
+    public void modificarTarifaDiaria() {
+        Double precio = vista.getNueva_tarifaDiaria();
+        int dia = vista.getNuevo_dia();
+        modelo.cambiarTarifaDiaria(precio, dia);
+    }
+
+    @Override
+    public void modificarTarifaHoraria() {
+        Double precio = vista.getNueva_tarifaHoraria();
+        int inicio = vista.getNueva_horaInicio();
+        int fin = vista.getNueva_horaFin();
+        modelo.cambiarTarifaHoraria(precio, inicio, fin);
+    }
+
     public void setTodo(Interfaz vista, ImplementacionModelo modelo) {
         this.vista = vista;
         this.modelo = modelo;
