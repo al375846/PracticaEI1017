@@ -154,7 +154,7 @@ public class Menu {
                     cartera_clientes.facturasEnPeriodo(cliente_facturas, CentroInformacion.fechaInicio(), CentroInformacion.fechaFinal());
                     break;
                 case SALIR:
-                    MemoryCard.save(conjunto_facturas, cartera_clientes);
+                    MemoryCard.save(conjunto_facturas, cartera_clientes, "Y");
                     break;
             }
         }while (opcionMenu != OpcionesMenu.SALIR);

@@ -20,7 +20,7 @@ public class MemoryCard {
         if (respuesta.compareTo("Y") == 0 || respuesta.compareTo("y") == 0) {
             try {
 
-                FileInputStream file = new FileInputStream("clientes.bin");
+                FileInputStream file = new FileInputStream("clientesFinal.bin");
                 ObjectInputStream ois = new ObjectInputStream(file);
                 cartera_clientes = (CarteraClientes) ois.readObject();
                 ois.close();
@@ -42,7 +42,7 @@ public class MemoryCard {
         if (respuesta.compareTo("Y") == 0 || respuesta.compareTo("y") == 0) {
             try {
 
-                FileInputStream file = new FileInputStream("facturas.bin");
+                FileInputStream file = new FileInputStream("facturasFinal.bin");
                 ObjectInputStream ois = new ObjectInputStream(file);
                 total_facturas = (ConjuntoFacturas) ois.readObject();
                 ois.close();
@@ -60,23 +60,20 @@ public class MemoryCard {
         return total_facturas;
     }
 
-    public static void save(ConjuntoFacturas total_facturas, CarteraClientes cartera_clientes) throws UnexpectedAnswerException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("¿Desea guardar la información actualizada?(Y/N): ");
-        String respuesta = scanner.next();
+    public static void save(ConjuntoFacturas total_facturas, CarteraClientes cartera_clientes, String respuesta) throws UnexpectedAnswerException {
         if (respuesta.compareTo("Y") == 0 || respuesta.compareTo("y") == 0) {
             try {
-                FileOutputStream filecli = new FileOutputStream("clientes.bin");
+                FileOutputStream filecli = new FileOutputStream("clientesFinal.bin");
                 ObjectOutputStream savecli = new ObjectOutputStream(filecli);
                 savecli.writeObject(cartera_clientes);
                 savecli.close();
-                FileOutputStream filefac = new FileOutputStream("facturas.bin");
+                FileOutputStream filefac = new FileOutputStream("facturasFinal.bin");
                 ObjectOutputStream savefac = new ObjectOutputStream(filefac);
                 savefac.writeObject(total_facturas);
                 savefac.close();
             } catch (IOException e) {
                 System.out.println("Error al leer el fichero");
-                save(total_facturas, cartera_clientes);
+                save(total_facturas, cartera_clientes, respuesta);
             }
         }
         else

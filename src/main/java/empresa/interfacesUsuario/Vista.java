@@ -23,4 +23,6 @@ public interface Vista {
     Double getNueva_tarifaHoraria();
     int getNueva_horaInicio();
     int getNueva_horaFin();
+    String getClienteBaja();
+    void setModelIniciar();
 }

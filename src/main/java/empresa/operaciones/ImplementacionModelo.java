@@ -1,6 +1,7 @@
 package empresa.operaciones;
 
 import empresa.clientes.*;
+import empresa.excepcion.UnexpectedAnswerException;
 import empresa.facturas.ConjuntoFacturas;
 import empresa.facturas.Factura;
 import empresa.interfacesUsuario.Interfaz;
@@ -27,8 +28,43 @@ public class ImplementacionModelo implements Modelo {
         conjuntoFacturas = new ConjuntoFacturas();
     }
 
+    public void load() {
+        try {
+            carteraClientes = MemoryCard.loading(carteraClientes, "Y");
+        } catch (UnexpectedAnswerException e) {
+            e.printStackTrace();
+        }
+        try {
+            conjuntoFacturas = MemoryCard.loading(conjuntoFacturas, "Y");
+        } catch (UnexpectedAnswerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void save() {
+        try {
+            MemoryCard.save(conjuntoFacturas, carteraClientes, "Y");
+        } catch (UnexpectedAnswerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Set<String> totalClientes() {
+        return carteraClientes.listaClientes().keySet();
+    }
+
+
+    public void actualizar() {
+        vista.setModelIniciar();
+    }
+
     public void altaCliente(Cliente cliente) {
         carteraClientes.altaCliente(cliente);
+        vista.setModelLista();
+    }
+
+    public void baja(String cliente) {
+        carteraClientes.bajaCliente(cliente);
         vista.setModelLista();
     }
 
@@ -105,22 +141,22 @@ public class ImplementacionModelo implements Modelo {
 
     }
 
-    @Override
+
     public Factura datosFactura(String codigo) {
         return conjuntoFacturas.obtenerFactura(codigo);
     }
 
-    @Override
+
     public void cambiarTarifaBasica(double precio) {
         TarifaBasica.cambiarPrecio(precio);
     }
 
-    @Override
+
     public void cambiarTarifaDiaria(double precio, int dia) {
         Diaria.modificarDiaria(precio, dia);
     }
 
-    @Override
+
     public void cambiarTarifaHoraria(double precio, int inicio, int fin) {
         FranjaHoraria.modificarHoraria(precio, inicio, fin);
     }

@@ -36,7 +36,7 @@ public class Factura extends Fecha implements Serializable {
     public static Factura emitirFactura(Cliente cliente, String codigo, Calendar inicio, Calendar fin) {
         try {
             HashSet<Llamada> llamadas = cliente.extraerEnPeriodo(cliente.getLlamadas(), inicio, fin);
-           int importe = 0;
+           double importe = 0;
            for (Llamada llamada: llamadas) {
                importe += llamada.getDuracion() * cliente.getTarifa().getPrecioLlamada(llamada);
            }

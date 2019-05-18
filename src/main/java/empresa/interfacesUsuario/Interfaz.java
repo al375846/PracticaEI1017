@@ -33,6 +33,8 @@ public class Interfaz extends JFrame implements Vista{
     private Controlador controlador;
     private Modelo modelo;
     private JFrame ventana = new JFrame("Principal");
+    JDialog cargar;
+    JDialog guardar;
     private JFrame data;
     private JTabbedPane tabbedPane = new JTabbedPane();
     private JTabbedPane tabla = new JTabbedPane();
@@ -104,12 +106,13 @@ public class Interfaz extends JFrame implements Vista{
     private Double nueva_tarifaHoraria;
     private int nueva_horaInicio;
     private int nueva_horaFin;
-
+    private String clienteBaja;
 
 
     public Interfaz() {}
 
     public void principal() {
+        cargar();
        //Definir el menu
        JMenuBar menuBar = new JMenuBar();
        JMenu menu = new JMenu("Opciones");
@@ -133,6 +136,7 @@ public class Interfaz extends JFrame implements Vista{
        menu.add(alta);
        menu.addSeparator();
         JMenuItem baja = new JMenuItem("Baja", KeyEvent.VK_B);
+        baja.addActionListener(new Baja());
        baja.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, ActionEvent.CTRL_MASK));
        menu.add(baja);
        menu.addSeparator();
@@ -240,11 +244,56 @@ public class Interfaz extends JFrame implements Vista{
         ventana.setSize(600,600);
         ventana.setResizable(false);
         ventana.setVisible(true);
+        modelo.actualizar();
+        ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        ventana.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                guardar();
+            }
+        });
+    }
 
-        //setear modelos
-        llamadas.setModel(modeloLlamadas);
-        llamadasPerfil.setModel(modeloLlamadas);
-        facturasCliente.setModel(modeloFacturasCliente);
+    public void cargar() {
+        cargar = new JDialog(ventana, "Cargar", true);
+        JPanel panelCargar = new JPanel();
+        panelCargar.setLayout(null);
+        JButton yes = new JButton("Si");
+        yes.addActionListener(new Cargar("Y"));
+        JButton no = new JButton("No");
+        no.addActionListener(new Cargar("N"));
+        yes.setBounds(55, 40, 60, 30);
+        no.setBounds(125, 40, 60, 30);
+        JLabel pregunta = new JLabel("¿Desea cargar los datos guardados?");
+        pregunta.setBounds(10, 10, 240, 30);
+        panelCargar.add(yes);
+        panelCargar.add(no);
+        panelCargar.add(pregunta);
+        cargar.add(panelCargar);
+        cargar.setSize(240, 110);
+        cargar.setResizable(false);
+        cargar.setVisible(true);
+    }
+
+    public void guardar() {
+        guardar = new JDialog(ventana, "Guardar", true);
+        JPanel panelGuardar = new JPanel();
+        panelGuardar.setLayout(null);
+        JButton yes = new JButton("Si");
+        yes.addActionListener(new Guardar("Y"));
+        JButton no = new JButton("No");
+        no.addActionListener(new Guardar("N"));
+        yes.setBounds(55, 40, 60, 30);
+        no.setBounds(125, 40, 60, 30);
+        JLabel pregunta = new JLabel("¿Desea guardar los datos creados?");
+        pregunta.setBounds(10, 10, 240, 30);
+        panelGuardar.add(yes);
+        panelGuardar.add(no);
+        panelGuardar.add(pregunta);
+        guardar.add(panelGuardar);
+        guardar.setSize(240, 110);
+        guardar.setResizable(false);
+        guardar.setVisible(true);
     }
 
     public void altaCliente(String tipo){
@@ -985,6 +1034,8 @@ public class Interfaz extends JFrame implements Vista{
         return this.nueva_horaFin;
     }
 
+    public String getClienteBaja() {return this.clienteBaja;}
+
     // -----------------------------SETTERS------------------------------------------------------
 
     public void setClienteParticular() {
@@ -1024,6 +1075,10 @@ public class Interfaz extends JFrame implements Vista{
 
     public void setModelLista(){
         listaClientes.setModel(modelo.getClientes());
+        if(modelo.getClientes().isEmpty()) {
+            datosCli.setEnabled(false);
+            periodo.setEnabled(false);
+        }
     }
 
     public void setModelLlamadas(){
@@ -1034,6 +1089,21 @@ public class Interfaz extends JFrame implements Vista{
     public void setModelFacturas() {
         listaFacturas.setModel(modelo.getFacturas());
         facturasCliente.setModel(modelo.getFacturasCliente(clienteAdd));
+    }
+
+    public void setModelIniciar() {
+        listaClientes.setModel(modelo.getClientes());
+        listaFacturas.setModel(modelo.getFacturas());
+        for(String cliente: modelo.totalClientes()) {
+            llamadasPerfil.setModel(modelo.getLlamadas(modelo.datosCliente(cliente)));
+            facturasCliente.setModel(modelo.getFacturasCliente(modelo.datosCliente(cliente)));
+        }
+        if(!modelo.getClientes().isEmpty()) {
+            datosCli.setEnabled(true);
+            periodo.setEnabled(true);
+        }
+        if(!modelo.getFacturas().isEmpty())
+            datosFac.setEnabled(true);
     }
 
     // -----------------------------ACTIONLISTENERS-----------------------------------------------
@@ -1343,6 +1413,52 @@ public class Interfaz extends JFrame implements Vista{
             sethoraria.setText("");
             sethoraInicio.setSelectedIndex(0);
             sethoraFin.setSelectedIndex(0);
+        }
+    }
+
+    private class Baja implements ActionListener {
+        public Baja() {
+
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            clienteBaja = listaClientes.getSelectedValue().toString();
+            controlador.baja();
+        }
+    }
+
+    private class Cargar implements ActionListener {
+        String respuesta;
+        public Cargar(String respuesta) {
+            this.respuesta = respuesta;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (this.respuesta.equals("Y")) {
+                modelo.load();
+                cargar.dispose();
+            }
+            else
+                cargar.dispose();
+        }
+    }
+
+    private class Guardar implements ActionListener {
+        String respuesta;
+        public Guardar(String respuesta) {
+            this.respuesta = respuesta;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (this.respuesta.equals("Y")) {
+                modelo.save();
+                guardar.dispose();
+            }
+            else
+                guardar.dispose();
         }
     }
 }

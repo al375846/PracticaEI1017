@@ -11,5 +11,5 @@ public interface Controlador {
     void modificarTarifaBasica();
     void modificarTarifaDiaria();
     void modificarTarifaHoraria();
-
+    void baja();
 }

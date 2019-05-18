@@ -24,6 +24,11 @@ public class ImplementacionControlador implements Controlador{
         modelo.altaCliente(cliente);
     }
 
+    public void baja() {
+        String baja = vista.getClienteBaja();
+        modelo.baja(baja);
+    }
+
     public void altaLlamada() {
         Cliente cliente = vista.getClienteAdd();
         Llamada llamada = vista.getLlamadaAdd();
@@ -43,20 +48,20 @@ public class ImplementacionControlador implements Controlador{
         modelo.altaFactura(cliente, factura);
     }
 
-    @Override
+
     public void modificarTarifaBasica() {
         Double precio = vista.getNueva_tarifaBasica();
         modelo.cambiarTarifaBasica(precio);
     }
 
-    @Override
+
     public void modificarTarifaDiaria() {
         Double precio = vista.getNueva_tarifaDiaria();
         int dia = vista.getNuevo_dia();
         modelo.cambiarTarifaDiaria(precio, dia);
     }
 
-    @Override
+
     public void modificarTarifaHoraria() {
         Double precio = vista.getNueva_tarifaHoraria();
         int inicio = vista.getNueva_horaInicio();
