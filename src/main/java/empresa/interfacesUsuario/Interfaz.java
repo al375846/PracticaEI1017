@@ -110,6 +110,7 @@ public class Interfaz extends JFrame implements Vista{
     private JTable resultado;
     private JTextField setbusqueda;
     private JComboBox filtro;
+    private int tipoBaja;//se usa para saber si se actualizada las busquedas
 
 
     public Interfaz() {}
@@ -1079,6 +1080,16 @@ public class Interfaz extends JFrame implements Vista{
         }
     }
 
+    public void setModelBaja() {
+        if(tipoBaja == 0)
+            resultado.setModel(modelo.getClientesBusqueda(setbusqueda.getText()));
+        listaClientes.setModel(modelo.getClientes());
+        if(modelo.getClientes().isEmpty()) {
+            datosCli.setEnabled(false);
+            periodo.setEnabled(false);
+        }
+    }
+
     public void setModelLlamadas(){
         llamadas.setModel(modelo.getLlamadas(clienteAdd));
         llamadasPerfil.setModel(modelo.getLlamadas(clienteAdd));
@@ -1431,13 +1442,13 @@ public class Interfaz extends JFrame implements Vista{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(resultado.getSelectedRow() != -1)
+            if(resultado.getSelectedRow() != -1) {
                 clienteBaja = resultado.getValueAt(resultado.getSelectedRow(), 0).toString();
-            else
+            }
+            else {
                 clienteBaja = listaClientes.getSelectedValue().toString();
-            resultado.clearSelection();
+            }
             controlador.baja();
-            resultado.setModel(modelo.getClientesBusqueda(setbusqueda.getText()));
         }
     }
 
@@ -1481,6 +1492,7 @@ public class Interfaz extends JFrame implements Vista{
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            tipoBaja = 0;
             if(filtro.getSelectedItem().toString().equals("Cliente"))
                 filtro.setSelectedIndex(0);
             else

@@ -65,7 +65,7 @@ public class ImplementacionModelo implements Modelo {
 
     public void baja(String cliente) {
         carteraClientes.bajaCliente(cliente);
-        vista.setModelLista();
+        vista.setModelBaja();
     }
 
     public void altaLlamada(String cliente, Llamada llamada) {

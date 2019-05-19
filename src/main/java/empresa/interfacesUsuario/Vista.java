@@ -25,4 +25,5 @@ public interface Vista {
     int getNueva_horaFin();
     String getClienteBaja();
     void setModelIniciar();
+    void setModelBaja();
 }
