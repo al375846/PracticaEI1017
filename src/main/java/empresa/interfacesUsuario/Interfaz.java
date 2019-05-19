@@ -1431,8 +1431,13 @@ public class Interfaz extends JFrame implements Vista{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            clienteBaja = listaClientes.getSelectedValue().toString();
+            if(resultado.getSelectedRow() != -1)
+                clienteBaja = resultado.getValueAt(resultado.getSelectedRow(), 0).toString();
+            else
+                clienteBaja = listaClientes.getSelectedValue().toString();
+            resultado.clearSelection();
             controlador.baja();
+            resultado.setModel(modelo.getClientesBusqueda(setbusqueda.getText()));
         }
     }
 
