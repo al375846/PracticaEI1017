@@ -28,4 +28,6 @@ public interface Modelo {
     void save();
     void actualizar();
     Set<String> totalClientes();
+    DefaultTableModel getClientesBusqueda(String codigo);
+    DefaultTableModel getFacturasBusqueda(String codigo);
 }

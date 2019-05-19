@@ -107,6 +107,9 @@ public class Interfaz extends JFrame implements Vista{
     private int nueva_horaInicio;
     private int nueva_horaFin;
     private String clienteBaja;
+    private JTable resultado;
+    private JTextField setbusqueda;
+    private JComboBox filtro;
 
 
     public Interfaz() {}
@@ -208,26 +211,21 @@ public class Interfaz extends JFrame implements Vista{
        busqueda.setBounds(10, 300, 50, 20);
        panel1.add(busqueda);
        String[] tipos = { "Cliente", "Factura"};
-       JComboBox filtro = new JComboBox(tipos);
+       filtro = new JComboBox(tipos);
+       filtro.setSelectedIndex(0);
        filtro.setBounds(70, 300, 100, 20);
        panel1.add(filtro);
-       JTextField codigo = new JTextField("Introduzca el código", 50);
-       codigo.setBounds(180, 300, 150, 20);
-       codigo.setHorizontalAlignment(TRAILING);
-       panel1.add(codigo);
+       setbusqueda = new JTextField("Introduzca el código", 50);
+        setbusqueda.setBounds(180, 300, 150, 20);
+        setbusqueda.setHorizontalAlignment(TRAILING);
+       panel1.add(setbusqueda);
        JButton buscar = new JButton("Buscar");
+       buscar.addActionListener(new BusquedaCodigo());
        buscar.setBounds(340, 300, 100, 20);
        panel1.add(buscar);
-       String[] columnNames = {"Codigo"};
-       Object[][] data = {{"20"}, {"30"}, {"40"}, {"50"}, {"60"}, {"70"}, {"80"}, {"90"}, {"100"}};
-       JTable resultado = new JTable(data, columnNames);
-
-      for (int c = 0; c < resultado.getColumnCount(); c++) {
-           Class<?> col_class = resultado.getColumnClass(c);
-           resultado.setDefaultEditor(col_class, null);        // remove editor
-      }
-      JScrollPane scrollPane = new JScrollPane(resultado);
-      scrollPane.setBounds(10, 350, 200, 150);
+       resultado = new JTable();
+        JScrollPane scrollPane = new JScrollPane(resultado);
+      scrollPane.setBounds(10, 350, 570, 150);
         resultado.setFillsViewportHeight(true);
         panel1.add(scrollPane);
 
@@ -1204,7 +1202,12 @@ public class Interfaz extends JFrame implements Vista{
     private class DatosCliente implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-        Cliente clienteSel = modelo.datosCliente(listaClientes.getSelectedValue().toString());
+        Cliente clienteSel;
+        if(resultado.getSelectedRow()!= -1)
+            clienteSel = modelo.datosCliente(resultado.getValueAt(resultado.getSelectedRow(), 0).toString());
+        else
+            clienteSel = modelo.datosCliente(listaClientes.getSelectedValue().toString());
+        resultado.clearSelection();
         if(clienteSel.isParticular()) {
             clienteParticular = (ClienteParticular) clienteSel;
             datos  = createClientePartPane(clienteParticular);
@@ -1335,7 +1338,12 @@ public class Interfaz extends JFrame implements Vista{
     private class DatosFactura implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            Factura facturaSel = modelo.datosFactura(listaFacturas.getSelectedValue().toString());
+            Factura facturaSel;
+            if(resultado.getSelectedRow() != -1)
+                facturaSel = modelo.datosFactura(resultado.getValueAt(resultado.getSelectedRow(), 0).toString());
+            else
+                facturaSel = modelo.datosFactura(listaFacturas.getSelectedValue().toString());
+            resultado.clearSelection();
             datosFactura(facturaSel);
 
         }
@@ -1459,6 +1467,25 @@ public class Interfaz extends JFrame implements Vista{
             }
             else
                 guardar.dispose();
+        }
+    }
+
+    private class BusquedaCodigo implements ActionListener {
+        public BusquedaCodigo() {
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(filtro.getSelectedItem().toString().equals("Cliente"))
+                filtro.setSelectedIndex(0);
+            else
+                filtro.setSelectedIndex(1);
+            if(filtro.getSelectedIndex() == 0) {
+                resultado.setModel(modelo.getClientesBusqueda(setbusqueda.getText()));
+            }
+            if (filtro.getSelectedIndex() == 1) {
+                resultado.setModel(modelo.getFacturasBusqueda(setbusqueda.getText()));
+            }
         }
     }
 }

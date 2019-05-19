@@ -141,6 +141,41 @@ public class ImplementacionModelo implements Modelo {
 
     }
 
+    public DefaultTableModel getFacturasBusqueda(String codigo) {
+        Set<String> facturas = conjuntoFacturas.listaFacturas().keySet();
+        DefaultTableModel nuevo = new DefaultTableModel();
+        String[] columnas = {"Código", "Importe", "Emisión", "Inicio", "Fin"};
+        for(int i = 0; i < columnas.length; i++){
+            nuevo.addColumn(columnas[i]);
+        }
+        for (String code: facturas) {
+            Factura factura = conjuntoFacturas.obtenerFactura(code);
+            if (factura.getCodigo().contains(codigo)) {
+                Object[] fila = {factura.getCodigo(), factura.getImporte(), factura.impFecha(), factura.impFechaInicio(), factura.impFechaFin()};
+                nuevo.addRow(fila);
+            }
+        }
+        return nuevo;
+    }
+
+    public DefaultTableModel getClientesBusqueda(String codigo) {
+        Set<String> clientes = carteraClientes.listaClientes().keySet();
+        DefaultTableModel nuevo = new DefaultTableModel();
+        String[] columnas = {"Código", "Nombre", "Alta", "Correo"};
+        for(int i = 0; i < columnas.length; i++){
+            nuevo.addColumn(columnas[i]);
+        }
+        for (String code: clientes) {
+            Cliente client = carteraClientes.datosCliente(code);
+            Object[] add = {};
+            if (client.getCodigo().contains(codigo)) {
+                Object[] fila = {client.getCodigo(), client.getNombre(), client.impFecha(), client.getCorreo()};
+                nuevo.addRow(fila);
+            }
+        }
+        return nuevo;
+    }
+
 
     public Factura datosFactura(String codigo) {
         return conjuntoFacturas.obtenerFactura(codigo);

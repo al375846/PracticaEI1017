@@ -51,6 +51,10 @@ public abstract class Cliente extends Fecha implements Serializable {
         this.direccion = direccion;
     }
 
+    public String impFecha(){
+        return (this.fecha_alta.get(Calendar.DAY_OF_MONTH) + "/" + (this.fecha_alta.get(Calendar.MONTH) + 1)+ "/" + this.fecha_alta.get(Calendar.YEAR));
+    }
+
     public Calendar getFecha() {
         return this.fecha_alta;
     }
