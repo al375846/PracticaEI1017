@@ -15,7 +15,6 @@ public class Aplicacion {
         modelo.setVista(vista);
         controlador.setTodo(vista, modelo);
         vista.setTodo(modelo, controlador);
-        //vista.buscarPeriodoCliente();
         vista.principal();
     }
 }

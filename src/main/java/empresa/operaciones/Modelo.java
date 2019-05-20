@@ -33,4 +33,6 @@ public interface Modelo {
     DefaultTableModel getFacturasBusqueda(String codigo);
     DefaultTableModel getFacturasPeriodoCliente(String codigo, Calendar fecha_inicio, Calendar fecha_fin);
     DefaultTableModel getLlamadasPeriodoCliente(String codigo, Calendar fecha_inicio, Calendar fecha_fin);
+    DefaultTableModel getClientesPeriodo(Calendar fecha_inicio,Calendar fecha_fin);
+    DefaultTableModel getFacturasPeriodo(Calendar fecha_inicio,Calendar fecha_fin);
 }

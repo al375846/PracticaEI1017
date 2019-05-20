@@ -172,6 +172,7 @@ public class Interfaz extends JFrame implements Vista{
         datosFac.addActionListener(new DatosFactura());
         datosFac.setEnabled(false);
         periodo = new JButton("Periodo");
+        periodo.addActionListener(new Buscar());
         periodo.setEnabled(false);
         panel1.setLayout(null);
         datosCli.setBounds(10, 10,120,20);
@@ -232,15 +233,16 @@ public class Interfaz extends JFrame implements Vista{
         panel1.add(scrollPane);
 
 
-        tabbedPane.addTab("Gestor", null, panel1, "No hace nada");
+        tabbedPane.addTab("Gestor", null, panel1);
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         //tabbedPane.setEnabledAt(0, true);
-        JComponent label3 = new JLabel("Text-Only Label");
+        /*JComponent label3 = new JLabel("Text-Only Label");
         tabbedPane.addTab("Perfil de cliente", label3);
         tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
+
+         */
         //tabbedPane.setEnabledAt(1, true);
         //tabbedPane.setVisible(true);
-        tabbedPane.setForegroundAt(0, Color.red);
         ventana.setSize(600,600);
         ventana.setResizable(false);
         ventana.setVisible(true);
@@ -506,7 +508,7 @@ public class Interfaz extends JFrame implements Vista{
         ImageIcon buscar = new ImageIcon("src/media/buscar.png");
         ImageIcon im_buscar = new ImageIcon(buscar.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JButton buscar_Periodo = new JButton(im_buscar);
-        buscar_Periodo.addActionListener(new Buscar());
+        buscar_Periodo.addActionListener(new BuscarCliente());
         buscar_Periodo.setBounds(200, 350, 50, 50);
         panel_1.add(buscar_Periodo);
 
@@ -987,12 +989,17 @@ public class Interfaz extends JFrame implements Vista{
         panel_1.add(slash4);
 
         JButton buscar = new JButton("Buscar");
-        buscar.addActionListener(new BuscarPeriodoCliente());
+        buscar.addActionListener(new BuscarPeriodoGeneral());
         buscar.setBounds(450, 150, 100, 20);
         panel_1.add(buscar);
+        resultado = new JTable();
+        JScrollPane scrollPane = new JScrollPane(resultado);
+        scrollPane.setBounds(20, 200, 560, 250);
+        resultado.setFillsViewportHeight(true);
+        panel_1.add(scrollPane);
 
         periodoGeneral.add(panel_1);
-        periodoGeneral.setSize(600, 250);
+        periodoGeneral.setSize(600, 500);
         periodoGeneral.setVisible(true);
         periodoGeneral.setResizable(false);
 
@@ -1627,7 +1634,7 @@ public class Interfaz extends JFrame implements Vista{
         }
     }
 
-    private class Buscar implements ActionListener {
+    private class BuscarCliente implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             buscarPeriodoCliente();
@@ -1664,6 +1671,13 @@ public class Interfaz extends JFrame implements Vista{
         }
     }
 
+    private class Buscar implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            buscarPeriodo();
+        }
+    }
+
     private class BuscarPeriodoGeneral implements ActionListener {
         public BuscarPeriodoGeneral(){ }
 
@@ -1678,12 +1692,12 @@ public class Interfaz extends JFrame implements Vista{
             Calendar fecha_fin = new GregorianCalendar();
             fecha_fin.set(Integer.parseInt(setYearFin.getText()), Integer.parseInt(setMonthFin.getText()) - 1, Integer.parseInt(setDayFin.getText()));
             if(filtro.getSelectedIndex() == 0) {
-                llamadasPerfil.setModel(modelo.getLlamadasPeriodoCliente(clienteAdd.getCodigo(),fecha_inicio, fecha_fin));
+                resultado.setModel(modelo.getClientesPeriodo(fecha_inicio, fecha_fin));
             }
             if (filtro.getSelectedIndex() == 1) {
-                facturasCliente.setModel(modelo.getFacturasPeriodoCliente(clienteAdd.getCodigo(),fecha_inicio, fecha_fin));
+                resultado.setModel(modelo.getFacturasPeriodo(fecha_inicio, fecha_fin));
             }
-            periodoCliente.dispose();
+            //periodoCliente.dispose();
         }
     }
 }
