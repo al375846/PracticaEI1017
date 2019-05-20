@@ -111,7 +111,8 @@ public class Interfaz extends JFrame implements Vista{
     private JTextField setbusqueda;
     private JComboBox filtro;
     private int tipoBaja;//se usa para saber si se actualizada las busquedas
-
+    private JFrame periodoCliente;
+    private JFrame periodoGeneral;
 
     public Interfaz() {}
 
@@ -505,6 +506,7 @@ public class Interfaz extends JFrame implements Vista{
         ImageIcon buscar = new ImageIcon("src/media/buscar.png");
         ImageIcon im_buscar = new ImageIcon(buscar.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JButton buscar_Periodo = new JButton(im_buscar);
+        buscar_Periodo.addActionListener(new Buscar());
         buscar_Periodo.setBounds(200, 350, 50, 50);
         panel_1.add(buscar_Periodo);
 
@@ -531,16 +533,15 @@ public class Interfaz extends JFrame implements Vista{
         panel_4.add(scrollPane2);
         tabla.addTab("Facturas", null, panel_4);
 
-        /*JButton salir = new JButton("Salir");
-        salir.addActionListener(new FinFichaUsuario());
-        salir.setBounds(560, 400, 100, 50);
-        panelUsuario.add(salir);
-         */
+        JButton reset = new JButton("Reset");
+        reset.setBounds(700, 420,80, 20);
+        reset.addActionListener(new ResetearPeriodo());
 
         panel_1.setBounds(0, 0, 350, 500);
         tabla.setBounds(350, 20, 400, 380);
         panelUsuario.add(panel_1);
         panelUsuario.add(tabla);
+        panelUsuario.add(reset);
         tabla.setVisible(true);
         data.add(panelUsuario);
         data.setSize(800, 500);
@@ -556,7 +557,6 @@ public class Interfaz extends JFrame implements Vista{
             }
         });
     }
-
 
     public void altaLlamada() {
         altaLlamada = new JFrame("Alta Llamada");
@@ -628,6 +628,7 @@ public class Interfaz extends JFrame implements Vista{
             }
         });
     }
+
     private void configuracionUsuario(Cliente cliente){
         configuracion = new JFrame(cliente.getNombre() + " - Configuración");
         JPanel panel_1 = new JPanel();
@@ -872,8 +873,134 @@ public class Interfaz extends JFrame implements Vista{
 
     }
 
+    public void buscarPeriodoCliente(){
+
+        periodoCliente = new JFrame("Buscar en periodo");
+        JPanel panel_1 = new JPanel();
+        panel_1.setLayout(null);
+        JLabel busqueda = new JLabel("Seleccione lo que desea buscar:");
+        busqueda.setBounds(20, 20, 250, 20);
+        panel_1.add(busqueda);
+        String[] tipos = { "Llamadas", "Facturas"};
+        filtro = new JComboBox(tipos);
+        filtro.setSelectedIndex(0);
+        filtro.setBounds(300, 20, 100, 20);
+        panel_1.add(filtro);
+
+        JLabel fechaInicio = new JLabel("Fecha de inicio:");
+        fechaInicio.setBounds(30, 60, 120, 30);
+        JLabel fechaFinal = new JLabel("Fecha de fin: ");
+        fechaFinal.setBounds(30, 100, 120, 30);
+        panel_1.add(fechaInicio);
+        panel_1.add(fechaFinal);
+        setYearInicio = new JTextField(4);
+        setMonthInicio = new JTextField(2);
+        setDayInicio = new JTextField(2);
+        setDayInicio.setBounds(170, 60, 40, 30);
+        setMonthInicio.setBounds(230, 60, 40, 30);
+        setYearInicio.setBounds(290, 60, 80, 30);
+        panel_1.add(setDayInicio);
+        panel_1.add(setMonthInicio);
+        panel_1.add(setYearInicio);
+        JLabel slash1 = new JLabel("/", CENTER);
+        JLabel slash2 = new JLabel("/", CENTER);
+        slash1.setBounds(210, 60, 20, 30);
+        slash2.setBounds(270, 60, 20, 30);
+        panel_1.add(slash1);
+        panel_1.add(slash2);
+        setYearFin = new JTextField(4);
+        setMonthFin = new JTextField(2);
+        setDayFin = new JTextField(2);
+        setDayFin.setBounds(170, 100, 40, 30);
+        setMonthFin.setBounds(230, 100, 40, 30);
+        setYearFin.setBounds(290, 100, 80, 30);
+        panel_1.add(setDayFin);
+        panel_1.add(setMonthFin);
+        panel_1.add(setYearFin);
+        JLabel slash3 = new JLabel("/", CENTER);
+        JLabel slash4 = new JLabel("/", CENTER);
+        slash3.setBounds(210, 100, 20, 30);
+        slash4.setBounds(270, 100, 20, 30);
+        panel_1.add(slash3);
+        panel_1.add(slash4);
+
+        JButton buscar = new JButton("Buscar");
+        buscar.addActionListener(new BuscarPeriodoCliente());
+        buscar.setBounds(450, 150, 100, 20);
+        panel_1.add(buscar);
+
+        periodoCliente.add(panel_1);
+        periodoCliente.setSize(600, 250);
+        periodoCliente.setVisible(true);
+        periodoCliente.setResizable(false);
+
+    }
+    public void buscarPeriodo(){
+
+        periodoGeneral = new JFrame("Buscar en periodo");
+        JPanel panel_1 = new JPanel();
+        panel_1.setLayout(null);
+        JLabel busqueda = new JLabel("Seleccione lo que desea buscar:");
+        busqueda.setBounds(20, 20, 250, 20);
+        panel_1.add(busqueda);
+        String[] tipos = { "Clientes", "Facturas"};
+        filtro = new JComboBox(tipos);
+        filtro.setSelectedIndex(0);
+        filtro.setBounds(300, 20, 100, 20);
+        panel_1.add(filtro);
+
+        JLabel fechaInicio = new JLabel("Fecha de inicio:");
+        fechaInicio.setBounds(30, 60, 120, 30);
+        JLabel fechaFinal = new JLabel("Fecha de fin: ");
+        fechaFinal.setBounds(30, 100, 120, 30);
+        panel_1.add(fechaInicio);
+        panel_1.add(fechaFinal);
+        setYearInicio = new JTextField(4);
+        setMonthInicio = new JTextField(2);
+        setDayInicio = new JTextField(2);
+        setDayInicio.setBounds(170, 60, 40, 30);
+        setMonthInicio.setBounds(230, 60, 40, 30);
+        setYearInicio.setBounds(290, 60, 80, 30);
+        panel_1.add(setDayInicio);
+        panel_1.add(setMonthInicio);
+        panel_1.add(setYearInicio);
+        JLabel slash1 = new JLabel("/", CENTER);
+        JLabel slash2 = new JLabel("/", CENTER);
+        slash1.setBounds(210, 60, 20, 30);
+        slash2.setBounds(270, 60, 20, 30);
+        panel_1.add(slash1);
+        panel_1.add(slash2);
+        setYearFin = new JTextField(4);
+        setMonthFin = new JTextField(2);
+        setDayFin = new JTextField(2);
+        setDayFin.setBounds(170, 100, 40, 30);
+        setMonthFin.setBounds(230, 100, 40, 30);
+        setYearFin.setBounds(290, 100, 80, 30);
+        panel_1.add(setDayFin);
+        panel_1.add(setMonthFin);
+        panel_1.add(setYearFin);
+        JLabel slash3 = new JLabel("/", CENTER);
+        JLabel slash4 = new JLabel("/", CENTER);
+        slash3.setBounds(210, 100, 20, 30);
+        slash4.setBounds(270, 100, 20, 30);
+        panel_1.add(slash3);
+        panel_1.add(slash4);
+
+        JButton buscar = new JButton("Buscar");
+        buscar.addActionListener(new BuscarPeriodoCliente());
+        buscar.setBounds(450, 150, 100, 20);
+        panel_1.add(buscar);
+
+        periodoGeneral.add(panel_1);
+        periodoGeneral.setSize(600, 250);
+        periodoGeneral.setVisible(true);
+        periodoGeneral.setResizable(false);
+
+    }
+
 
     // ---------------------------TEXTPANES-----------------------------------------------------
+
     private JTextPane createClientePartPane(ClienteParticular clienteParticular) {
         String fecha = (clienteParticular.getFecha().get(Calendar.DAY_OF_MONTH) + "/" + (clienteParticular.getFecha().get(Calendar.MONTH) + 1)+ "/" + clienteParticular.getFecha().get(Calendar.YEAR));
         String[] initString =
@@ -907,6 +1034,7 @@ public class Interfaz extends JFrame implements Vista{
 
         return textPane;
     }
+
     private JTextPane createClienteEmpPane(ClienteEmpresa clienteEmpresa) {
         String fecha = (clienteEmpresa.getFecha().get(Calendar.DAY_OF_MONTH) + "/" + (clienteEmpresa.getFecha().get(Calendar.MONTH) + 1)+ "/" + clienteEmpresa.getFecha().get(Calendar.YEAR));
         String[] initString =
@@ -939,6 +1067,7 @@ public class Interfaz extends JFrame implements Vista{
 
         return textPane;
     }
+
     private JTextPane createFacturaPane(Factura factura) {
         String[] initString =
                 { "Código de la factura: ", factura.getCodigo() + "\n\n",
@@ -967,6 +1096,7 @@ public class Interfaz extends JFrame implements Vista{
 
         return textPane;
     }
+
     protected void addStylesToDocument(StyledDocument doc) {
         //Initialize some styles.
         Style def = StyleContext.getDefaultStyleContext().
@@ -1034,6 +1164,7 @@ public class Interfaz extends JFrame implements Vista{
     }
 
     public String getClienteBaja() {return this.clienteBaja;}
+
 
     // -----------------------------SETTERS------------------------------------------------------
 
@@ -1153,20 +1284,6 @@ public class Interfaz extends JFrame implements Vista{
             configuracionUsuario(clienteAdd);
         }
     }
-
-    /*
-    private class FinFichaUsuario implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            data.setVisible(false);
-            tabla.remove(0);
-            tabla.remove(0);
-            tabla.remove(0);
-            llamadasPerfil.setModel(modeloLlamadas);
-        }
-    }
-
-    */
 
     private class Siguiente implements ActionListener {
     private int i;
@@ -1376,6 +1493,7 @@ public class Interfaz extends JFrame implements Vista{
 
         }
     }
+
     private class ModificarTarifaDiaria implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -1385,6 +1503,7 @@ public class Interfaz extends JFrame implements Vista{
 
         }
     }
+
     private class ModificarTarifaHoraria implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -1404,6 +1523,7 @@ public class Interfaz extends JFrame implements Vista{
             setbasica.setText("");
         }
     }
+
     private class NuevaTarifaDiaria implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -1421,6 +1541,7 @@ public class Interfaz extends JFrame implements Vista{
             setdiaAplicable.setSelectedIndex(0);
         }
     }
+
     private class NuevaTarifaHoraria implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -1503,6 +1624,66 @@ public class Interfaz extends JFrame implements Vista{
             if (filtro.getSelectedIndex() == 1) {
                 resultado.setModel(modelo.getFacturasBusqueda(setbusqueda.getText()));
             }
+        }
+    }
+
+    private class Buscar implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            buscarPeriodoCliente();
+        }
+    }
+
+    private class BuscarPeriodoCliente implements ActionListener {
+        public BuscarPeriodoCliente(){ }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            if (filtro.getSelectedItem().toString().equals("Llamadas"))
+                filtro.setSelectedIndex(0);
+            else
+                filtro.setSelectedIndex(1);
+            Calendar fecha_inicio = new GregorianCalendar();
+            fecha_inicio.set(Integer.parseInt(setYearInicio.getText()), Integer.parseInt(setMonthInicio.getText()) - 1, Integer.parseInt(setDayInicio.getText()));
+            Calendar fecha_fin = new GregorianCalendar();
+            fecha_fin.set(Integer.parseInt(setYearFin.getText()), Integer.parseInt(setMonthFin.getText()) - 1, Integer.parseInt(setDayFin.getText()));
+            if(filtro.getSelectedIndex() == 0) {
+                llamadasPerfil.setModel(modelo.getLlamadasPeriodoCliente(clienteAdd.getCodigo(),fecha_inicio, fecha_fin));
+            }
+            if (filtro.getSelectedIndex() == 1) {
+                facturasCliente.setModel(modelo.getFacturasPeriodoCliente(clienteAdd.getCodigo(),fecha_inicio, fecha_fin));
+            }
+            periodoCliente.dispose();
+        }
+    }
+    private class ResetearPeriodo implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            setModelFacturas();
+            setModelLlamadas();
+        }
+    }
+
+    private class BuscarPeriodoGeneral implements ActionListener {
+        public BuscarPeriodoGeneral(){ }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            if (filtro.getSelectedItem().toString().equals("Clientes"))
+                filtro.setSelectedIndex(0);
+            else
+                filtro.setSelectedIndex(1);
+            Calendar fecha_inicio = new GregorianCalendar();
+            fecha_inicio.set(Integer.parseInt(setYearInicio.getText()), Integer.parseInt(setMonthInicio.getText()) - 1, Integer.parseInt(setDayInicio.getText()));
+            Calendar fecha_fin = new GregorianCalendar();
+            fecha_fin.set(Integer.parseInt(setYearFin.getText()), Integer.parseInt(setMonthFin.getText()) - 1, Integer.parseInt(setDayFin.getText()));
+            if(filtro.getSelectedIndex() == 0) {
+                llamadasPerfil.setModel(modelo.getLlamadasPeriodoCliente(clienteAdd.getCodigo(),fecha_inicio, fecha_fin));
+            }
+            if (filtro.getSelectedIndex() == 1) {
+                facturasCliente.setModel(modelo.getFacturasPeriodoCliente(clienteAdd.getCodigo(),fecha_inicio, fecha_fin));
+            }
+            periodoCliente.dispose();
         }
     }
 }

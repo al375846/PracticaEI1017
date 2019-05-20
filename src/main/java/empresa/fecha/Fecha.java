@@ -21,6 +21,7 @@ public class Fecha implements Serializable {
     public <T extends Fecha> HashSet<T> extraerEnPeriodo(Collection<T> datos, Calendar fecha_inicio, Calendar fecha_fin) throws IllegalPeriodException {
         if(fecha_inicio.after(fecha_fin))
             throw new IllegalPeriodException();
+
         Collection<T> resultado = new HashSet<>();
         for(T dato: datos) {
             if (fecha_inicio.before(dato.getFecha()) && fecha_fin.after(dato.getFecha())) {

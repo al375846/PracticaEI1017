@@ -7,6 +7,7 @@ import empresa.tarifas.Tarifa;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.Calendar;
 import java.util.Set;
 
 public interface Modelo {
@@ -30,4 +31,6 @@ public interface Modelo {
     Set<String> totalClientes();
     DefaultTableModel getClientesBusqueda(String codigo);
     DefaultTableModel getFacturasBusqueda(String codigo);
+    DefaultTableModel getFacturasPeriodoCliente(String codigo, Calendar fecha_inicio, Calendar fecha_fin);
+    DefaultTableModel getLlamadasPeriodoCliente(String codigo, Calendar fecha_inicio, Calendar fecha_fin);
 }

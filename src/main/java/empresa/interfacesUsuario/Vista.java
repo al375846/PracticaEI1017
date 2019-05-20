@@ -7,6 +7,8 @@ import empresa.facturas.Factura;
 import empresa.llamadas.Llamada;
 import empresa.tarifas.Tarifa;
 
+import java.util.Calendar;
+
 public interface Vista {
     ClienteParticular getClientePart();
     ClienteEmpresa getClienteEmp();
@@ -26,4 +28,5 @@ public interface Vista {
     String getClienteBaja();
     void setModelIniciar();
     void setModelBaja();
+
 }

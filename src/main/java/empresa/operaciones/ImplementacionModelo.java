@@ -1,6 +1,7 @@
 package empresa.operaciones;
 
 import empresa.clientes.*;
+import empresa.excepcion.IllegalPeriodException;
 import empresa.excepcion.UnexpectedAnswerException;
 import empresa.facturas.ConjuntoFacturas;
 import empresa.facturas.Factura;
@@ -14,9 +15,7 @@ import empresa.tarifas.TarifaBasica;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ImplementacionModelo implements Modelo {
     private Vista vista;
@@ -196,8 +195,48 @@ public class ImplementacionModelo implements Modelo {
         FranjaHoraria.modificarHoraria(precio, inicio, fin);
     }
 
-    public void cambiarTarifaCliente(String codigo, Tarifa tarifa){
+    public void cambiarTarifaCliente(String codigo, Tarifa tarifa)  {
         carteraClientes.cambiarTarifa(codigo, tarifa);
+    }
+    public DefaultTableModel getFacturasPeriodoCliente(String codigo, Calendar fecha_inicio, Calendar fecha_fin) {
+        try {
+            Set<Factura> facturas = carteraClientes.datosCliente(codigo).extraerEnPeriodo(carteraClientes.datosCliente(codigo).getFacturas(), fecha_inicio, fecha_fin);
+
+            DefaultTableModel nuevo = new DefaultTableModel();
+            String[] columnas = {"Código", "Importe", "Emisión", "Inicio", "Fin"};
+            for (int i = 0; i < columnas.length; i++) {
+                nuevo.addColumn(columnas[i]);
+            }
+            for (Factura factura : facturas) {
+
+                Object[] fila = {factura.getCodigo(), factura.getImporte(), factura.impFecha(), factura.impFechaInicio(), factura.impFechaFin()};
+                nuevo.addRow(fila);
+
+            }
+            return nuevo;
+        } catch (IllegalPeriodException e) {
+            System.out.println("Periodo de fechas no válido.");
+        }
+        return new DefaultTableModel();
+    }
+    public DefaultTableModel getLlamadasPeriodoCliente(String codigo, Calendar fecha_inicio, Calendar fecha_fin) {
+        try {
+            Set<Llamada> llamadas = carteraClientes.datosCliente(codigo).extraerEnPeriodo(carteraClientes.datosCliente(codigo).getLlamadas(), fecha_inicio, fecha_fin);
+            DefaultTableModel nuevo = new DefaultTableModel();
+            String[] columnas = {"Número", "Duración", "Fecha", "Hora"};
+            for(int i = 0; i < columnas.length; i++){
+                nuevo.addColumn(columnas[i]);
+            }
+            for (Llamada llamada: llamadas) {
+                Object[] fila = {llamada.getNum_llamo(), llamada.getDuracion(), llamada.impFecha(), llamada.impHora()};
+                nuevo.addRow(fila);
+            }
+            return nuevo;
+        } catch (IllegalPeriodException e) {
+            System.out.println("Periodo de fechas no válido.");
+            return new DefaultTableModel();
+        }
+
     }
 
 }
