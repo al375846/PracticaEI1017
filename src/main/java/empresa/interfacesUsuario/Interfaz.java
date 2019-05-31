@@ -153,9 +153,11 @@ public class Interfaz extends JFrame implements Vista{
        menu.addSeparator();
         JMenuItem guardar = new JMenuItem("Guardar");
        guardar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+       guardar.addActionListener(new Guardar());
        menu.add(guardar);
        menu.addSeparator();
         JMenuItem cargar = new JMenuItem("Cargar");
+        cargar.addActionListener(new Cargar());
         cargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
         menu.add(cargar);
         ventana.setJMenuBar(menuBar);
@@ -1599,39 +1601,26 @@ public class Interfaz extends JFrame implements Vista{
         }
     }
 
-    /*private class Cargar implements ActionListener {
-        String respuesta;
-        public Cargar(String respuesta) {
-            this.respuesta = respuesta;
+    private class Cargar implements ActionListener {
+        public Cargar() {
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (this.respuesta.equals("Y")) {
-                modelo.load();
-                cargar.dispose();
-            }
-            else
-                cargar.dispose();
+            cargar();
+            setModelIniciar();
         }
     }
 
     private class Guardar implements ActionListener {
-        String respuesta;
-        public Guardar(String respuesta) {
-            this.respuesta = respuesta;
+        public Guardar() {
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (this.respuesta.equals("Y")) {
-                modelo.save();
-                guardar.dispose();
-            }
-            else
-                guardar.dispose();
+            guardar();
         }
-    }*/
+    }
 
     private class BusquedaCodigo implements ActionListener {
         public BusquedaCodigo() {
