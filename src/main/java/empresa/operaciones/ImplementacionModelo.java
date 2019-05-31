@@ -15,6 +15,7 @@ import empresa.tarifas.TarifaBasica;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.io.File;
 import java.util.*;
 
 public class ImplementacionModelo implements Modelo {
@@ -27,22 +28,19 @@ public class ImplementacionModelo implements Modelo {
         conjuntoFacturas = new ConjuntoFacturas();
     }
 
-    public void load() {
+    public void load(File fichero) {
         try {
-            carteraClientes = MemoryCard.loading(carteraClientes, "Y");
-        } catch (UnexpectedAnswerException e) {
-            e.printStackTrace();
-        }
-        try {
-            conjuntoFacturas = MemoryCard.loading(conjuntoFacturas, "Y");
+            Object[] carga = MemoryCard.loadingTodo(carteraClientes, conjuntoFacturas, fichero);
+            carteraClientes = (CarteraClientes) carga[0];
+            conjuntoFacturas = (ConjuntoFacturas) carga[1];
         } catch (UnexpectedAnswerException e) {
             e.printStackTrace();
         }
     }
 
-    public void save() {
+    public void save(File fichero) {
         try {
-            MemoryCard.save(conjuntoFacturas, carteraClientes, "Y");
+            MemoryCard.saveTodo(conjuntoFacturas, carteraClientes, fichero);
         } catch (UnexpectedAnswerException e) {
             e.printStackTrace();
         }

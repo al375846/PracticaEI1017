@@ -7,6 +7,7 @@ import empresa.tarifas.Tarifa;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.io.File;
 import java.util.Calendar;
 import java.util.Set;
 
@@ -25,8 +26,8 @@ public interface Modelo {
     void cambiarTarifaDiaria(double precio, int dia);
     void cambiarTarifaHoraria(double precio, int inicio, int fin);
     void baja(String codigo);
-    void load();
-    void save();
+    void load(File fichero);
+    void save(File fichero);
     void actualizar();
     Set<String> totalClientes();
     DefaultTableModel getClientesBusqueda(String codigo);

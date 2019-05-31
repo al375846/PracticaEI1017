@@ -16,6 +16,34 @@ public class MemoryCard {
         return scanner.next();
     }
 
+    public static Object[] loadingTodo(CarteraClientes cartera_clientes, ConjuntoFacturas total_facturas, File fichero) throws UnexpectedAnswerException {
+            try {
+                FileInputStream file = new FileInputStream(fichero);
+                ObjectInputStream ois = new ObjectInputStream(file);
+                cartera_clientes = (CarteraClientes) ois.readObject();
+                total_facturas = (ConjuntoFacturas) ois.readObject();
+                ois.close();
+            } catch (IOException e) {
+                System.out.println("Error al leer el fichero");
+            } catch (ClassNotFoundException c) {
+                System.out.println("Error al cargar el fichero");
+            }
+        Object[] vuelta = {cartera_clientes, total_facturas};
+        return vuelta;
+    }
+
+    public static void saveTodo(ConjuntoFacturas total_facturas, CarteraClientes cartera_clientes, File fichero) throws UnexpectedAnswerException {
+            try {
+                FileOutputStream filecli = new FileOutputStream(fichero);
+                ObjectOutputStream save = new ObjectOutputStream(filecli);
+                save.writeObject(cartera_clientes);
+                save.writeObject(total_facturas);
+                save.close();
+            } catch (IOException e) {
+                System.out.println("Error al leer el fichero");
+            }
+    }
+
     public static CarteraClientes loading(CarteraClientes cartera_clientes, String respuesta) throws UnexpectedAnswerException {
         if (respuesta.compareTo("Y") == 0 || respuesta.compareTo("y") == 0) {
             try {

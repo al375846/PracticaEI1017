@@ -23,6 +23,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.*;
+import java.io.File;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -257,6 +258,16 @@ public class Interfaz extends JFrame implements Vista{
     }
 
     public void cargar() {
+        JFileChooser elegir = new JFileChooser("clientesFinal.bin");
+        int seleccion = elegir.showOpenDialog(ventana);
+        if (seleccion == JFileChooser.APPROVE_OPTION)
+        {
+            File fichero = elegir.getSelectedFile();
+
+            //new Cargar("Y");
+            modelo.load(fichero);
+        }
+        /*
         cargar = new JDialog(ventana, "Cargar", true);
         JPanel panelCargar = new JPanel();
         panelCargar.setLayout(null);
@@ -274,10 +285,18 @@ public class Interfaz extends JFrame implements Vista{
         cargar.add(panelCargar);
         cargar.setSize(240, 110);
         cargar.setResizable(false);
-        cargar.setVisible(true);
+        cargar.setVisible(true);*/
     }
 
     public void guardar() {
+        JFileChooser elegir = new JFileChooser("total.bin");
+        int seleccion = elegir.showSaveDialog(ventana);
+        if (seleccion == JFileChooser.APPROVE_OPTION)
+        {
+            File fichero = elegir.getSelectedFile();
+            modelo.save(fichero);
+        }
+        /*
         guardar = new JDialog(ventana, "Guardar", true);
         JPanel panelGuardar = new JPanel();
         panelGuardar.setLayout(null);
@@ -295,7 +314,7 @@ public class Interfaz extends JFrame implements Vista{
         guardar.add(panelGuardar);
         guardar.setSize(240, 110);
         guardar.setResizable(false);
-        guardar.setVisible(true);
+        guardar.setVisible(true);*/
     }
 
     public void altaCliente(String tipo){
@@ -1580,7 +1599,7 @@ public class Interfaz extends JFrame implements Vista{
         }
     }
 
-    private class Cargar implements ActionListener {
+    /*private class Cargar implements ActionListener {
         String respuesta;
         public Cargar(String respuesta) {
             this.respuesta = respuesta;
@@ -1612,7 +1631,7 @@ public class Interfaz extends JFrame implements Vista{
             else
                 guardar.dispose();
         }
-    }
+    }*/
 
     private class BusquedaCodigo implements ActionListener {
         public BusquedaCodigo() {
