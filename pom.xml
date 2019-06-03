@@ -38,6 +38,12 @@
             <artifactId>GeneradorDatosINE</artifactId>
             <version>v1.0.0</version>
         </dependency>
+        <!-- Para la biblioteca jcalendar -->
+        <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version>
+        </dependency>
     </dependencies>
     <build>
         <pluginManagement>

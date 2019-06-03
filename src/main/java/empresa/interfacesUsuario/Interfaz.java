@@ -1,6 +1,7 @@
 package empresa.interfacesUsuario;
 
 
+import com.toedter.calendar.JDateChooser;
 import empresa.clientes.Cliente;
 import empresa.clientes.ClienteEmpresa;
 import empresa.clientes.ClienteParticular;
@@ -27,8 +28,7 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static javax.swing.SwingConstants.CENTER;
-import static javax.swing.SwingConstants.TRAILING;
+import static javax.swing.SwingConstants.*;
 
 public class Interfaz extends JFrame implements Vista{
     private Controlador controlador;
@@ -39,7 +39,7 @@ public class Interfaz extends JFrame implements Vista{
     private JFrame data;
     private JTabbedPane tabbedPane = new JTabbedPane();
     private JTabbedPane tabla = new JTabbedPane();
-    private JFrame altacliente;
+    private JFrame altaCliente;
     private JFrame altaLlamada;
     private JFrame configuracion;
     private JFrame factura;
@@ -72,9 +72,6 @@ public class Interfaz extends JFrame implements Vista{
     private JPanel panelUsuario = new JPanel();
     private JTextField setNumLlamo;
     private JTextField setDuracion;
-    private JTextField setYear;
-    private JTextField setMonth;
-    private JTextField setDay;
     private JTextField setHour;
     private JTextField setMinute;
     private Cliente clienteAdd;
@@ -88,12 +85,6 @@ public class Interfaz extends JFrame implements Vista{
     String[] columnasFactura = {"Código", "Importe", "Emisión", "Inicio", "Fin"};
     DefaultTableModel modeloFacturasCliente = new DefaultTableModel(columnasFactura, 1);
     private JTextField setCodigoFactura;
-    private JTextField setYearInicio;
-    private JTextField setMonthInicio;
-    private JTextField setDayInicio;
-    private JTextField setYearFin;
-    private JTextField setMonthFin;
-    private JTextField setDayFin;
     private Factura facturaAdd;
     private JList listaFacturas;
     private DefaultListModel modeloFacturas;
@@ -114,6 +105,10 @@ public class Interfaz extends JFrame implements Vista{
     private int tipoBaja;//se usa para saber si se actualizada las busquedas
     private JFrame periodoCliente;
     private JFrame periodoGeneral;
+    private JDateChooser setFechaInicio;
+    private JDateChooser setFechaFin;
+    private JDateChooser setFechaAlta;
+
 
     public Interfaz() {}
 
@@ -163,9 +158,48 @@ public class Interfaz extends JFrame implements Vista{
         ventana.setJMenuBar(menuBar);
        //Menu definido
 
-
-        ventana.add(tabbedPane);
+        //ventana.add(tabbedPane);
         JPanel panel1 = new JPanel();
+
+        JToolBar barraHerramientas = new JToolBar();
+
+        ImageIcon load = new ImageIcon("src/media/cargar.jpeg");
+        ImageIcon im_cargar = new ImageIcon(load.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        JButton botonCargar = new JButton(im_cargar);
+        botonCargar.setBounds(30, 0, 30, 40);
+        botonCargar.addActionListener(new Cargar());
+        ImageIcon save = new ImageIcon("src/media/guardar.png");
+        ImageIcon im_guardar = new ImageIcon(save.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        JButton botonGuardar = new JButton(im_guardar);
+        botonGuardar.setBounds(70, 0, 30, 40);
+        botonGuardar.addActionListener(new Guardar());
+        ImageIcon altaU = new ImageIcon("src/media/addUsuario.png");
+        ImageIcon im_alta = new ImageIcon(altaU.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        JButton botonAlta = new JButton(im_alta);
+        botonAlta.setBounds(110, 0, 30, 40);
+        botonAlta.addActionListener(new AltaCliente());
+        ImageIcon bajaU = new ImageIcon("src/media/eliminarUsuario.png");
+        ImageIcon im_baja = new ImageIcon(bajaU.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        JButton botonBaja = new JButton(im_baja);
+        botonBaja.setBounds(150, 0, 30, 40);
+        botonBaja.addActionListener(new Baja());
+        ImageIcon cambio = new ImageIcon("src/media/cambiarTarifa.jpg");
+        ImageIcon im_cambiarTarifa = new ImageIcon(cambio.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        JButton botonCambiarTarifa = new JButton(im_cambiarTarifa);
+        botonCambiarTarifa.setBounds(190, 0, 30, 40);
+        botonCambiarTarifa.addActionListener(new NuevaTarifaGeneral());
+
+        barraHerramientas.add(botonCargar);
+        barraHerramientas.add(botonGuardar);
+        barraHerramientas.add(botonAlta);
+        barraHerramientas.add(botonBaja);
+        barraHerramientas.add(botonCambiarTarifa);
+        barraHerramientas.setFloatable(false);
+        barraHerramientas.setRollover(true);
+        barraHerramientas.setVisible(true);
+        barraHerramientas.setBounds(0, 0, 600, 40);
+        panel1.add(barraHerramientas);
+        panel1.setLayout(null);
        //Botones de accion
 
         datosCli = new JButton("Datos Cliente");
@@ -177,10 +211,9 @@ public class Interfaz extends JFrame implements Vista{
         periodo = new JButton("Periodo");
         periodo.addActionListener(new Buscar());
         periodo.setEnabled(false);
-        panel1.setLayout(null);
-        datosCli.setBounds(10, 10,120,20);
-        datosFac.setBounds(140,10,120,20);
-        periodo.setBounds(270, 10, 120, 20);
+        datosCli.setBounds(10, 60,150,20);
+        datosFac.setBounds(170,60,150,20);
+        periodo.setBounds(330, 60, 150, 20);
         panel1.add(datosCli);
         panel1.add(datosFac);
         panel1.add(periodo);
@@ -193,10 +226,10 @@ public class Interfaz extends JFrame implements Vista{
         listaClientes.setLayout(null);
         listaClientes.setLayoutOrientation(JList.VERTICAL);
         JScrollPane scroller = new JScrollPane(listaClientes);
-        scroller.setBounds(10,80,150,200);
+        scroller.setBounds(10,120,150,200);
         panel1.add(scroller);
         JLabel lisCli = new JLabel("Lista de clientes");
-        lisCli.setBounds(35, 60, 120, 20);
+        lisCli.setBounds(35, 100, 120, 20);
         panel1.add(lisCli);
 
         modeloFacturas = new DefaultListModel();
@@ -205,47 +238,40 @@ public class Interfaz extends JFrame implements Vista{
         listaFacturas.setLayout(null);
         listaFacturas.setLayoutOrientation(JList.VERTICAL);
         JScrollPane scroller2 = new JScrollPane(listaFacturas);
-        scroller2.setBounds(170,80,150,200);
+        scroller2.setBounds(170,120,150,200);
         panel1.add(scroller2);
         JLabel lisFac = new JLabel("Lista de facturas");
-       lisFac.setBounds(195, 60, 120, 20);
+       lisFac.setBounds(195, 100, 120, 20);
        panel1.add(lisFac);
        //Fin listas
 
        //Buscar
        JLabel busqueda = new JLabel("Buscar:");
-       busqueda.setBounds(10, 300, 50, 20);
+       busqueda.setBounds(10, 340, 50, 20);
        panel1.add(busqueda);
        String[] tipos = { "Cliente", "Factura"};
        filtro = new JComboBox(tipos);
        filtro.setSelectedIndex(0);
-       filtro.setBounds(70, 300, 100, 20);
+       filtro.setBounds(70, 340, 100, 20);
        panel1.add(filtro);
        setbusqueda = new JTextField("Introduzca el código", 50);
-        setbusqueda.setBounds(180, 300, 150, 20);
-        setbusqueda.setHorizontalAlignment(TRAILING);
+        setbusqueda.setBounds(180, 340, 150, 20);
+        setbusqueda.setHorizontalAlignment(LEADING);
        panel1.add(setbusqueda);
        JButton buscar = new JButton("Buscar");
        buscar.addActionListener(new BusquedaCodigo());
-       buscar.setBounds(340, 300, 100, 20);
+       buscar.setBounds(340, 340, 100, 20);
        panel1.add(buscar);
        resultado = new JTable();
         JScrollPane scrollPane = new JScrollPane(resultado);
-      scrollPane.setBounds(10, 350, 570, 150);
+      scrollPane.setBounds(10, 380, 570, 150);
         resultado.setFillsViewportHeight(true);
         panel1.add(scrollPane);
 
 
-        tabbedPane.addTab("Gestor", null, panel1);
-        tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-        //tabbedPane.setEnabledAt(0, true);
-        /*JComponent label3 = new JLabel("Text-Only Label");
-        tabbedPane.addTab("Perfil de cliente", label3);
-        tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
-
-         */
-        //tabbedPane.setEnabledAt(1, true);
-        //tabbedPane.setVisible(true);
+        //tabbedPane.addTab("Gestor", null, panel1);
+        //tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+        ventana.add(panel1);
         ventana.setSize(600,600);
         ventana.setResizable(false);
         ventana.setVisible(true);
@@ -320,7 +346,9 @@ public class Interfaz extends JFrame implements Vista{
     }
 
     public void altaCliente(String tipo){
-        altacliente = new JFrame("Alta Cliente");
+
+        tablaCliente = new JTabbedPane();
+        altaCliente = new JFrame("Alta Cliente");
         //Datos del cliente
         //Nombre
         JPanel panel1 = new JPanel();
@@ -342,14 +370,14 @@ public class Interfaz extends JFrame implements Vista{
         }
         setnombre = new JTextField("Introduzca el nombre", 300);
         setnombre.setBounds(130, 60, 300, 20);
-        setnombre.setHorizontalAlignment(JTextField.TRAILING);
+        setnombre.setHorizontalAlignment(JTextField.LEADING);
         panel1.add(setnombre);
         //Apellidos
         JLabel apellidos = new JLabel("Apellidos: ");
         apellidos.setBounds(20, 100, 80, 20);
         setapellidos = new JTextField("Introduzca los apellidos", 300);
         setapellidos.setBounds(130, 100, 300, 20);
-        setapellidos.setHorizontalAlignment(JTextField.TRAILING);
+        setapellidos.setHorizontalAlignment(JTextField.LEADING);
         panel1.add(apellidos);
         panel1.add(setapellidos);
         if(tipo.equals("E")) {
@@ -361,7 +389,7 @@ public class Interfaz extends JFrame implements Vista{
         codigo.setBounds(20, 140, 80, 20);
         setcodigo = new JTextField("Código", 100);
         setcodigo.setBounds(130, 140, 100, 20);
-        setcodigo.setHorizontalAlignment(JTextField.TRAILING);
+        setcodigo.setHorizontalAlignment(JTextField.LEADING);
         panel1.add(codigo);
         panel1.add(setcodigo);
         //Correo
@@ -369,7 +397,7 @@ public class Interfaz extends JFrame implements Vista{
         correo.setBounds(20, 180, 80, 20);
         setcorreo = new JTextField("Introduzca el correo", 300);
         setcorreo.setBounds(130, 180, 300, 20);
-        setcorreo.setHorizontalAlignment(JTextField.TRAILING);
+        setcorreo.setHorizontalAlignment(JTextField.LEADING);
         panel1.add(correo);
         panel1.add(setcorreo);
         //Direccion
@@ -379,17 +407,17 @@ public class Interfaz extends JFrame implements Vista{
         cp.setBounds(100, 260, 80, 20);
         setcp = new JTextField("Cp", 80);
         setcp.setBounds(200, 260, 80, 20);
-        setcp.setHorizontalAlignment(JTextField.TRAILING);
+        setcp.setHorizontalAlignment(JTextField.LEADING);
         JLabel poblacion = new JLabel("Población: ");
         poblacion.setBounds(100, 300, 80, 20);
         setpoblacion = new JTextField("Población", 120);
         setpoblacion.setBounds(200, 300, 120, 20);
-        setpoblacion.setHorizontalAlignment(JTextField.TRAILING);
+        setpoblacion.setHorizontalAlignment(JTextField.LEADING);
         JLabel provincia = new JLabel("Provincia: ");
         provincia.setBounds(100, 340, 80, 20);
         setprovincia = new JTextField("Provincia", 120);
         setprovincia.setBounds(200, 340, 120, 20);
-        setprovincia.setHorizontalAlignment(JTextField.TRAILING);
+        setprovincia.setHorizontalAlignment(JTextField.LEADING);
         panel1.add(direccion);
         panel1.add(cp);
         panel1.add(setcp);
@@ -425,12 +453,12 @@ public class Interfaz extends JFrame implements Vista{
         basica.setBounds(50, 100, 105, 20);
         setbasica = new JTextField( 80);
         setbasica.setBounds(165, 100, 80, 20);
-        setbasica.setHorizontalAlignment(JTextField.TRAILING);
+        setbasica.setHorizontalAlignment(JTextField.LEADING);
         JLabel diaria = new JLabel("Tarifa Diaria: ");
         diaria.setBounds(50, 140, 105, 20);
         setdiaria = new JTextField( 80);
         setdiaria.setBounds(165, 140, 80, 20);
-        setdiaria.setHorizontalAlignment(JTextField.TRAILING);
+        setdiaria.setHorizontalAlignment(JTextField.LEADING);
         JLabel diaApliacable = new JLabel("Dia aplicable: ");
         diaApliacable.setBounds(100, 180, 100, 20);
         String[] dias = { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
@@ -440,7 +468,7 @@ public class Interfaz extends JFrame implements Vista{
         horaria.setBounds(50, 220, 105, 20);
         sethoraria = new JTextField( 80);
         sethoraria.setBounds(165, 220, 100, 20);
-        sethoraria.setHorizontalAlignment(JTextField.TRAILING);
+        sethoraria.setHorizontalAlignment(JTextField.LEADING);
         String[] horas = { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
                 "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
         JLabel horaInicio = new JLabel("Hora Inicio: ");
@@ -486,10 +514,10 @@ public class Interfaz extends JFrame implements Vista{
         tablaCliente.addTab("Cliente", null, printearAlta, "No hace nada");
         tablaCliente.setEnabledAt(1, false);
         tablaCliente.setEnabledAt(2, false);
-        altacliente.add(tablaCliente);
-        altacliente.setSize(600, 450);
-        altacliente.setResizable(false);
-        altacliente.setVisible(true);
+        altaCliente.add(tablaCliente);
+        altaCliente.setSize(600, 450);
+        altaCliente.setResizable(false);
+        altaCliente.setVisible(true);
     }
 
     public void fichaUsuario(Cliente cliente) {
@@ -535,6 +563,7 @@ public class Interfaz extends JFrame implements Vista{
 
         //Visor de datos
         panelDatos = new JPanel();
+        tabla = new JTabbedPane();
         datos.setEditable(false);
         datos.setPreferredSize(new Dimension(400, 400));
         panelDatos.add(datos);
@@ -542,6 +571,7 @@ public class Interfaz extends JFrame implements Vista{
 
         //Llamadas
         JPanel panel_3 = new JPanel();
+        llamadasPerfil = new JTable();
         llamadasPerfil.setPreferredSize(new Dimension(290, 400));
         JScrollPane scrollPane = new JScrollPane(llamadasPerfil);
         scrollPane.setPreferredSize(new Dimension(395, 400));
@@ -601,35 +631,24 @@ public class Interfaz extends JFrame implements Vista{
         panel_llamada.add(hour);
         setNumLlamo = new JTextField(80);
         setDuracion = new JTextField(80);
-        setYear = new JTextField(4);
-        setMonth = new JTextField(2);
-        setDay = new JTextField(2);
         setHour = new JTextField(2);
         setMinute = new JTextField(2);
         setNumLlamo.setBounds(220, 10, 100, 30);
         setDuracion.setBounds(220, 50, 100, 30);
-        setDay.setBounds(220, 90, 40, 30);
-        setMonth.setBounds(280, 90, 40, 30);
-        setYear.setBounds(340, 90, 80, 30);
+        setFechaAlta = new JDateChooser();
+        setFechaAlta.setBounds(220, 90, 160, 30);
+
         setHour.setBounds(220, 130, 40, 30);
         setMinute.setBounds(280, 130, 40, 30);
         panel_llamada.add(setNumLlamo);
         panel_llamada.add(setDuracion);
-        panel_llamada.add(setYear);
-        panel_llamada.add(setMonth);
-        panel_llamada.add(setDay);
+        panel_llamada.add(setFechaAlta);
         panel_llamada.add(setHour);
         panel_llamada.add(setMinute);
-        JLabel slash1 = new JLabel("/", CENTER);
-        JLabel slash2 = new JLabel("/", CENTER);
         JLabel puntos = new JLabel(":", CENTER);
-        slash1.setBounds(260, 90, 20, 30);
-        slash2.setBounds(320, 90, 20, 30);
         puntos.setBounds(260, 130, 20, 30);
-        panel_llamada.add(slash1);
-        panel_llamada.add(slash2);
         panel_llamada.add(puntos);
-        ImageIcon plus = new ImageIcon("src/media/añadir.jpg");
+        ImageIcon plus = new ImageIcon("src/media/add.jpg");
         ImageIcon im_add = new ImageIcon(plus.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
         JButton add = new JButton(im_add);
         add.addActionListener(new AltaLlamada());
@@ -654,6 +673,8 @@ public class Interfaz extends JFrame implements Vista{
 
     private void configuracionUsuario(Cliente cliente){
         configuracion = new JFrame(cliente.getNombre() + " - Configuración");
+        tabbedPane = new JTabbedPane();
+
         JPanel panel_1 = new JPanel();
         panel_1.setLayout(null);
         JLabel basica = new JLabel("Tarifa Básica: ");
@@ -688,7 +709,7 @@ public class Interfaz extends JFrame implements Vista{
         sethoraFin.setBounds(305, 180, 60, 20);
         //Aplicar
         JButton aplicar = new JButton("Aplicar");
-        aplicar.setBounds(295, 220, 85, 30);
+        aplicar.setBounds(295, 240, 85, 30);
         aplicar.addActionListener(new NuevaTarifa());
         panel_1.add(basica);
         panel_1.add(setbasica);
@@ -703,8 +724,9 @@ public class Interfaz extends JFrame implements Vista{
         panel_1.add(horaFin);
         panel_1.add(sethoraFin);
         panel_1.add(aplicar);
+        tabbedPane.addTab("Tarifa", null, panel_1);
 
-        configuracion.add(panel_1);
+        configuracion.add(tabbedPane);
         configuracion.setSize(400, 300);
         configuracion.setResizable(false);
         configuracion.setVisible(true);
@@ -720,46 +742,23 @@ public class Interfaz extends JFrame implements Vista{
         periodoFactura.setBounds(10, 50, 150, 30);
         JLabel fechaInicio = new JLabel("Fecha de inicio:");
         fechaInicio.setBounds(50, 90, 100, 30);
+        setFechaInicio = new JDateChooser();
+        setFechaInicio.setBounds(170, 90, 160, 30);
         JLabel fechaFinal = new JLabel("Fecha de fin: ");
         fechaFinal.setBounds(50, 130, 100, 30);
+        setFechaFin = new JDateChooser();
+        setFechaFin.setBounds(170, 130, 160, 30);
         panelFactura.add(codigoFactura);
         panelFactura.add(periodoFactura);
         panelFactura.add(fechaInicio);
         panelFactura.add(fechaFinal);
         setCodigoFactura = new JTextField(80);
         setCodigoFactura.setBounds(170, 10, 100, 30);
-        setCodigoFactura.setHorizontalAlignment(TRAILING);
-        setYearInicio = new JTextField(4);
-        setMonthInicio = new JTextField(2);
-        setDayInicio = new JTextField(2);
-        setDayInicio.setBounds(170, 90, 40, 30);
-        setMonthInicio.setBounds(230, 90, 40, 30);
-        setYearInicio.setBounds(290, 90, 80, 30);
+        setCodigoFactura.setHorizontalAlignment(LEADING);
         panelFactura.add(setCodigoFactura);
-        panelFactura.add(setDayInicio);
-        panelFactura.add(setMonthInicio);
-        panelFactura.add(setYearInicio);
-        JLabel slash1 = new JLabel("/", CENTER);
-        JLabel slash2 = new JLabel("/", CENTER);
-        slash1.setBounds(210, 90, 20, 30);
-        slash2.setBounds(270, 90, 20, 30);
-        panelFactura.add(slash1);
-        panelFactura.add(slash2);
-        setYearFin = new JTextField(4);
-        setMonthFin = new JTextField(2);
-        setDayFin = new JTextField(2);
-        setDayFin.setBounds(170, 130, 40, 30);
-        setMonthFin.setBounds(230, 130, 40, 30);
-        setYearFin.setBounds(290, 130, 80, 30);
-        panelFactura.add(setDayFin);
-        panelFactura.add(setMonthFin);
-        panelFactura.add(setYearFin);
-        JLabel slash3 = new JLabel("/", CENTER);
-        JLabel slash4 = new JLabel("/", CENTER);
-        slash3.setBounds(210, 130, 20, 30);
-        slash4.setBounds(270, 130, 20, 30);
-        panelFactura.add(slash3);
-        panelFactura.add(slash4);
+        panelFactura.add(setFechaInicio);
+        panelFactura.add(setFechaFin);
+
         JButton aplicar = new JButton("Añadir");
         aplicar.addActionListener(new NuevaFactura());
         aplicar.setBounds(295, 220, 85, 30);
@@ -912,40 +911,16 @@ public class Interfaz extends JFrame implements Vista{
 
         JLabel fechaInicio = new JLabel("Fecha de inicio:");
         fechaInicio.setBounds(30, 60, 120, 30);
+        setFechaInicio = new JDateChooser();
+        setFechaInicio.setBounds(170, 60, 160, 30);
         JLabel fechaFinal = new JLabel("Fecha de fin: ");
         fechaFinal.setBounds(30, 100, 120, 30);
+        setFechaFin = new JDateChooser();
+        setFechaFin.setBounds(170, 100, 160, 30);
         panel_1.add(fechaInicio);
         panel_1.add(fechaFinal);
-        setYearInicio = new JTextField(4);
-        setMonthInicio = new JTextField(2);
-        setDayInicio = new JTextField(2);
-        setDayInicio.setBounds(170, 60, 40, 30);
-        setMonthInicio.setBounds(230, 60, 40, 30);
-        setYearInicio.setBounds(290, 60, 80, 30);
-        panel_1.add(setDayInicio);
-        panel_1.add(setMonthInicio);
-        panel_1.add(setYearInicio);
-        JLabel slash1 = new JLabel("/", CENTER);
-        JLabel slash2 = new JLabel("/", CENTER);
-        slash1.setBounds(210, 60, 20, 30);
-        slash2.setBounds(270, 60, 20, 30);
-        panel_1.add(slash1);
-        panel_1.add(slash2);
-        setYearFin = new JTextField(4);
-        setMonthFin = new JTextField(2);
-        setDayFin = new JTextField(2);
-        setDayFin.setBounds(170, 100, 40, 30);
-        setMonthFin.setBounds(230, 100, 40, 30);
-        setYearFin.setBounds(290, 100, 80, 30);
-        panel_1.add(setDayFin);
-        panel_1.add(setMonthFin);
-        panel_1.add(setYearFin);
-        JLabel slash3 = new JLabel("/", CENTER);
-        JLabel slash4 = new JLabel("/", CENTER);
-        slash3.setBounds(210, 100, 20, 30);
-        slash4.setBounds(270, 100, 20, 30);
-        panel_1.add(slash3);
-        panel_1.add(slash4);
+        panel_1.add(setFechaInicio);
+        panel_1.add(setFechaFin);
 
         JButton buscar = new JButton("Buscar");
         buscar.addActionListener(new BuscarPeriodoCliente());
@@ -958,6 +933,7 @@ public class Interfaz extends JFrame implements Vista{
         periodoCliente.setResizable(false);
 
     }
+
     public void buscarPeriodo(){
 
         periodoGeneral = new JFrame("Buscar en periodo");
@@ -974,40 +950,17 @@ public class Interfaz extends JFrame implements Vista{
 
         JLabel fechaInicio = new JLabel("Fecha de inicio:");
         fechaInicio.setBounds(30, 60, 120, 30);
+        setFechaInicio = new JDateChooser();
+        setFechaInicio.setBounds(170, 60, 160, 30);
+
         JLabel fechaFinal = new JLabel("Fecha de fin: ");
         fechaFinal.setBounds(30, 100, 120, 30);
+        setFechaFin = new JDateChooser();
+        setFechaFin.setBounds(170, 100, 160, 30);
         panel_1.add(fechaInicio);
         panel_1.add(fechaFinal);
-        setYearInicio = new JTextField(4);
-        setMonthInicio = new JTextField(2);
-        setDayInicio = new JTextField(2);
-        setDayInicio.setBounds(170, 60, 40, 30);
-        setMonthInicio.setBounds(230, 60, 40, 30);
-        setYearInicio.setBounds(290, 60, 80, 30);
-        panel_1.add(setDayInicio);
-        panel_1.add(setMonthInicio);
-        panel_1.add(setYearInicio);
-        JLabel slash1 = new JLabel("/", CENTER);
-        JLabel slash2 = new JLabel("/", CENTER);
-        slash1.setBounds(210, 60, 20, 30);
-        slash2.setBounds(270, 60, 20, 30);
-        panel_1.add(slash1);
-        panel_1.add(slash2);
-        setYearFin = new JTextField(4);
-        setMonthFin = new JTextField(2);
-        setDayFin = new JTextField(2);
-        setDayFin.setBounds(170, 100, 40, 30);
-        setMonthFin.setBounds(230, 100, 40, 30);
-        setYearFin.setBounds(290, 100, 80, 30);
-        panel_1.add(setDayFin);
-        panel_1.add(setMonthFin);
-        panel_1.add(setYearFin);
-        JLabel slash3 = new JLabel("/", CENTER);
-        JLabel slash4 = new JLabel("/", CENTER);
-        slash3.setBounds(210, 100, 20, 30);
-        slash4.setBounds(270, 100, 20, 30);
-        panel_1.add(slash3);
-        panel_1.add(slash4);
+        panel_1.add(setFechaInicio);
+        panel_1.add(setFechaFin);
 
         JButton buscar = new JButton("Buscar");
         buscar.addActionListener(new BuscarPeriodoGeneral());
@@ -1155,6 +1108,10 @@ public class Interfaz extends JFrame implements Vista{
         return this.clienteAdd;
     }
 
+    public JFrame getFrameAltaCliente() {
+        return this.altaCliente;
+    }
+
     public Llamada getLlamadaAdd() {
         return this.llamadaAdd;
     }
@@ -1193,6 +1150,13 @@ public class Interfaz extends JFrame implements Vista{
 
     public String getClienteBaja() {return this.clienteBaja;}
 
+    public JFrame getVentana() {
+        return this.ventana;
+    }
+
+    public JFrame getFrameFactura(){
+        return this.factura;
+    }
 
     // -----------------------------SETTERS------------------------------------------------------
 
@@ -1292,8 +1256,8 @@ public class Interfaz extends JFrame implements Vista{
                 setClienteEmpresa();
                 controlador.altaClienteEmpresa();
             }
-            altacliente.setVisible(false);
-            altacliente.dispose();
+            altaCliente.setVisible(false);
+            altaCliente.dispose();
             ventana.setVisible(true);
             datosCli.setEnabled(true);
             periodo.setEnabled(true);
@@ -1343,18 +1307,32 @@ public class Interfaz extends JFrame implements Vista{
     }
 }
 
+    private class AltaCliente implements ActionListener {
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object[] options = {"Particular", "Empresa"};
+        int n =JOptionPane.showOptionDialog(ventana,"¿Qué tipo de cliente quieres dar de alta?","Alta Cliente",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null, options, options[0]);
+            if(n == 0){
+                altaCliente("P");
+            } else {
+                altaCliente("E");
+            }
+    }
+}
     private class Alta implements ActionListener {
         private String tipo;
         public Alta(String tipo) {
             this.tipo = tipo;
         }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        altaCliente(tipo);
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            altaCliente(tipo);
+        }
     }
-}
-
     private class DatosCliente implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -1369,6 +1347,7 @@ public class Interfaz extends JFrame implements Vista{
             datos  = createClientePartPane(clienteParticular);
             datos.setEditable(false);
             llamadasPerfil.setModel(modelo.getLlamadas(clienteParticular));
+            facturasCliente.setModel(modelo.getFacturasCliente(clienteParticular));
             clienteAdd = clienteParticular;
             fichaUsuario(clienteParticular);
         } else {
@@ -1376,6 +1355,7 @@ public class Interfaz extends JFrame implements Vista{
             datos = createClienteEmpPane(clienteEmpresa);
             datos.setEditable(false);
             llamadasPerfil.setModel(modelo.getLlamadas(clienteEmpresa));
+            facturasCliente.setModel(modelo.getFacturasCliente(clienteEmpresa));
             clienteAdd = clienteEmpresa;
             fichaUsuario(clienteEmpresa);
         }
@@ -1411,13 +1391,14 @@ public class Interfaz extends JFrame implements Vista{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        llamadaAdd = new Llamada(setNumLlamo.getText(), Double.parseDouble(setDuracion.getText()), new GregorianCalendar());
-        llamadaAdd.setFecha(Integer.parseInt(setYear.getText()), Integer.parseInt(setMonth.getText()) - 1, Integer.parseInt(setDay.getText()), Integer.parseInt(setHour.getText()), Integer.parseInt(setMinute.getText()));
+        Calendar fecha_alta = new GregorianCalendar();
+        fecha_alta.set(setFechaAlta.getCalendar().get(Calendar.YEAR), setFechaAlta.getCalendar().get(Calendar.MONTH), setFechaAlta.getCalendar().get(Calendar.DAY_OF_MONTH), Integer.parseInt(setHour.getText()), Integer.parseInt(setMinute.getText()));
+        llamadaAdd = new Llamada(setNumLlamo.getText(), Double.parseDouble(setDuracion.getText()), fecha_alta);
         setNumLlamo.setText("");
         setDuracion.setText("");
-        setYear.setText("");
-        setMonth.setText("");
-        setDay.setText("");
+        //setYear.setText("");
+        //setMonth.setText("");
+        //setDay.setText("");
         setHour.setText("");
         setMinute.setText("");
         controlador.altaLlamada();
@@ -1481,12 +1462,20 @@ public class Interfaz extends JFrame implements Vista{
             Cliente cliente = modelo.datosCliente(clienteAdd.getCodigo());
             String codigo = setCodigoFactura.getText();
             Calendar fecha_inicio = new GregorianCalendar();
-            fecha_inicio.set(Integer.parseInt(setYearInicio.getText()), Integer.parseInt(setMonthInicio.getText()) -1, Integer.parseInt(setDayInicio.getText()));
+            fecha_inicio.set(setFechaInicio.getCalendar().get(Calendar.YEAR), setFechaInicio.getCalendar().get(Calendar.MONTH), setFechaInicio.getCalendar().get(Calendar.DAY_OF_MONTH));
             Calendar fecha_fin = new GregorianCalendar();
-            fecha_fin.set(Integer.parseInt(setYearFin.getText()), Integer.parseInt(setMonthFin.getText()) -1, Integer.parseInt(setDayFin.getText()));
-            facturaAdd = Factura.emitirFactura(cliente, codigo, fecha_inicio, fecha_fin);
-            controlador.altaFactura();
-            datosFac.setEnabled(true);
+            fecha_fin.set(setFechaFin.getCalendar().get(Calendar.YEAR), setFechaFin.getCalendar().get(Calendar.MONTH), setFechaFin.getCalendar().get(Calendar.DAY_OF_MONTH));
+            if(fecha_inicio.after(fecha_fin)){
+                JOptionPane.showMessageDialog(factura, "Periodo de fechas no válido.", "IllegalPeriodException", JOptionPane.ERROR_MESSAGE);
+            } else {
+                facturaAdd = Factura.emitirFactura(cliente, codigo, fecha_inicio, fecha_fin, factura);
+                if(modelo.facturaExistente(facturaAdd)){
+                    JOptionPane.showMessageDialog(factura, "La factura ya existe", "InvoiceAlreadyExistent", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    controlador.altaFactura();
+                    datosFac.setEnabled(true);
+                }
+            }
             factura.dispose();
         }
     }
@@ -1635,9 +1624,15 @@ public class Interfaz extends JFrame implements Vista{
                 filtro.setSelectedIndex(1);
             if(filtro.getSelectedIndex() == 0) {
                 resultado.setModel(modelo.getClientesBusqueda(setbusqueda.getText()));
+                if (resultado.getRowCount() == 0){
+                    JOptionPane.showMessageDialog(ventana, "El cliente no existe", "ClientNotFound", JOptionPane.ERROR_MESSAGE);
+                }
             }
             if (filtro.getSelectedIndex() == 1) {
                 resultado.setModel(modelo.getFacturasBusqueda(setbusqueda.getText()));
+                if (resultado.getRowCount() == 0){
+                    JOptionPane.showMessageDialog(ventana, "La factura no existe", "InvoiceNotFound", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
     }
@@ -1659,18 +1654,30 @@ public class Interfaz extends JFrame implements Vista{
             else
                 filtro.setSelectedIndex(1);
             Calendar fecha_inicio = new GregorianCalendar();
-            fecha_inicio.set(Integer.parseInt(setYearInicio.getText()), Integer.parseInt(setMonthInicio.getText()) - 1, Integer.parseInt(setDayInicio.getText()));
+            fecha_inicio.set(setFechaInicio.getCalendar().get(Calendar.YEAR), setFechaInicio.getCalendar().get(Calendar.MONTH), setFechaInicio.getCalendar().get(Calendar.DAY_OF_MONTH));
             Calendar fecha_fin = new GregorianCalendar();
-            fecha_fin.set(Integer.parseInt(setYearFin.getText()), Integer.parseInt(setMonthFin.getText()) - 1, Integer.parseInt(setDayFin.getText()));
+            fecha_fin.set(setFechaFin.getCalendar().get(Calendar.YEAR), setFechaFin.getCalendar().get(Calendar.MONTH), setFechaFin.getCalendar().get(Calendar.DAY_OF_MONTH));
             if(filtro.getSelectedIndex() == 0) {
-                llamadasPerfil.setModel(modelo.getLlamadasPeriodoCliente(clienteAdd.getCodigo(),fecha_inicio, fecha_fin));
+                if(fecha_inicio.after(fecha_fin)){
+                    JOptionPane.showMessageDialog(periodoCliente, "Periodo de fechas no válido.", "IllegalPeriodException", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    llamadasPerfil.setModel(modelo.getLlamadasPeriodoCliente(clienteAdd.getCodigo(),fecha_inicio, fecha_fin));
+
+                }
+
             }
             if (filtro.getSelectedIndex() == 1) {
-                facturasCliente.setModel(modelo.getFacturasPeriodoCliente(clienteAdd.getCodigo(),fecha_inicio, fecha_fin));
+                if(fecha_inicio.after(fecha_fin)){
+                    JOptionPane.showMessageDialog(periodoCliente, "Periodo de fechas no válido.", "IllegalPeriodException", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    facturasCliente.setModel(modelo.getFacturasPeriodoCliente(clienteAdd.getCodigo(),fecha_inicio, fecha_fin));
+
+                }
             }
             periodoCliente.dispose();
         }
     }
+
     private class ResetearPeriodo implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -1696,16 +1703,25 @@ public class Interfaz extends JFrame implements Vista{
             else
                 filtro.setSelectedIndex(1);
             Calendar fecha_inicio = new GregorianCalendar();
-            fecha_inicio.set(Integer.parseInt(setYearInicio.getText()), Integer.parseInt(setMonthInicio.getText()) - 1, Integer.parseInt(setDayInicio.getText()));
+            fecha_inicio.set(setFechaInicio.getCalendar().get(Calendar.YEAR), setFechaInicio.getCalendar().get(Calendar.MONTH), setFechaInicio.getCalendar().get(Calendar.DAY_OF_MONTH));
             Calendar fecha_fin = new GregorianCalendar();
-            fecha_fin.set(Integer.parseInt(setYearFin.getText()), Integer.parseInt(setMonthFin.getText()) - 1, Integer.parseInt(setDayFin.getText()));
+            fecha_fin.set(setFechaFin.getCalendar().get(Calendar.YEAR), setFechaFin.getCalendar().get(Calendar.MONTH), setFechaFin.getCalendar().get(Calendar.DAY_OF_MONTH));
             if(filtro.getSelectedIndex() == 0) {
-                resultado.setModel(modelo.getClientesPeriodo(fecha_inicio, fecha_fin));
+                if(fecha_inicio.after(fecha_fin)){
+                    JOptionPane.showMessageDialog(periodoGeneral, "Periodo de fechas no válido.", "IllegalPeriodException", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    resultado.setModel(modelo.getClientesPeriodo(fecha_inicio, fecha_fin));
+
+                }
             }
             if (filtro.getSelectedIndex() == 1) {
-                resultado.setModel(modelo.getFacturasPeriodo(fecha_inicio, fecha_fin));
+                if(fecha_inicio.after(fecha_fin)){
+                    JOptionPane.showMessageDialog(periodoGeneral, "Periodo de fechas no válido.", "IllegalPeriodException", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    resultado.setModel(modelo.getFacturasPeriodo(fecha_inicio, fecha_fin));
+
+                }
             }
-            //periodoCliente.dispose();
         }
     }
 }

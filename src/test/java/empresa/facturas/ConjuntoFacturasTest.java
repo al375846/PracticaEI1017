@@ -14,6 +14,7 @@ import empresa.tarifas.TarifaBasica;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.swing.*;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -25,6 +26,7 @@ public class ConjuntoFacturasTest {
     Factura otra_factura;
     Calendar fecha_inicio;
     Calendar fecha_fin;
+    JFrame ventana;
 
     @Before
     public void setUp() throws Exception {

@@ -7,6 +7,8 @@ import empresa.interfacesUsuario.Vista;
 import empresa.llamadas.Llamada;
 import empresa.tarifas.Tarifa;
 
+import javax.swing.*;
+
 public class ImplementacionControlador implements Controlador{
     private Vista vista;
     private Modelo modelo;
@@ -17,16 +19,19 @@ public class ImplementacionControlador implements Controlador{
 
     public void altaClienteParticular() {
         Cliente cliente = vista.getClientePart();
-        modelo.altaCliente(cliente);
+        JFrame ventana = vista.getFrameAltaCliente();
+        modelo.altaCliente(cliente, ventana);
     }
     public void altaClienteEmpresa() {
         Cliente cliente = vista.getClienteEmp();
-        modelo.altaCliente(cliente);
+        JFrame ventana = vista.getFrameAltaCliente();
+        modelo.altaCliente(cliente, ventana);
     }
 
     public void baja() {
         String baja = vista.getClienteBaja();
-        modelo.baja(baja);
+        JFrame ventana = vista.getVentana();
+        modelo.baja(baja, ventana);
     }
 
     public void altaLlamada() {

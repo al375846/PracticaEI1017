@@ -8,6 +8,7 @@ import empresa.fecha.Fecha;
 import empresa.llamadas.Llamada;
 import empresa.tarifas.Tarifa;
 
+import javax.swing.*;
 import java.io.Serializable;
 import java.util.*;
 
@@ -21,23 +22,25 @@ public class CarteraClientes extends Fecha implements Serializable {
         this.cartera_clientes = new HashMap<>();
     }
 
-    public void altaCliente(Cliente cliente){
-        try {
-            this.clienteExistente(cliente);
-            cartera_clientes.put(cliente.getCodigo(), cliente);
-        }
-        catch (ClientAlreadyExistentException c) {
-            System.out.println("El cliente ya existe.");
-        }
+    public void altaCliente(Cliente cliente, JFrame ventana){
+       try {
+           this.clienteExistente(cliente);
+           cartera_clientes.put(cliente.getCodigo(), cliente);
+       } catch (ClientAlreadyExistentException c) {
+           JOptionPane.showMessageDialog(ventana,"El cliente ya existe", "ClientAlreadyExistentException", JOptionPane.ERROR_MESSAGE);
+           System.out.println("El cliente ya existe.");
+       }
+
 
     }
 
-    public void bajaCliente(String codigo){
+    public void bajaCliente(String codigo, JFrame ventana){
         try {
             this.clienteNoExistente(codigo);
             cartera_clientes.remove(codigo);
         }
         catch (ClientNotFound c) {
+            JOptionPane.showMessageDialog(ventana, "El cliente no existe", "ClientNotFound", JOptionPane.ERROR_MESSAGE);
             System.out.println("El cliente no existe.");
         }
     }
@@ -107,7 +110,7 @@ public class CarteraClientes extends Fecha implements Serializable {
             return cartera_clientes.get(codigo).getFacturas();
         }
         catch (ClientNotFound c) {
-            System.out.println("El cliente no existe.");
+            c.printStackTrace();
             return new ArrayList<>();
         }
     }
@@ -140,30 +143,33 @@ public class CarteraClientes extends Fecha implements Serializable {
         return  cliente.contieneFactura(cliente, factura);
     }
 
-    public HashSet<Cliente> clientesEnPeriodo(Calendar fecha_inicio, Calendar fecha_fin) {
+    public HashSet<Cliente> clientesEnPeriodo(Calendar fecha_inicio, Calendar fecha_fin /*,JFrame ventana*/) {
         try {
             return extraerEnPeriodo(cartera_clientes.values(), fecha_inicio, fecha_fin);
         }
         catch (IllegalPeriodException e) {
+            //JOptionPane.showMessageDialog(ventana, "IllegalPeriodException", "Periodo de fechas no válido", JOptionPane.ERROR_MESSAGE);
             System.out.println("Periodo de fechas no válido.");
         }
         return new HashSet<>();
     }
-    public HashSet<Llamada> llamadasEnPeriodo(String codigo, Calendar fecha_inicio, Calendar fecha_fin){
+    public HashSet<Llamada> llamadasEnPeriodo(String codigo, Calendar fecha_inicio, Calendar fecha_fin/*,JFrame ventana*/){
         try {
             return extraerEnPeriodo(this.datosCliente(codigo).getLlamadas(), fecha_inicio, fecha_fin);
         }
         catch (IllegalPeriodException p) {
+            //JOptionPane.showMessageDialog(ventana, "IllegalPeriodException", "Periodo de fechas no válido", JOptionPane.ERROR_MESSAGE);
             System.out.println("Periodo de fechas no válido.");
         }
         return new HashSet<>();
     }
 
-    public HashSet<Factura> facturasEnPeriodo(String codigo, Calendar fecha_inicio, Calendar fecha_fin) {
+    public HashSet<Factura> facturasEnPeriodo(String codigo, Calendar fecha_inicio, Calendar fecha_fin/*,JFrame ventana*/) {
         try {
             return extraerEnPeriodo(this.datosCliente(codigo).getFacturas(), fecha_inicio, fecha_fin);
         }
         catch (IllegalPeriodException p) {
+            //JOptionPane.showMessageDialog(ventana, "IllegalPeriodException", "Periodo de fechas no válido", JOptionPane.ERROR_MESSAGE);
             System.out.println("Periodo de fechas no válido.");
         }
         return new HashSet<>();

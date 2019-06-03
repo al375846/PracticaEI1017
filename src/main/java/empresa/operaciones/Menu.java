@@ -1,9 +1,6 @@
-package empresa.operaciones;
+/*package empresa.operaciones;
 import empresa.clientes.*;
-import empresa.excepcion.ClientNotFound;
-import empresa.excepcion.InvoiceNotFound;
-import empresa.excepcion.IllegalPeriodException;
-import empresa.excepcion.UnexpectedAnswerException;
+import empresa.excepcion.*;
 import empresa.facturas.ConjuntoFacturas;
 import empresa.facturas.Factura;
 
@@ -12,7 +9,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-    public static void main(String[] args) throws  UnexpectedAnswerException {
+    public static void main(String[] args) throws  UnexpectedAnswerException, ClientAlreadyExistentException {
         ConjuntoFacturas conjunto_facturas  = new ConjuntoFacturas();
         CarteraClientes cartera_clientes = new CarteraClientes();
         OpcionesMenu opcionMenu;
@@ -160,3 +157,5 @@ public class Menu {
         }while (opcionMenu != OpcionesMenu.SALIR);
     }
 }
+
+ */

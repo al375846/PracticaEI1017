@@ -4,6 +4,7 @@ import empresa.excepcion.InvoiceNotFound;
 import empresa.excepcion.InvoiceAlreadyExistentException;
 import empresa.fecha.Fecha;
 
+import javax.swing.*;
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -24,7 +25,7 @@ public class ConjuntoFacturas extends Fecha implements Serializable {
                 facturas.put(factura.getCodigo(), factura);
             }
             catch (InvoiceAlreadyExistentException i) {
-                System.out.println("Factura ya existe");
+                i.printStackTrace();
             }
         }
     }
@@ -44,7 +45,7 @@ public class ConjuntoFacturas extends Fecha implements Serializable {
             return facturas.get(codigo);
         }
         catch (InvoiceNotFound i) {
-            System.out.println("Factura no existe");
+            i.printStackTrace();
         }
         return new Factura();
     }

@@ -1,7 +1,10 @@
 package empresa.operaciones;
 
+import com.toedter.calendar.JCalendar;
 import empresa.clientes.*;
+import empresa.excepcion.ClientAlreadyExistentException;
 import empresa.excepcion.IllegalPeriodException;
+import empresa.excepcion.InvoiceAlreadyExistentException;
 import empresa.excepcion.UnexpectedAnswerException;
 import empresa.facturas.ConjuntoFacturas;
 import empresa.facturas.Factura;
@@ -55,13 +58,15 @@ public class ImplementacionModelo implements Modelo {
         vista.setModelIniciar();
     }
 
-    public void altaCliente(Cliente cliente) {
-        carteraClientes.altaCliente(cliente);
-        vista.setModelLista();
+    public void altaCliente(Cliente cliente, JFrame ventana) {
+
+            carteraClientes.altaCliente(cliente, ventana);
+            vista.setModelLista();
+
     }
 
-    public void baja(String cliente) {
-        carteraClientes.bajaCliente(cliente);
+    public void baja(String cliente, JFrame ventana) {
+        carteraClientes.bajaCliente(cliente, ventana);
         vista.setModelBaja();
     }
 
@@ -71,9 +76,14 @@ public class ImplementacionModelo implements Modelo {
     }
 
     public void altaFactura(Cliente cliente, Factura factura) {
-        carteraClientes.addFactura(factura, cliente);
+
         conjuntoFacturas.addFactura(factura);
+        carteraClientes.addFactura(factura, cliente);
         vista.setModelFacturas();
+
+    }
+    public boolean facturaExistente(Factura factura){
+            return conjuntoFacturas.contieneFactura(factura);
     }
 
     public void setVista(Interfaz vista) {
@@ -89,7 +99,8 @@ public class ImplementacionModelo implements Modelo {
         Iterator<String> iter = listado.iterator();
         DefaultListModel nuevo = new DefaultListModel();
         while(iter.hasNext()) {
-            nuevo.addElement(iter.next());
+            String codigo = iter.next();
+            nuevo.addElement(codigo);
         }
         return nuevo;
     }
@@ -164,7 +175,6 @@ public class ImplementacionModelo implements Modelo {
         }
         for (String code: clientes) {
             Cliente client = carteraClientes.datosCliente(code);
-            Object[] add = {};
             if (client.getCodigo().contains(codigo)) {
                 Object[] fila = {client.getCodigo(), client.getNombre(), client.impFecha(), client.getCorreo()};
                 nuevo.addRow(fila);
@@ -200,6 +210,7 @@ public class ImplementacionModelo implements Modelo {
     public DefaultTableModel getFacturasPeriodoCliente(String codigo, Calendar fecha_inicio, Calendar fecha_fin) {
         try {
             Set<Factura> facturas = carteraClientes.datosCliente(codigo).extraerEnPeriodo(carteraClientes.datosCliente(codigo).getFacturas(), fecha_inicio, fecha_fin);
+            //Set<Factura> facturas = carteraClientes.facturasEnPeriodo(codigo, fecha_inicio, fecha_fin, );
 
             DefaultTableModel nuevo = new DefaultTableModel();
             String[] columnas = {"Código", "Importe", "Emisión", "Inicio", "Fin"};
@@ -214,7 +225,7 @@ public class ImplementacionModelo implements Modelo {
             }
             return nuevo;
         } catch (IllegalPeriodException e) {
-            System.out.println("Periodo de fechas no válido.");
+            e.printStackTrace();
             return new DefaultTableModel();
         }
 

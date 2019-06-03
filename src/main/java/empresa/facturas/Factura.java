@@ -6,6 +6,7 @@ import empresa.fecha.Fecha;
 import empresa.llamadas.Llamada;
 import empresa.tarifas.Tarifa;
 
+import javax.swing.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -33,7 +34,7 @@ public class Factura extends Fecha implements Serializable {
         this.fin_periodo = fin_facturacion;
     }
 
-    public static Factura emitirFactura(Cliente cliente, String codigo, Calendar inicio, Calendar fin) {
+    public static Factura emitirFactura(Cliente cliente, String codigo, Calendar inicio, Calendar fin, JFrame ventana) {
         try {
             HashSet<Llamada> llamadas = cliente.extraerEnPeriodo(cliente.getLlamadas(), inicio, fin);
            double importe = 0;
@@ -44,21 +45,22 @@ public class Factura extends Fecha implements Serializable {
             return factura;
         }
         catch (IllegalPeriodException p) {
+            JOptionPane.showMessageDialog(ventana, "Periodo de fechas no válido", "IllegalPeriodException", JOptionPane.ERROR_MESSAGE);
             System.out.println("Periodo de fechas no válido");
         }
         return null;
     }
 
     public String impFechaInicio(){
-        return (this.inicio_periodo.get(Calendar.DAY_OF_MONTH) + "/" + (this.inicio_periodo.get(Calendar.MONTH) + 1)+ "/" + this.inicio_periodo.get(Calendar.YEAR));
+        return (this.inicio_periodo.get(Calendar.DAY_OF_MONTH) + "/" + (this.inicio_periodo.get(Calendar.MONTH) + 1) + "/" + this.inicio_periodo.get(Calendar.YEAR));
     }
 
     public String impFechaFin(){
-        return (this.fin_periodo.get(Calendar.DAY_OF_MONTH) + "/" + (this.fin_periodo.get(Calendar.MONTH) + 1)+ "/" + this.fin_periodo.get(Calendar.YEAR));
+        return (this.fin_periodo.get(Calendar.DAY_OF_MONTH) + "/" + (this.fin_periodo.get(Calendar.MONTH) + 1) + "/" + this.fin_periodo.get(Calendar.YEAR));
     }
 
     public String impFecha(){
-        return (this.fecha_emision.get(Calendar.DAY_OF_MONTH) + "/" + (this.fecha_emision.get(Calendar.MONTH) + 1)+ "/" + this.fecha_emision.get(Calendar.YEAR));
+        return (this.fecha_emision.get(Calendar.DAY_OF_MONTH) + "/" + (this.fecha_emision.get(Calendar.MONTH) + 1) + "/" + this.fecha_emision.get(Calendar.YEAR));
     }
 
     public Calendar getFecha() {
@@ -101,20 +103,17 @@ public class Factura extends Fecha implements Serializable {
     }
 
     public String toString() {
-        String fecha = (this.fecha_emision.get(Calendar.DAY_OF_MONTH) + "/" + (this.fecha_emision.get(Calendar.MONTH) + 1)+ "/" + this.fecha_emision.get(Calendar.YEAR));
         StringBuilder factura = new StringBuilder();
         factura.append("Codigo: " + this.codigo);
         factura.append("\n");
         factura.append("Importe: " + this.getImporte());
         factura.append("\n");
         factura.append(this.tarifa.toString());
-        factura.append("Fecha de emision: " + fecha);
+        factura.append("Fecha de emision: " + impFecha());
         factura.append("\n");
-        fecha = (this.inicio_periodo.get(Calendar.DAY_OF_MONTH) + "/" + (this.inicio_periodo.get(Calendar.MONTH) + 1) + "/" + this.inicio_periodo.get(Calendar.YEAR));
-        factura.append("Inicio del periodo de facturacion: " + fecha);
+        factura.append("Inicio del periodo de facturacion: " + impFechaInicio());
         factura.append("\n");
-        fecha = (this.fin_periodo.get(Calendar.DAY_OF_MONTH) + "/" + (this.fin_periodo.get(Calendar.MONTH) + 1) + "/" + this.fin_periodo.get(Calendar.YEAR));
-        factura.append("Fin del periodo de facturacion: " + fecha);
+        factura.append("Fin del periodo de facturacion: " + impFechaFin());
         factura.append("\n");
 
         return factura.toString();

@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
+import javax.swing.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -31,6 +32,7 @@ public class FacturaTest {
     String codigo;
     Factura factura_prueba;
     Tarifa tarifa_empresa;
+    JFrame ventana;
 
     @Before
     public void setUp() {
@@ -62,7 +64,7 @@ public class FacturaTest {
     public void emitirFactura() {
         clienteEmpresa.addLlamada(nueva_llamada);
         clienteEmpresa.addLlamada(otra_llamada);
-        factura_prueba = Factura.emitirFactura(clienteEmpresa, codigo, fecha_inicio, fecha_fin);
+        factura_prueba = Factura.emitirFactura(clienteEmpresa, codigo, fecha_inicio, fecha_fin, ventana);
         factura_prueba.setFecha_emision(fecha_emision);
         boolean prueba = factura.compare(factura_prueba);
         assertEquals(true, prueba);

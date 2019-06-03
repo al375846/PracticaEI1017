@@ -9,6 +9,7 @@ import es.uji.www.GeneradorDatosINE;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.swing.*;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -30,6 +31,7 @@ public class CarteraClientesTest {
     Llamada llamada_3;
     Llamada llamada_4;
     Llamada llamada_5;
+    JFrame ventana;
 
     @Before
     public void setUp() throws Exception {
@@ -71,11 +73,11 @@ public class CarteraClientesTest {
 
     @Test
     public void altaCliente() throws ClientNotFound {
-        carteraClientes.altaCliente(clienteEmpresa);
+        carteraClientes.altaCliente(clienteEmpresa, ventana);
         boolean prueba = carteraClientes.contieneCliente(clienteEmpresa);
         assertEquals(true, prueba);
 
-        carteraClientes.altaCliente(clienteParticular);
+        carteraClientes.altaCliente(clienteParticular, ventana);
         prueba = carteraClientes.contieneCliente(clienteParticular);
         assertEquals(true, prueba);
 
@@ -87,17 +89,17 @@ public class CarteraClientesTest {
     @Test
     public void bajaCliente() throws ClientNotFound {
 
-        carteraClientes.altaCliente(clienteEmpresa);
+        carteraClientes.altaCliente(clienteEmpresa, ventana);
         boolean prueba = carteraClientes.contieneCliente(clienteEmpresa);
         assertEquals(true, prueba);
-        carteraClientes.bajaCliente(clienteEmpresa.getCodigo());
+        carteraClientes.bajaCliente(clienteEmpresa.getCodigo(), ventana);
         prueba = carteraClientes.contieneCliente(new ClienteEmpresa());
         assertEquals(false, prueba);
 
-        carteraClientes.altaCliente(clienteParticular);
+        carteraClientes.altaCliente(clienteParticular, ventana);
         prueba = carteraClientes.contieneCliente(clienteParticular);
         assertEquals(true, prueba);
-        carteraClientes.bajaCliente(clienteParticular.getCodigo());
+        carteraClientes.bajaCliente(clienteParticular.getCodigo(), ventana);
         prueba = carteraClientes.contieneCliente(new ClienteEmpresa());
         assertEquals(false, prueba);
 
@@ -116,7 +118,7 @@ public class CarteraClientesTest {
     @Test
     public void altaLlamada() throws ClientNotFound {
 
-        carteraClientes.altaCliente(clienteParticular);
+        carteraClientes.altaCliente(clienteParticular, ventana);
         carteraClientes.altaLlamada(clienteParticular.getCodigo(), nueva_llamada);
         boolean prueba = carteraClientes.contieneLlamada(clienteParticular, nueva_llamada);
         assertEquals(true, prueba);
@@ -127,9 +129,9 @@ public class CarteraClientesTest {
 
     @Test
     public void datosCliente() throws ClientNotFound {
-        carteraClientes.altaCliente(clienteParticular);
+        carteraClientes.altaCliente(clienteParticular, ventana);
         assertEquals(clienteParticular, carteraClientes.datosCliente(clienteParticular.getCodigo()));
-        carteraClientes.altaCliente(clienteEmpresa);
+        carteraClientes.altaCliente(clienteEmpresa, ventana);
         assertEquals(clienteEmpresa, carteraClientes.datosCliente(clienteEmpresa.getCodigo()));
     }
 
@@ -137,8 +139,8 @@ public class CarteraClientesTest {
     public void listaClientes() throws ClientNotFound {
 
         CarteraClientes carteraEnB = new CarteraClientes();
-        carteraEnB.altaCliente(clienteEmpresa);
-        carteraEnB.altaCliente(clienteParticular);
+        carteraEnB.altaCliente(clienteEmpresa, ventana);
+        carteraEnB.altaCliente(clienteParticular, ventana);
         HashMap<String, Cliente> clientes = new HashMap<>();
         clientes.put(clienteEmpresa.getCodigo(), clienteEmpresa);
         clientes.put(clienteParticular.getCodigo(), clienteParticular);
@@ -149,7 +151,7 @@ public class CarteraClientesTest {
     @Test
     public void listaLlamadas() throws ClientNotFound {
 
-        carteraClientes.altaCliente(clienteEmpresa);
+        carteraClientes.altaCliente(clienteEmpresa, ventana);
         List<Llamada> registroLlamadas = new ArrayList<>();
         registroLlamadas.add(nueva_llamada);
         registroLlamadas.add(otra_llamada);
@@ -164,7 +166,7 @@ public class CarteraClientesTest {
     @Test
     public void addFactura() throws ClientNotFound {
 
-        carteraClientes.altaCliente(clienteEmpresa);
+        carteraClientes.altaCliente(clienteEmpresa, ventana);
         boolean prueba = carteraClientes.contieneFactura(clienteEmpresa, factura);
         assertEquals(false, prueba);
 
@@ -176,7 +178,7 @@ public class CarteraClientesTest {
     @Test
     public void listaFacturas() throws ClientNotFound {
 
-        carteraClientes.altaCliente(clienteParticular);
+        carteraClientes.altaCliente(clienteParticular, ventana);
         List<Factura> facturas = new ArrayList<>();
         facturas.add(factura);
         facturas.add(otra_factura);
@@ -191,7 +193,7 @@ public class CarteraClientesTest {
     @Test
     public void extraerPeriodo() {
         clienteEmpresa.getFecha().set(2019, 2,1);
-        carteraClientes.altaCliente(clienteEmpresa);
+        carteraClientes.altaCliente(clienteEmpresa, ventana);
         HashSet<Cliente> clientes = new HashSet<>();
         assertEquals(clientes, carteraClientes.clientesEnPeriodo(new GregorianCalendar(2021,1,1), new GregorianCalendar(2022,1,1)));
         clientes.add(clienteEmpresa);

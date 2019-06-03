@@ -12,20 +12,21 @@ import java.util.Calendar;
 import java.util.Set;
 
 public interface Modelo {
-    void altaCliente(Cliente cliente);
+    void altaCliente(Cliente cliente, JFrame ventana);
     Cliente datosCliente(String codigo);
     DefaultListModel getClientes();
     void altaLlamada(String cliente, Llamada llamada);
     DefaultTableModel getLlamadas(Cliente cliente);
     void cambiarTarifaCliente(String codigo, Tarifa tarifa);
     void altaFactura(Cliente cliente, Factura factura);
+    boolean facturaExistente(Factura factura);
     DefaultListModel getFacturas();
     DefaultTableModel getFacturasCliente(Cliente cliente);
     Factura datosFactura(String codigo);
     void cambiarTarifaBasica(double precio);
     void cambiarTarifaDiaria(double precio, int dia);
     void cambiarTarifaHoraria(double precio, int inicio, int fin);
-    void baja(String codigo);
+    void baja(String codigo, JFrame ventana);
     void load(File fichero);
     void save(File fichero);
     void actualizar();
